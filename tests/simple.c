@@ -23,7 +23,8 @@ Test(quotes, double_quotes)
 Test(quotes, met_flags)
 {
     char *s = "ls -lta";
-    char *ret[2] = {"ls", "-lta"};
+
+    char **ret = parser(s);
     char *output[2] = {"ls", "-lta"};
     cr_assert(eq(str, output[0], ret[0]));
     cr_assert(eq(str, output[1], ret[1]));
