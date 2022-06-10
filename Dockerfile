@@ -7,5 +7,6 @@ RUN apt-get update && \
                     make \
                     clang \
                     valgrind \
+                    git \
                     -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
