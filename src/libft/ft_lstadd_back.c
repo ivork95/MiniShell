@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.h                                           :+:    :+:            */
+/*   ft_lstadd_back.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
+/*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/10 17:36:36 by ivork         ########   odam.nl         */
+/*   Created: 2020/11/08 21:11:53 by ivork         #+#    #+#                 */
+/*   Updated: 2020/11/22 16:58:50 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "libft.h"
 
-int	closed_quotes(char *str);
-char **parser(char *line);
-
-#endif
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	if (!*lst)
+		*lst = new;
+	else
+		ft_lstlast(*lst)->next = new;
+}

@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.h                                           :+:    :+:            */
+/*   ft_strchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
+/*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/10 17:36:36 by ivork         ########   odam.nl         */
+/*   Created: 2020/11/08 21:12:24 by ivork         #+#    #+#                 */
+/*   Updated: 2021/10/12 17:49:20 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
 
-int	closed_quotes(char *str);
-char **parser(char *line);
-
-#endif
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if (c == 0)
+		return ((char *)&s[i]);
+	return (0);
+}

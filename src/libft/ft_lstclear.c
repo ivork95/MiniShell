@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.h                                           :+:    :+:            */
+/*   ft_lstclear.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
+/*   By: anonymous <anonymous@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/10 17:36:36 by ivork         ########   odam.nl         */
+/*   Created: 2020/11/22 18:05:55 by anonymous     #+#    #+#                 */
+/*   Updated: 2021/10/12 17:52:55 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "libft.h"
 
-int	closed_quotes(char *str);
-char **parser(char *line);
+void	ft_lstclear(t_list **lst, void (*del)(void*))
+{
+	t_list	*current;
 
-#endif
+	current = *lst;
+	if (current->next != NULL)
+		ft_lstclear(&current->next, del);
+	del(current->content);
+	free(current);
+	*lst = 0;
+}

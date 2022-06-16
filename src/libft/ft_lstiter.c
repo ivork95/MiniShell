@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.h                                           :+:    :+:            */
+/*   ft_lstiter.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
+/*   By: anonymous <anonymous@student.codam.nl>       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/10 17:36:36 by ivork         ########   odam.nl         */
+/*   Created: 2020/11/22 18:26:19 by anonymous     #+#    #+#                 */
+/*   Updated: 2021/10/12 17:52:48 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "libft.h"
 
-int	closed_quotes(char *str);
-char **parser(char *line);
+void	ft_lstiter(t_list *lst, void (*f)(void *))
+{
+	t_list	*current;
 
-#endif
+	current = lst;
+	while (current)
+	{
+		f(current->content);
+		current = current->next;
+	}
+}

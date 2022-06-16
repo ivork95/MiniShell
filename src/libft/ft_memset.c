@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.h                                           :+:    :+:            */
+/*   ft_memset.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
+/*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/10 17:36:36 by ivork         ########   odam.nl         */
+/*   Created: 2020/11/08 21:11:53 by ivork         #+#    #+#                 */
+/*   Updated: 2020/11/23 13:27:30 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include <stddef.h>
 
-int	closed_quotes(char *str);
-char **parser(char *line);
+void	*ft_memset(void *str, int c, size_t n)
+{
+	int		i;
+	char	*cs;
 
-#endif
+	cs = str;
+	i = 0;
+	while (n > 0)
+	{
+		cs[i] = c;
+		i++;
+		n--;
+	}
+	return (str);
+}

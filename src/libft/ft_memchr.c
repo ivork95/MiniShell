@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.h                                           :+:    :+:            */
+/*   ft_memchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
+/*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/10 17:36:36 by ivork         ########   odam.nl         */
+/*   Created: 2020/10/29 15:11:49 by ivork         #+#    #+#                 */
+/*   Updated: 2021/10/12 17:52:00 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include <stddef.h>
 
-int	closed_quotes(char *str);
-char **parser(char *line);
+void	*ft_memchr(const void *str, int c, size_t n)
+{
+	size_t		i;
+	const char	*temp;
 
-#endif
+	temp = str;
+	i = 0;
+	while (i < n)
+	{
+		if (temp[i] == (const char)c)
+			return ((char *)&temp[i]);
+		i++;
+	}
+	return (0);
+}
