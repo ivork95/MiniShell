@@ -33,6 +33,16 @@ Test(quotes, met_flags)
     cr_assert(eq(str, output[1], ret[1]));
 }
 
+Test(quotes, cmds_quotes_options_no_quotes)
+{
+    char *s = "\'ls\' -la";
+
+    char **ret = parser(s);
+    char *output[2] = {"ls", "-la"};
+    cr_assert(eq(str, output[0], ret[0]));
+    cr_assert(eq(str, output[1], ret[1]));
+}
+
 Test(quotes, is_closed)
 {
     char *s_closed = "\"ls\"";

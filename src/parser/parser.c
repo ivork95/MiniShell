@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 16:30:36 by ivork         #+#    #+#                 */
-/*   Updated: 2022/06/16 12:40:25 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/06/16 14:56:30 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,39 @@
 // 	return (splitted_lines);
 // }
 
-char **parser(char *line)
+void remove_quotes(char **line)
 {
-    char *line_dup;
-    char **splitted_lines;
     char type_of_quote;
 
-    line_dup = ft_strdup(line);
-    if (line_dup[0] == '\'')
+    if (*line[0] == '\'')
         type_of_quote = '\'';
-    else if (line_dup[0] == '\"')
+    else if (*line[0] == '\"')
         type_of_quote = '\"';
     else
         type_of_quote = 0;
-
     if (type_of_quote)
     {
-        line_dup++;
-        line_dup[ft_strlen(line_dup) - 1] = '\0';
+        printf("line = |%s|\n", *line);
+        (*line)++;
+        printf("line = |%s|\n", *line);
+        (*line)[ft_strlen(*line) - 1] = '\0';
     }
-    splitted_lines = ft_split(line_dup, ' ');
+    printf("line = |%s|\n", *line);
+}
+
+char **parser(const char *line)
+{
+    char **splitted_lines;
+    size_t i;
+
+    i = 0;
+    splitted_lines = ft_split(line, ' ');
+    while (splitted_lines[i] != NULL)
+    {
+        remove_quotes(splitted_lines + i);
+        i++;
+    }
+
     return (splitted_lines);
 }
 
