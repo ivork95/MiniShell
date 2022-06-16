@@ -7,6 +7,6 @@ RUN apt-get update && \
                     make \
                     clang \
                     valgrind \
-                    git \
+                    libreadline-dev \
                     -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
