@@ -1,5 +1,5 @@
 VPATH :=	src:\
-			src/parsing:
+			src/parser:
 NAME := minishell
 HEADERS := includes/parser.h
 OBJECTS :=	obj/main.o \

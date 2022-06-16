@@ -5,19 +5,22 @@
 Test(quotes, zonder_quotes)
 {
     char *s = "ls";
-    cr_assert(eq(str, s, "ls"));
+    char **ret = parser(s);
+    cr_assert(eq(str, "ls", ret[0]));
 }
 
 Test(quotes, single_quotes)
 {
     char *s = "\'ls\'";
-    cr_assert(eq(str, s, "ls"));
+    char **ret = parser(s);
+    cr_assert(eq(str, "ls", ret[0]));
 }
 
 Test(quotes, double_quotes)
 {
     char *s = "\"ls\"";
-    cr_assert(eq(str, s, "ls"));
+    char **ret = parser(s);
+    cr_assert(eq(str, "ls", ret[0]));
 }
 
 Test(quotes, met_flags)
@@ -40,3 +43,12 @@ Test(quotes, is_closed)
     is_closed = closed_quotes(s_niet_closed);
     cr_assert(ne(is_closed, "string is geclosed!"));
 }
+
+
+/*
+gcc simple.c \
+../src/parser/parser.c \
+../src/parser/is_closed.c \
+../src/libft/libft.a \
+-lcriterion
+*/
