@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 16:30:36 by ivork         #+#    #+#                 */
-/*   Updated: 2022/06/21 15:31:14 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/06/21 16:44:39 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ char *find_closing_single_quote(char *str, size_t *i)
     char *end = NULL;
     while (str[*i])
     {
-        if (str[*i + 1] == '\'')
-        { 
-            end = str + *i;
+        if (str[*i] == '\'')
+        {
+            end = str + (*i - 1);
             (*i)++;
             break;
         }
@@ -70,9 +70,9 @@ char *find_closing_double_quote(char *str, size_t *i)
     char *end = NULL;
     while (str[*i])
     {
-        if (str[*i + 1] == '\"')
+        if (str[*i] == '\"')
         { 
-            end = str + *i;
+            end = str + (*i - 1);
             (*i)++;
             break;
         }
@@ -81,12 +81,32 @@ char *find_closing_double_quote(char *str, size_t *i)
     return (end);
 }
 
+char *find_end_word(char *str, size_t *i)
+{
+    char *end = NULL;
+    while (str[*i])
+    {
+        if (str[*i] == ' ')
+        { 
+            // end = str + (*i - 1);
+            // (*i)++;
+            break;
+        }
+        (*i)++;
+    }
+    (*i)--;
+    return (str + *i);
+}
+
 int main(void)
 {
     char *start = NULL;
     char *end = NULL;
-    char *str = "\'ls \' -la";
-    char *ret = calloc(10, sizeof(*ret));
+    char *str = "\'ls \' \"-la\" grep";
+    char *ret_1 = calloc(10, sizeof(*ret_1));
+    char *ret_2 = calloc(10, sizeof(*ret_2));
+    char *ret_3 = calloc(10, sizeof(*ret_3));
+    char *rets[3] = {ret_1, ret_2, ret_3};
     size_t i = 0;
 
     while (str[i] != '\0')
@@ -95,9 +115,24 @@ int main(void)
         {
             i++;
             start = str + i;
-            end = find_closing_single_quote(str + i, &i);
-            ft_strlcpy(ret, start, end - start + 2);
-            printf("ret = |%s|\n", ret);
+            end = find_closing_single_quote(str, &i);
+            ft_strlcpy(ret_1, start, end - start + 2);
+            printf("rets[0] = |%s|\n", rets[0]);
+        }
+        if (str[i] == '\"')
+        {
+            i++;
+            start = str + i;
+            end = find_closing_double_quote(str, &i);
+            ft_strlcpy(ret_2, start, end - start + 2);
+            printf("rets[1] = |%s|\n", rets[1]);
+        }
+        if (str[i] != ' ')
+        {
+            start = str + i;
+            end = find_end_word(str, &i);
+            ft_strlcpy(ret_3, start, end - start + 2);
+            printf("rets[2] = |%s|\n", rets[2]);
         }
         i++;
     }
