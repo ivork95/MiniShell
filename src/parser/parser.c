@@ -1,173 +1,122 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ivork <ivork@student.codam.nl>               +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/06/10 16:30:36 by ivork         #+#    #+#                 */
-/*   Updated: 2022/06/21 16:44:39 by kgajadie      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../libft/libft.h"
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "../libft/libft.h"
 
-void remove_quotes(char **line)
+char *find_closing_single_quote(char **str_dup)
 {
-    char type_of_quote;
-    printf("line = |%s|\n", *line);
+    char    *end;
 
-    if (*line[0] == '\'')
-        type_of_quote = '\'';
-    else if (*line[0] == '\"')
-        type_of_quote = '\"';
-    else
-        type_of_quote = 0;
-    if (type_of_quote)
+    end = NULL;
+    while (**str_dup != '\0')
     {
-        (*line)++;
-        (*line)[ft_strlen(*line) - 1] = '\0';
-    }
-}
-
-char **parser(const char *line)
-{
-    char **splitted_lines;
-    size_t i;
-
-    i = 0;
-    splitted_lines = ft_split(line, ' ');
-    // printf("splitted_lines[0] = |%s|\n", splitted_lines[0]);
-    while (splitted_lines[i] != NULL)
-    {
-        remove_quotes(splitted_lines + i);
-        i++;
-    }
-    // printf("splitted_lines[1] = |%s|\n", splitted_lines[0]);
-    return (splitted_lines);
-}
-
-char *find_closing_single_quote(char *str, size_t *i)
-{
-    char *end = NULL;
-    while (str[*i])
-    {
-        if (str[*i] == '\'')
+        if (**str_dup == '\'')
         {
-            end = str + (*i - 1);
-            (*i)++;
+            end = *str_dup;
+            (*str_dup)++;
             break;
         }
-        (*i)++;
+        (*str_dup)++;
     }
     return (end);
 }
 
-char *find_closing_double_quote(char *str, size_t *i)
+char *find_closing_double_quote(char **str_dup)
 {
-    char *end = NULL;
-    while (str[*i])
+    char    *end;
+
+    end = NULL;
+    while (**str_dup != '\0')
     {
-        if (str[*i] == '\"')
-        { 
-            end = str + (*i - 1);
-            (*i)++;
+        if (**str_dup == '\"')
+        {
+            end = *str_dup;
+            (*str_dup)++;
             break;
         }
-        (*i)++;
+        (*str_dup)++;
     }
     return (end);
 }
 
-char *find_end_word(char *str, size_t *i)
+char *find_end_word(char **str_dup)
 {
-    char *end = NULL;
-    while (str[*i])
+    char    *end;
+
+    end = NULL;
+    while (**str_dup != '\0')
     {
-        if (str[*i] == ' ')
-        { 
-            // end = str + (*i - 1);
-            // (*i)++;
-            break;
-        }
-        (*i)++;
+        if (**str_dup == ' ')
+            return (*str_dup);
+        (*str_dup)++;
     }
-    (*i)--;
-    return (str + *i);
+    end = (*str_dup)--;
+    return (end);
 }
 
-int main(void)
+
+void print_arguments(char *str, long int length)
 {
-    char *start = NULL;
-    char *end = NULL;
-    char *str = "\'ls \' \"-la\" grep";
-    char *ret_1 = calloc(10, sizeof(*ret_1));
-    char *ret_2 = calloc(10, sizeof(*ret_2));
-    char *ret_3 = calloc(10, sizeof(*ret_3));
-    char *rets[3] = {ret_1, ret_2, ret_3};
-    size_t i = 0;
+	int  i;
 
-    while (str[i] != '\0')
+	i = 0;
+	while(length > i)
+	{
+		printf("%c", str[i]);
+		i++;
+	}
+	printf("\n");
+}
+
+void parser(const char* str)
+{
+    // char *ret_1 = calloc(10, sizeof(*ret_1));
+    // char *ret_2 = calloc(10, sizeof(*ret_2));
+    // char *ret_3 = calloc(10, sizeof(*ret_3));
+
+    char    *start;
+    char    *end;
+    char    *str_dup;
+
+    start = NULL;
+    end = NULL;
+    str_dup = str;
+
+    while (*str_dup != '\0')
     {
-        if (str[i] == '\'')
+        if (*str_dup == '\'')
         {
-            i++;
-            start = str + i;
-            end = find_closing_single_quote(str, &i);
-            ft_strlcpy(ret_1, start, end - start + 2);
-            printf("rets[0] = |%s|\n", rets[0]);
+            str_dup++;
+            start = str_dup;
+            end = find_closing_single_quote(&str_dup);
+			print_arguments(start, end - start);
+			// printf("%ld\n", end - start);
+            // ft_strlcpy(ret_1, start, end - start + 1);
+            // printf("ret_1 = |%s|\n", ret_1);
         }
-        if (str[i] == '\"')
+        if (*str_dup == '\"')
         {
-            i++;
-            start = str + i;
-            end = find_closing_double_quote(str, &i);
-            ft_strlcpy(ret_2, start, end - start + 2);
-            printf("rets[1] = |%s|\n", rets[1]);
+            str_dup++;
+            start = str_dup;
+            end = find_closing_double_quote(&str_dup);
+			print_arguments(start, end - start);
+            // ft_strlcpy(ret_2, start, end - start + 1);
+            // printf("ret_2 = |%s|\n", ret_2);
         }
-        if (str[i] != ' ')
+        if (*str_dup != ' ')
         {
-            start = str + i;
-            end = find_end_word(str, &i);
-            ft_strlcpy(ret_3, start, end - start + 2);
-            printf("rets[2] = |%s|\n", rets[2]);
+            start = str_dup;
+            end = find_end_word(&str_dup);
+			print_arguments(start, end - start);
+            // ft_strlcpy(ret_3, start, end - start + 1);
+            // printf("ret_3 = |%s|\n", ret_3);
         }
-        i++;
+        str_dup++;
     }
-
-    return (0);
 }
 
 // int main(void)
 // {
-//     char *start = NULL;
-//     char *end = NULL;
-//     char *str = "\'ls \' -la";
-//     char *ret = calloc(10, sizeof(*ret));
-//     size_t i = 0;
-
-//     while (str[i] != '\0')
-//     {
-//         if (str[i] == '\'')
-//         {
-//             if (start == NULL)
-//                 start = str + i;
-//             else
-//                 end = str + i;
-//         }
-//         if (start != NULL && end != NULL)
-//         {
-//             ft_strlcpy(ret, start, end - start + 2);
-//             start = NULL;
-//             end = NULL;
-//         }
-
-//         if (str[i] == '\'')
-//         i++;
-//     }
-
-//     printf("ret = |%s|\n", ret);
-//     return (0);
+//     const char *str = "\'ls \'        \"-la \" grep    ";
+//     alpha(str);
 // }
