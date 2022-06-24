@@ -1,55 +1,88 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ivork <ivork@student.codam.nl>               +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/06/10 16:30:36 by ivork         #+#    #+#                 */
-/*   Updated: 2022/06/16 15:11:07 by kgajadie      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../libft/libft.h"
+#include <string.h>
 #include <stdio.h>
+#include <unistd.h>
+#include "../libft/libft.h"
 
-void remove_quotes(char **line)
+char *find_closing_single_quote(char **str_dup)
 {
-    char type_of_quote;
-    printf("line = |%s|\n", *line);
+    char    *end;
 
-    if (*line[0] == '\'')
-        type_of_quote = '\'';
-    else if (*line[0] == '\"')
-        type_of_quote = '\"';
-    else
-        type_of_quote = 0;
-    if (type_of_quote)
+    end = NULL;
+    while (**str_dup != '\0')
     {
-        (*line)++;
-        (*line)[ft_strlen(*line) - 1] = '\0';
+        if (**str_dup == '\'')
+        {
+            end = *str_dup;
+            (*str_dup)++;
+            break;
+        }
+        (*str_dup)++;
     }
+    return (end);
 }
 
-char **parser(const char *line)
+char *find_closing_double_quote(char **str_dup)
 {
-    char **splitted_lines;
-    size_t i;
+    char    *end;
 
-    i = 0;
-    splitted_lines = ft_split(line, ' ');
-    // printf("splitted_lines[0] = |%s|\n", splitted_lines[0]);
-    while (splitted_lines[i] != NULL)
+    end = NULL;
+    while (**str_dup != '\0')
     {
-        remove_quotes(splitted_lines + i);
-        i++;
+        if (**str_dup == '\"')
+        {
+            end = *str_dup;
+            (*str_dup)++;
+            break;
+        }
+        (*str_dup)++;
     }
-    // printf("splitted_lines[1] = |%s|\n", splitted_lines[0]);
-    return (splitted_lines);
+    return (end);
 }
 
-// int main(void)
-// {
-//     char *s = "\'ls\'";
-//     char **ret = parser(s);
-// }
+char *find_end_word(char **str_dup)
+{
+    while (**str_dup != '\0' && **str_dup != ' ')
+        (*str_dup)++;
+    return((*str_dup)--);
+}
+
+
+void print_arguments(char *str, long int length)
+{
+    write(1, str, length);
+}
+
+void parser(const char* str)
+{
+    char    *start;
+    char    *end;
+    char    *str_dup;
+
+    start = NULL;
+    end = NULL;
+    str_dup = str;
+
+    while (*str_dup != '\0')
+    {
+        if (*str_dup == '\'')
+        {
+            str_dup++;
+            start = str_dup;
+            end = find_closing_single_quote(&str_dup);
+			print_arguments(start, end - start);
+        }
+        if (*str_dup == '\"')
+        {
+            str_dup++;
+            start = str_dup;
+            end = find_closing_double_quote(&str_dup);
+			print_arguments(start, end - start);
+        }
+        if (*str_dup != ' ')
+        {
+            start = str_dup;
+            end = find_end_word(&str_dup);
+        }
+        str_dup++;
+    }
+}
