@@ -1,173 +1,202 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
+/*   parser_old.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ivork <ivork@student.codam.nl>               +#+                     */
+/*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/10 16:30:36 by ivork         #+#    #+#                 */
-/*   Updated: 2022/06/21 16:44:39 by kgajadie      ########   odam.nl         */
+/*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
+/*   Updated: 2022/06/24 19:54:34 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "../libft/libft.h"
+#include "../../includes/parser.h"
 
-void remove_quotes(char **line)
+
+t_llnode *create_new_node()
 {
-    char type_of_quote;
-    printf("line = |%s|\n", *line);
-
-    if (*line[0] == '\'')
-        type_of_quote = '\'';
-    else if (*line[0] == '\"')
-        type_of_quote = '\"';
-    else
-        type_of_quote = 0;
-    if (type_of_quote)
-    {
-        (*line)++;
-        (*line)[ft_strlen(*line) - 1] = '\0';
-    }
+	t_llnode *new;
+	
+	new = malloc(sizeof(t_llnode));
+		if (new == NULL)
+		exit(EXIT_FAILURE);
+	new->next = NULL;
+	return (new);
 }
 
-char **parser(const char *line)
+void	add_list_front(t_llnode **head, t_llnode *new_node)
 {
-    char **splitted_lines;
-    size_t i;
-
-    i = 0;
-    splitted_lines = ft_split(line, ' ');
-    // printf("splitted_lines[0] = |%s|\n", splitted_lines[0]);
-    while (splitted_lines[i] != NULL)
-    {
-        remove_quotes(splitted_lines + i);
-        i++;
-    }
-    // printf("splitted_lines[1] = |%s|\n", splitted_lines[0]);
-    return (splitted_lines);
+	new_node->next = *head;
+	*head = new_node;
 }
 
-char *find_closing_single_quote(char *str, size_t *i)
+void	print_arguments(char *str, long int length)
 {
-    char *end = NULL;
-    while (str[*i])
-    {
-        if (str[*i] == '\'')
-        {
-            end = str + (*i - 1);
-            (*i)++;
-            break;
-        }
-        (*i)++;
-    }
-    return (end);
+	int	i;
+
+	i = 0;
+	printf("|");
+	while (length > i)
+	{
+		printf("%c", str[i]);
+		i++;
+	}
+	printf("|\n");
 }
 
-char *find_closing_double_quote(char *str, size_t *i)
+char	*find_closing_quote(char **str_dup, char delimiter)
 {
-    char *end = NULL;
-    while (str[*i])
-    {
-        if (str[*i] == '\"')
-        { 
-            end = str + (*i - 1);
-            (*i)++;
-            break;
-        }
-        (*i)++;
-    }
-    return (end);
+	char	*end;
+
+	end = NULL;
+	while (**str_dup != '\0')
+	{
+		if (**str_dup == delimiter)
+		{
+			end = *str_dup;
+			(*str_dup)++;
+			break ;
+		}
+		(*str_dup)++;
+	}
+	return (end);
 }
 
-char *find_end_word(char *str, size_t *i)
+char	*find_end_word(char **str_dup)
 {
-    char *end = NULL;
-    while (str[*i])
-    {
-        if (str[*i] == ' ')
-        { 
-            // end = str + (*i - 1);
-            // (*i)++;
-            break;
-        }
-        (*i)++;
-    }
-    (*i)--;
-    return (str + *i);
+	char	*end;
+
+	end = NULL;
+	while (**str_dup != '\0')
+	{
+		if (**str_dup == ' ')
+			return (*str_dup);
+		(*str_dup)++;
+	}
+	end = (*str_dup)--;
+	return (end);
 }
 
-int main(void)
+void	handle_quotes(char **str_dup, t_llnode **head, char delimiter)
 {
-    char *start = NULL;
-    char *end = NULL;
-    char *str = "\'ls \' \"-la\" grep";
-    char *ret_1 = calloc(10, sizeof(*ret_1));
-    char *ret_2 = calloc(10, sizeof(*ret_2));
-    char *ret_3 = calloc(10, sizeof(*ret_3));
-    char *rets[3] = {ret_1, ret_2, ret_3};
-    size_t i = 0;
+	char		*start;
+	char		*end;
+	t_llnode	*new_node;
 
-    while (str[i] != '\0')
-    {
-        if (str[i] == '\'')
-        {
-            i++;
-            start = str + i;
-            end = find_closing_single_quote(str, &i);
-            ft_strlcpy(ret_1, start, end - start + 2);
-            printf("rets[0] = |%s|\n", rets[0]);
-        }
-        if (str[i] == '\"')
-        {
-            i++;
-            start = str + i;
-            end = find_closing_double_quote(str, &i);
-            ft_strlcpy(ret_2, start, end - start + 2);
-            printf("rets[1] = |%s|\n", rets[1]);
-        }
-        if (str[i] != ' ')
-        {
-            start = str + i;
-            end = find_end_word(str, &i);
-            ft_strlcpy(ret_3, start, end - start + 2);
-            printf("rets[2] = |%s|\n", rets[2]);
-        }
-        i++;
-    }
+	(*str_dup)++;
+	start = *str_dup;
+	end = find_closing_quote(str_dup, delimiter);
+	
+	new_node = create_new_node();
+	new_node->str = malloc(end - start + 1);
+	if (new_node->str == NULL)
+		exit(EXIT_FAILURE);
+	ft_strlcpy(new_node->str, start, end - start + 1);
+	add_list_front(head, new_node);
+	
+	print_arguments(start, end - start);
 
-    return (0);
 }
 
-// int main(void)
+void	handle_spaces(char **str_dup, t_llnode **head)
+{
+	char		*start;
+	char		*end;
+	t_llnode	*new_node;
+
+	start = *str_dup;
+	end = find_end_word(str_dup);
+
+	new_node = create_new_node();
+	new_node->str = malloc(end - start + 1);
+	if (new_node->str == NULL)
+		exit(EXIT_FAILURE);
+	ft_strlcpy(new_node->str, start, end - start + 1);
+	add_list_front(head, new_node);
+	
+	print_arguments(start, end - start);
+}
+
+t_llnode	*split_words(char *str)
+{
+	t_llnode *head;
+
+	head = create_new_node();
+	char	*str_dup;
+
+	str_dup = str;
+	while (*str_dup != '\0')
+	{
+		if (*str_dup == '\'')
+			handle_quotes(&str_dup, &head, '\'');
+		if (*str_dup == '\"')
+			handle_quotes(&str_dup, &head, '\"');
+		if (*str_dup != ' ')
+			handle_spaces(&str_dup, &head);
+		str_dup++;
+	}
+	return (head);
+}
+
+
+void free_linked_list(t_llnode *head)
+{
+	t_llnode *tmp;
+	
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->str);
+		free(tmp);
+	}
+}
+
+void print_list(t_llnode *head)
+{
+	while (head->next != NULL)
+	{
+		printf("|%s|\n", head->str);
+		head = head->next;
+	}
+}
+
+// t_llnode	*parser(char *str)
 // {
-//     char *start = NULL;
-//     char *end = NULL;
-//     char *str = "\'ls \' -la";
-//     char *ret = calloc(10, sizeof(*ret));
-//     size_t i = 0;
+// 	// char	*str = "\'ls \' \"-la\" grep '|' \"wc\" -l ";
 
-//     while (str[i] != '\0')
-//     {
-//         if (str[i] == '\'')
-//         {
-//             if (start == NULL)
-//                 start = str + i;
-//             else
-//                 end = str + i;
-//         }
-//         if (start != NULL && end != NULL)
-//         {
-//             ft_strlcpy(ret, start, end - start + 2);
-//             start = NULL;
-//             end = NULL;
-//         }
+// 	t_llnode *head;
 
-//         if (str[i] == '\'')
-//         i++;
-//     }
+// 	head = create_new_node();
 
-//     printf("ret = |%s|\n", ret);
-//     return (0);
+// 	// printf("before = %p\n", head);
+// 	head = split_words(str);
+// 	// printf("after = %p\n", head);
+
+
+// 	print_list(head);
+// 	free_linked_list(head);
+// 	return (head);
 // }
+
+int	main(void)
+{
+	char	*str = "\'ls \' \"-la\" grep '|' \"wc\" -l ";
+
+	t_llnode *head;
+
+	// head = create_new_node();
+
+	// printf("before = %p\n", head);
+	head = split_words(str);
+	// printf("after = %p\n", head);
+
+
+	print_list(head);
+	free_linked_list(head);
+	return (0);
+}
