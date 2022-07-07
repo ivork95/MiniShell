@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/24 22:05:55 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/07 17:16:36 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,11 @@ char	*find_end_word(char **str_dup)
 	{
 		if (**str_dup == ' ')
 		{
-			// printf("test\n");
 			return (*str_dup);
 		}
 		(*str_dup)++;
 	}
 	end = (*str_dup)--;
-	// printf("end inside = %s\n", end);
 	return (end);
 }
 
@@ -95,7 +93,6 @@ char 	*handle_quotes(char **str_dup, char delimiter)
 	end = find_closing_quote(str_dup, delimiter);
 	str = malloc((end - start + 1) * sizeof(char));
 	ft_strlcpy(str, start, end - start + 1);
-	// print_arguments(start, end - start);
 	return (str);
 }
 
@@ -124,24 +121,32 @@ char *split_user_input(char **str_dup)
 		return(handle_quotes(str_dup, '\"'));
 	if (**str_dup != ' ')
 		return(handle_spaces(str_dup));
+	return (NULL);
 }
 
 t_llnode	*create_linked_list(char *str)
 {
 	t_llnode *head;
-	t_llnode *new_node;
+	t_llnode *tmp;
 	char	*argument;
 
-	head = create_new_node();
+	head = NULL;
 	while (*str != '\0')
 	{
 		argument = split_user_input(&str);
 		if (argument)
 		{
-			new_node = create_new_node();
-			new_node->str = argument;
-			add_list_front(&head, new_node);
-			
+			if (head != NULL)
+			{
+				tmp = create_new_node();
+				tmp->str = argument;
+				add_list_front(&head, tmp);
+			}
+			else
+			{
+				head = create_new_node();
+				head->str = argument;	
+			}
 		}
 		if (*str)
 			str++;
@@ -165,7 +170,7 @@ void free_linked_list(t_llnode *head)
 
 void print_list(t_llnode *head)
 {
-	while (head->next != NULL)
+	while (head != NULL)
 	{
 		printf("|%s|\n", head->str);
 		head = head->next;
@@ -181,18 +186,17 @@ t_llnode	*parser(char *str)
 	return (head);
 }
 
-// int	main(void)
-// {
-// 	char	*str = "\'ls \' \"-la\"              grep '|' \"wc\" '-l1234      ";
-// 	char *s = "ls -lta";
-// 	t_llnode *head;
+int	main(void)
+{
+	char	*str = "\'ls \' \"-la\"              grep \'|\' \"wc\" \'-l1234      \'         ";
+	char *s = "ls -lta";
+	t_llnode *head;
 
-// 	printf("before = %p\n", head);
-// 	head = create_linked_list(s);
-// 	printf("after = %p\n", head);
+	printf("before = %p\n", head);
+	head = create_linked_list(str);
+	printf("after = %p\n", head);
 
-
-// 	print_list(head);
-// 	free_linked_list(head);
-// 	return (0);
-// }
+	print_list(head);
+	free_linked_list(head);
+	return (0);
+}

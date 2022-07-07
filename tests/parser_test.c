@@ -53,8 +53,8 @@ Test(quotes, met_flags)
 {
     t_llnode *arguments;
 
-    char *s = "ls -lta";
-    char *expect[] = {"ls", "-lta"};
+    char *s = "\'ls\'";
+    char *expect[] = {"ls"};
     int i = 0;
     arguments = parser(s);
     while (arguments->next)
