@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/08 13:55:07 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/07/08 13:56:59 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	free_linked_list(t_llnode *head)
 	free(head);
 }
 
-void print_list(t_llnode *head)
+void	print_list(t_llnode *head)
 {
 	while (head != NULL)
 	{
