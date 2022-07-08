@@ -114,6 +114,21 @@ Test(test_parser, quote_cmd_space_quote_)
     cr_assert(eq(str, output[0], arguments->str));
 }
 
+Test(test_parser, long_string)
+{
+    char *test_string = "\'ls \' -la | \"grep\" libft \'hello   \'           world      ";
+    char *output[7] = {"world", "hello   ", "libft", "grep", "|", "-la", "ls "};
+    
+    t_llnode *arguments = parser(test_string);
+    int i = 0;
+    while (arguments)
+    {
+        cr_assert(eq(str, output[i], arguments->str));
+        arguments = arguments->next;
+        i++;
+    }
+}
+
 Test(test_parser, is_closed)
 {
     char *s_closed = "\"ls\"";
