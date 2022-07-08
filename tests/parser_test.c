@@ -23,7 +23,7 @@ Test(quotes, zonder_quotes)
 
 Test(quotes, single_quotes)
 {
-    char *test_string = "\'ls\'";
+    char *test_string = "\'ls\' -la";
     char *test_string2 = "\' ls\'";
     char *test_string3 = "\'ls \'";
     char *test_string5 = "\'ls\'     ";
@@ -33,10 +33,7 @@ Test(quotes, single_quotes)
     cr_assert_str_eq("ls", handle_quotes(&test_string5, '\''));
 }
 
-// void    parser_test()
-// {
-//     Parser
-// }
+
 Test(quotes, double_quotes)
 {
     char *test_string = "\"ls\"";
@@ -53,8 +50,8 @@ Test(quotes, met_flags)
 {
     t_llnode *arguments;
 
-    char *s = "\'ls\'";
-    char *expect[] = {"ls"};
+    char *s = "\'ls\' -la";
+    char *expect[] = {"-la", "ls", NULL};
     int i = 0;
     arguments = parser(s);
     while (arguments->next)
@@ -62,7 +59,6 @@ Test(quotes, met_flags)
         cr_assert_str_eq(arguments->str, expect[i]);
         arguments = arguments->next;
         i++;
-
     }
 }
 
