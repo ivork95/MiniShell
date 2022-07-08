@@ -1,10 +1,12 @@
+# MiniShell
+
 Bouw image genaamd ubuntu-c-dev op basis van Dockerfile:
-```
+```bash
 docker build -t  ubuntu-c-dev .
 ```
 
 Draai container op basis van image genaamd  ubuntu-c-dev met mounted eigen folder:
-```
+```bash
 docker run -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 ```
 
@@ -16,7 +18,7 @@ docker run -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 -c = CPU shares (relative weight) ???\
 sh = ?
 
-Run code met readline in ubuntu:
-```
+Run code met readline in Ubuntu:
+```bash
 gcc code.c -L/usr/local/lib -I/usr/local/include -lreadline
 ```
