@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/07 17:16:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/07 18:30:13 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,23 +180,21 @@ void print_list(t_llnode *head)
 t_llnode	*parser(char *str)
 {
 	t_llnode *head;
-
 	head = create_linked_list(str);
-	free_linked_list(head);
 	return (head);
 }
 
-int	main(void)
-{
-	char	*str = "\'ls \' \"-la\"              grep \'|\' \"wc\" \'-l1234      \'         ";
-	char *s = "ls -lta";
-	t_llnode *head;
+// int	main(void)
+// {
+// 	char	*str = "\'ls \' \"-la\"              grep \'|\' \"wc\" \'-l1234      \'         ";
+// 	char *s = "\'ls\' -la";
+// 	t_llnode *head;
 
-	printf("before = %p\n", head);
-	head = create_linked_list(str);
-	printf("after = %p\n", head);
+// 	printf("before = %p\n", head);
+// 	head = create_linked_list(s);
+// 	printf("after = %p\n", head);
 
-	print_list(head);
-	free_linked_list(head);
-	return (0);
-}
+// 	print_list(head);
+// 	free_linked_list(head);
+// 	return (0);
+// }
