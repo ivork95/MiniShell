@@ -2,6 +2,17 @@
 #include <criterion/new/assert.h>
 #include "../includes/parser.h"
 
+void    handle_spaces_test(char *input, char *expected)
+{
+    char *submitted;
+    submitted = handle_spaces(&input);
+        cr_assert_str_eq( submitted, expected, "called handle_spaces():\ninput:\t%s$\nexpected: %s$\n", submitted, expected);
+}
+Test(handle_spaces, fixed)
+{
+    handle_spaces_test((char *){"ls"} ,"ls");
+    handle_spaces_test((char *){"ls  "}, "ls");
+}
 /* HANDLE_SPACES */
 Test(test_handle_spaces, str1)
 {
