@@ -2,48 +2,88 @@
 #include <criterion/new/assert.h>
 #include "../includes/parser.h"
 
-Test(quotes, zonder_quotes)
+/* HANDLE_SPACES */
+Test(test_handle_spaces, str1)
 {
-    char *test_string = "ls";
-    char *test_string2 = "ls  ";
-    char *test_string3 = "ls -la";
-    char *test_string4 = "ls      ";
-    cr_assert_str_eq("ls", handle_spaces(&test_string));
-    cr_assert_str_eq("ls", handle_spaces(&test_string2));
-    cr_assert_str_eq("ls", handle_spaces(&test_string3));
-    cr_assert_str_eq("ls", handle_spaces(&test_string4));
+    char *test_string = "ls"; 
+    cr_assert_str_eq( handle_spaces(&test_string), "ls");
 }
 
-Test(quotes, single_quotes)
+Test(test_handle_spaces, str2)
+{
+    char *test_string = "ls  "; 
+    cr_assert_str_eq(handle_spaces(&test_string), "ls");
+}
+
+Test(test_handle_spaces, str3)
+{
+    char *test_string = "ls -la"; 
+    cr_assert_str_eq(handle_spaces(&test_string), "ls");
+}
+
+Test(test_handle_spaces, str4)
+{
+    char *test_string = "ls      "; 
+    cr_assert_str_eq(handle_spaces(&test_string), "ls");
+}
+
+/* HANDLE_QUOTES */
+/* SINGLE_QUOTES */
+Test(test_handle_quotes, single_quotes_str1)
 {
     char *test_string = "\'ls\' -la";
-    char *test_string2 = "\' ls\'";
-    char *test_string3 = "\'ls \'";
-    char *test_string5 = "\'ls\'     ";
-    cr_assert_str_eq("ls", handle_quotes(&test_string, '\''));
-    cr_assert_str_eq(" ls", handle_quotes(&test_string2, '\''));
-    cr_assert_str_eq("ls ", handle_quotes(&test_string3, '\''));
-    cr_assert_str_eq("ls", handle_quotes(&test_string5, '\''));
+    cr_assert_str_eq(handle_quotes(&test_string, '\''), "ls");
 }
 
+Test(test_handle_quotes, single_quotes_str2)
+{
+    char *test_string = "\' ls\'";
+    cr_assert_str_eq(handle_quotes(&test_string, '\''), " ls");
+}
 
-Test(quotes, double_quotes)
+Test(test_handle_quotes, single_quotes_str3)
+{
+    char *test_string =  "\'ls \'";
+    cr_assert_str_eq(handle_quotes(&test_string, '\''), "ls ");
+}
+
+Test(test_handle_quotes, single_quotes_str4)
+{
+    char *test_string ="\'ls\'     ";
+    cr_assert_str_eq(handle_quotes(&test_string, '\''), "ls");
+}
+
+/* DOUBLE_QUOTES */
+Test(test_handle_quotes, double_quotes_str1)
 {
     char *test_string = "\"ls\"";
-    char *test_string2 = "\" ls\"";
-    char *test_string3 = "\"ls \"";
-    char *test_string5 = "\"ls\"     ";
-    cr_assert_str_eq("ls", handle_quotes(&test_string, '\"'));
-    cr_assert_str_eq(" ls", handle_quotes(&test_string2, '\"'));
-    cr_assert_str_eq("ls ", handle_quotes(&test_string3, '\"'));
-    cr_assert_str_eq("ls", handle_quotes(&test_string5, '\"'));
+    cr_assert_str_eq(handle_quotes(&test_string, '\"'), "ls");
 }
 
-
-Test(quotes, met_flags)
+Test(test_handle_quotes, double_quotes_str2)
 {
-    char *s = "ls -lta";
-    t_llnode *arguments = parser(s);
+
+    char *test_string = "\" ls\"";
+    cr_assert_str_eq(handle_quotes(&test_string, '\"'), " ls");
+}
+
+Test(test_handle_quotes, double_quotes_str3)
+{
+    char *test_string = "\"ls \"";
+    cr_assert_str_eq(handle_quotes(&test_string, '\"'), "ls ");
+}
+
+Test(test_handle_quotes, double_quotes_str4)
+{
+    char *test_string = "\"ls\"     ";
+    cr_assert_str_eq(handle_quotes(&test_string, '\"'), "ls");
+}
+
+/* PARSER */
+Test(test_parser, met_flags)
+{
+    char *test_string = "ls -lta";
+    t_llnode *arguments = parser(test_string);
     char *output[2] = {"ls", "-lta"};
     
     cr_assert(eq(str, output[1], arguments->str));
@@ -51,11 +91,11 @@ Test(quotes, met_flags)
     cr_assert(eq(str, output[0], arguments->str));
 }
 
-Test(quotes, cmd_quotes_option_no_quotes)
+Test(test_parser, cmd_quotes_option_no_quotes)
 {
-    char *s = "\'ls\' -la";
+    char *test_string = "\'ls\' -la";
 
-    t_llnode *arguments = parser(s);
+    t_llnode *arguments = parser(test_string);
     char *output[2] = {"ls", "-la"};
 
     cr_assert(eq(str, output[1], arguments->str));
@@ -63,18 +103,18 @@ Test(quotes, cmd_quotes_option_no_quotes)
     cr_assert(eq(str, output[0], arguments->str));
 }
 
-Test(quotes, quote_cmd_space_quote_)
+Test(test_parser, quote_cmd_space_quote_)
 {
-    char *s = "\'ls \' -la";
+    char *test_string = "\'ls \' -la";
 
-    t_llnode *arguments = parser(s);
+    t_llnode *arguments = parser(test_string);
     char *output[2] = {"ls ", "-la"};
     cr_assert(eq(str, output[1], arguments->str));
     arguments = arguments->next;
     cr_assert(eq(str, output[0], arguments->str));
 }
 
-Test(quotes, is_closed)
+Test(test_parser, is_closed)
 {
     char *s_closed = "\"ls\"";
     int is_closed = closed_quotes(s_closed);
