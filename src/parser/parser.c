@@ -6,23 +6,20 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/08 13:49:13 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/08 13:55:07 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include "../libft/libft.h"
 #include "../../includes/parser.h"
 
 t_llnode	*create_new_node(void)
 {
 	t_llnode	*new;
 
-	new = malloc(sizeof(t_llnode));
+	new = malloc(sizeof(*new));
 	if (new == NULL)
 		exit(EXIT_FAILURE);
+	new->str = NULL;
 	new->next = NULL;
 	return (new);
 }
@@ -31,20 +28,6 @@ void	add_list_front(t_llnode **head, t_llnode *new_node)
 {
 	new_node->next = *head;
 	*head = new_node;
-}
-
-void	print_arguments(char *str, long int length)
-{
-	int	i;
-
-	i = 0;
-	printf("|");
-	while (length > i)
-	{
-		printf("%c", str[i]);
-		i++;
-	}
-	printf("|\n");
 }
 
 char	*find_closing_quote(char **str_dup, char delimiter)
@@ -150,18 +133,13 @@ void	create_linked_list(t_llnode **head, char *str)
 
 void	free_linked_list(t_llnode *head)
 {
-	t_llnode	*tmp;
-
-	while (head != NULL)
-	{
-		tmp = head;
-		head = head->next;
-		free(tmp->str);
-		free(tmp);
-	}
+	if (head->next != NULL)
+		free_linked_list(head->next);
+	free(head->str);
+	free(head);
 }
 
-void	print_list(t_llnode *head)
+void print_list(t_llnode *head)
 {
 	while (head != NULL)
 	{
