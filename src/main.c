@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/06/10 17:22:00 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/08 14:27:06 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@
 #include <stdlib.h>
 #include "../includes/parser.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	char *user_input;
-
+	char	*user_input;
 
 	user_input = readline(">");
 	parser(user_input);
