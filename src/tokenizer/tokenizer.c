@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/14 22:03:53 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/14 22:16:44 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ void	print_list(t_tokens *head)
 {
 	while (head != NULL)
 	{
-		printf("|%s|\n", head->str);
+		printf("$%s$\n", head->str);
 		head = head->next;
 	}
 }
 
 int	main(void)
 {
-	char		*s = "\'helloo\'   world|test    this \"string   \"        forme<outfile>         ";
+	char		*s = "\'helloo\'   world|test  ||   this \"string   \"        \"forme\"<outfile>>       \"quotes > not | closed  ";
 	t_tokens	*list;
 
 	list = tokenizer(s);
