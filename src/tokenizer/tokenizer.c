@@ -1,31 +1,74 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   tokenizer.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ivork <ivork@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
+/*   Updated: 2022/07/14 22:03:53 by ivork         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 #include "../libft/libft.h"
 #include <ctype.h>
 #include <stdio.h>
 
-t_tokens *tokenizer(char *str)
+size_t	isspecialchar(char c)
 {
+	if (c == '<' || c == '>' || c == '|')
+		return (1);
+	return (0);
+}
 
-	t_tokens *token;
-	size_t len;
-	int quote;
+t_tokens	*create_new_node(void)
+{
+	t_tokens	*new;
 
-	len = 0;
-	while (*str == ' ') 
-		str++;
-	token = malloc(sizeof(t_tokens));
-	quote = 0;
+	new = malloc(sizeof(*new));
+	if (new == NULL)
+		exit(EXIT_FAILURE);
+	new->str = NULL;
+	new->next = NULL;
+	return (new);
+}
 
+t_tokens	*tokenize_special_opp(char *str)
+{
+	t_tokens	*token;
+
+	token = create_new_node();
 	if (*str == '|')
 	{
 		token->str = str;
 		token->type = PIPE;
 		token->len = 1;
 	}
-
-	while ((str[len] && quote) || (str[len] != '\0' && !isspace(str[len]) && str[len] != '<' && str[len] != '>' && str[len] != '|'))
+	else if (*str == '<' || *str == '>')
 	{
-		token->type = WORD;
+		token->str = str;
+		token->type = REDIRECT_OP;
+		if (*(str + 1) == *str)
+			token->len = 2;
+		else
+			token->len = 1;
+	}
+	return (token);
+}
+
+t_tokens	*tokenize_word(char *str)
+{
+	t_tokens	*token;
+	size_t		len;
+	int			quote;
+
+	token = create_new_node();
+	quote = 0;
+	len = 0;
+	while ((str[len] && quote) || (str[len] != '\0'
+			&& !isspace(str[len]) && !isspecialchar(str[len])))
+	{
 		if ((str[len] == '\'' || str[len] == '\"') && quote == 0)
 		{
 			quote = str[len];
@@ -35,17 +78,29 @@ t_tokens *tokenizer(char *str)
 			quote = 0;
 		len++;
 	}
-	if (token->type == WORD)
+	token->type = WORD;
+	token->str = str;
+	token->len = len;
+	return (token);
+}
+
+t_tokens	*tokenizer(char *str)
+{
+	t_tokens	*token;
+
+	while (*str == ' ')
+		str++;
+	if (!(*str))
+		return (NULL);
+	if (isspecialchar(*str))
 	{
-		token->str = str;
-		token->len = len;
+		token = tokenize_special_opp(str);
+		token->next = tokenizer(str + token->len);
+		return (token);
 	}
-	else
-		len += token->len;
-	if (str[len] != '\0')
-		token->next = tokenizer(str + len);
-	else
-		token->next = NULL;
+	token = tokenize_word(str);
+	if (str[token->len] != '\0')
+		token->next = tokenizer(str + token->len);
 	return (token);
 }
 
@@ -58,15 +113,12 @@ void	print_list(t_tokens *head)
 	}
 }
 
-int main(void)
+int	main(void)
 {
-	char *s = "\'helloo\'   world|test    this \"string   \"        forme";
-	t_tokens *list;
+	char		*s = "\'helloo\'   world|test    this \"string   \"        forme<outfile>         ";
+	t_tokens	*list;
 
-
-	printf("test before tokenizer\n");
 	list = tokenizer(s);
-	printf("test after tokenizer\n");
 	print_list(list);
 	return (0);
 }
