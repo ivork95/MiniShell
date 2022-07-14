@@ -125,6 +125,38 @@ Test(test_parser, quote_cmd_space_quote_)
     cr_assert(eq(str, output[0], arguments->str));
 }
 
+Test(test_parser, cmd_operator_no_space_)
+{
+    char *test_string = "ls -la|grep a.out";
+
+    t_llnode *arguments = parser(test_string);
+    char *output[5] = {"ls ", "-la", "|", "grep", "a.out"};
+
+    int i = 4;
+    while (arguments)
+    {
+        cr_assert(eq(str, output[i], arguments->str));
+        arguments = arguments->next;
+        i--;
+    }
+}
+
+Test(test_parser, cmd_quotes_no_space_)
+{
+    char *test_string = "echo test\'<\'hello";
+
+    t_llnode *arguments = parser(test_string);
+    char *output[2] = {"echo", "test<hello"};
+
+    int i = 1;
+    while (arguments)
+    {
+        cr_assert(eq(str, output[i], arguments->str));
+        arguments = arguments->next;
+        i--;
+    }
+}
+
 Test(test_parser, long_string)
 {
     char *test_string = "\'ls \' -la | \"grep\" libft \'hello   \'           world      ";
