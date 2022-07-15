@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/14 22:16:44 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/15 13:05:07 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 #include <ctype.h>
 #include <stdio.h>
 
-size_t	isspecialchar(char c)
+bool	isspecialchar(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
-		return (1);
-	return (0);
+		return (true);
+	return (false);
 }
 
 t_tokens	*create_new_node(void)
@@ -108,7 +108,7 @@ void	print_list(t_tokens *head)
 {
 	while (head != NULL)
 	{
-		printf("$%s$\n", head->str);
+		printf("::%s::\n", head->str);
 		head = head->next;
 	}
 }
