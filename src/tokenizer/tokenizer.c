@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/15 13:05:07 by kawish        ########   odam.nl         */
+/*   Updated: 2022/07/15 14:42:52 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,19 @@
 #include <ctype.h>
 #include <stdio.h>
 
+bool	ft_isspace(int c)
+{
+	if (c == '\t'
+		|| c == '\n'
+		|| c == '\v'
+		|| c == '\f'
+		|| c == '\r'
+		|| c == ' ')
+		return (true);
+	else
+		return (false);
+}
+
 bool	isspecialchar(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
@@ -22,23 +35,23 @@ bool	isspecialchar(char c)
 	return (false);
 }
 
-t_tokens	*create_new_node(void)
+t_tokens	*create_new_token(void)
 {
-	t_tokens	*new;
+	t_tokens	*new_token;
 
-	new = malloc(sizeof(*new));
-	if (new == NULL)
+	new_token = malloc(sizeof(*new_token));
+	if (new_token == NULL)
 		exit(EXIT_FAILURE);
-	new->str = NULL;
-	new->next = NULL;
-	return (new);
+	new_token->str = NULL;
+	new_token->next = NULL;
+	return (new_token);
 }
 
 t_tokens	*tokenize_special_opp(char *str)
 {
 	t_tokens	*token;
 
-	token = create_new_node();
+	token = create_new_token();
 	if (*str == '|')
 	{
 		token->str = str;
@@ -59,36 +72,36 @@ t_tokens	*tokenize_special_opp(char *str)
 
 t_tokens	*tokenize_word(char *str)
 {
-	t_tokens	*token;
+	t_tokens	*new_token;
 	size_t		len;
 	int			quote;
 
-	token = create_new_node();
+	new_token = create_new_token();
 	quote = 0;
 	len = 0;
 	while ((str[len] && quote) || (str[len] != '\0'
-			&& !isspace(str[len]) && !isspecialchar(str[len])))
+			&& !ft_isspace(str[len]) && !isspecialchar(str[len])))
 	{
 		if ((str[len] == '\'' || str[len] == '\"') && quote == 0)
 		{
 			quote = str[len];
-			token->quoted = true;
+			new_token->quoted = true;
 		}
 		else if (str[len] == quote)
 			quote = 0;
 		len++;
 	}
-	token->type = WORD;
-	token->str = str;
-	token->len = len;
-	return (token);
+	new_token->type = WORD;
+	new_token->str = str;
+	new_token->len = len;
+	return (new_token);
 }
 
 t_tokens	*tokenizer(char *str)
 {
 	t_tokens	*token;
 
-	while (*str == ' ')
+	while (ft_isspace(*str))
 		str++;
 	if (!(*str))
 		return (NULL);
