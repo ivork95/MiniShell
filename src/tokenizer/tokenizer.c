@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/15 14:42:52 by kawish        ########   odam.nl         */
+/*   Updated: 2022/07/21 10:56:40 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,17 @@ t_tokens	*tokenizer(char *str)
 	return (token);
 }
 
-void	print_list(t_tokens *head)
+void	print_tokens(t_tokens *head)
 {
+	size_t i;
+
+	i = 0;
+	printf("head->str = ::%s::\n", head->str);
 	while (head != NULL)
 	{
-		printf("::%s::\n", head->str);
+		printf("node[%lu]->str = ::%.*s::\n", i, (int)head->len, head->str);
 		head = head->next;
+		i++;
 	}
 }
 
@@ -132,6 +137,6 @@ int	main(void)
 	t_tokens	*list;
 
 	list = tokenizer(s);
-	print_list(list);
+	print_tokens(list);
 	return (0);
 }
