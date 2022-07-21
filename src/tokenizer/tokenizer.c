@@ -6,34 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/21 10:56:40 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/07/21 11:06:36 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../libft/libft.h"
-#include <ctype.h>
-#include <stdio.h>
-
-bool	ft_isspace(int c)
-{
-	if (c == '\t'
-		|| c == '\n'
-		|| c == '\v'
-		|| c == '\f'
-		|| c == '\r'
-		|| c == ' ')
-		return (true);
-	else
-		return (false);
-}
-
-bool	isspecialchar(char c)
-{
-	if (c == '<' || c == '>' || c == '|')
-		return (true);
-	return (false);
-}
 
 t_tokens	*create_new_token(void)
 {
@@ -115,20 +92,6 @@ t_tokens	*tokenizer(char *str)
 	if (str[token->len] != '\0')
 		token->next = tokenizer(str + token->len);
 	return (token);
-}
-
-void	print_tokens(t_tokens *head)
-{
-	size_t i;
-
-	i = 0;
-	printf("head->str = ::%s::\n", head->str);
-	while (head != NULL)
-	{
-		printf("node[%lu]->str = ::%.*s::\n", i, (int)head->len, head->str);
-		head = head->next;
-		i++;
-	}
 }
 
 int	main(void)
