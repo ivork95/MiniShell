@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:09:33 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/21 11:11:17 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/07/21 18:20:34 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ typedef struct s_tokens
 bool	ft_isspace(int c);
 bool	isspecialchar(char c);
 void	print_tokens(t_tokens *head);
+t_tokens	*tokenizer(char *str);
 #endif
