@@ -8,5 +8,6 @@ RUN apt-get update && \
                     clang \
                     valgrind \
                     libreadline-dev \
+                    strace \
                     -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
