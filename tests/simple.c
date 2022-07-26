@@ -1,6 +1,8 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 #include "../includes/parser.h"
+#include "../includes/minishell.h"
+#include "../src/libft/libft.h"
 
 void    handle_spaces_test(char *input, char *expected)
 {
@@ -183,11 +185,32 @@ Test(test_parser, is_closed)
     cr_assert(ne(is_closed, "string is geclosed!"));
 }
 
+Test(test_tokenizer, cmd_line)
+{
+	char	*s = "\'helloo\'   world|test  ||   this \"string   \"        \"forme\"<outfile>>       \"quotes > not | closed  ";
+	t_tokens	*list;
+
+	list = tokenizer(s);
+    char *output[13] = {"\'helloo\'", "world","|","test",  "|", "|"  ,"this", "\"string   \"",   "\"forme\"", "<", "outfile", ">>", "\"quotes > not | closed  "};
+
+    int i = 0;
+    while (list)
+    {
+        char *test_str = malloc(sizeof(char *) * list->len + 1);
+        ft_strlcpy(test_str, list->str, list->len + 1);
+        cr_assert(eq(str, output[i], test_str));
+        list = list->next;
+        free(test_str);
+        i++;
+    }
+}
 
 /*
 gcc simple.c \
 ../src/parser/parser.c \
 ../src/parser/is_closed.c \
 ../src/libft/libft.a \
+../src/tokenizer/tokenizer.c \ 
+../src/tokenizer/tokenizer_utils.c \ 
 -lcriterion
 */
