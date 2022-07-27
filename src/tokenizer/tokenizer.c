@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/21 11:06:36 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/07/27 18:44:50 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,4 @@ t_tokens	*tokenizer(char *str)
 	if (str[token->len] != '\0')
 		token->next = tokenizer(str + token->len);
 	return (token);
-}
-
-int	main(void)
-{
-	char		*s = "\'helloo\'   world|test  ||   this \"string   \"        \"forme\"<outfile>>       \"quotes > not | closed  ";
-	t_tokens	*list;
-
-	list = tokenizer(s);
-	print_tokens(list);
-	return (0);
 }
