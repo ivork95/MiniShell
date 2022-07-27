@@ -6,23 +6,24 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:09:33 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/21 18:20:34 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/27 18:43:23 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define COMMAND       0   // normal command
-# define WORD          1   // normal word
-# define REDIRECT_OP   2   // redirection operator (>, <, 2>)
-# define PIPE          3   // `|` pipe operator
-
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
 # include <ctype.h>
 # include "../src/libft/libft.h"
+
+enum {
+	WORD,
+	REDIRECT_OP,
+	PIPE
+};
 
 typedef struct s_tokens
 {
