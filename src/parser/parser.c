@@ -6,153 +6,119 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/08 13:56:59 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/07/27 18:47:04 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
+#include <stdlib.h>
 
-t_llnode	*create_new_node(void)
+void	init_command(t_commands **command)
 {
-	t_llnode	*new;
-
-	new = malloc(sizeof(*new));
-	if (new == NULL)
-		exit(EXIT_FAILURE);
-	new->str = NULL;
-	new->next = NULL;
-	return (new);
+	(*command)->cmd = NULL;
+	(*command)->args = NULL;
+	(*command)->files = NULL;
+	(*command)->next = NULL;
 }
 
-void	add_list_front(t_llnode **head, t_llnode *new_node)
+size_t redirect_type(char *str)
 {
-	new_node->next = *head;
-	*head = new_node;
+	if (ft_strncmp(str, "<", 2))
+		return (REDIRECT_IN);
+	if (ft_strncmp(str, ">", 2))
+		return (REDIRECT_OUT);
+	if (ft_strncmp(str, ">>", 2))
+		return (REDIRECT_APP);
+	return (-1);
 }
 
-char	*find_closing_quote(char **str_dup, char delimiter)
+void set_command(t_tokens **token, t_commands **command)
 {
-	char	*end;
+	char *cmd;
 
-	while (**str_dup != '\0')
+	cmd = malloc(sizeof(char*) * (*token)->len + 1);
+	if (cmd == NULL)
 	{
-		if (**str_dup == delimiter)
-		{
-			end = *str_dup;
-			(*str_dup)++;
-			return (end);
-		}
-		(*str_dup)++;
+		//todo exit mallc error
+		return ;
 	}
-	return (*str_dup);
+	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
+	(*command)->cmd = cmd;
+	*token = (*token)->next;
 }
 
-char	*find_end_word(char **str_dup)
+void set_args(t_tokens **token, t_commands **command)
 {
-	char	*end;
+	t_tokens *tmp;
+	size_t i;
 
-	end = NULL;
-	while (**str_dup != '\0')
+	
+	tmp = *token;
+	i = 0;
+	while (tmp && tmp->type == WORD)
 	{
-		if (**str_dup == ' ')
-		{
-			return (*str_dup);
-		}
-		(*str_dup)++;
+		i++;
+		tmp = tmp->next;
 	}
-	end = (*str_dup)--;
-	return (end);
-}
-
-char	*handle_quotes(char **str_dup, char delimiter)
-{
-	char		*start;
-	char		*end;
-	char		*str;
-
-	(*str_dup)++;
-	start = *str_dup;
-	end = find_closing_quote(str_dup, delimiter);
-	str = malloc((end - start + 1) * sizeof(char));
-	ft_strlcpy(str, start, end - start + 1);
-	return (str);
-}
-
-char	*handle_spaces(char **str_dup)
-{
-	char		*start;
-	char		*end;
-	char		*str;
-
-	start = *str_dup;
-	end = find_end_word(str_dup);
-	str = malloc((end - start + 1) * sizeof(char));
-	ft_strlcpy(str, start, end - start + 1);
-	return (str);
-}
-
-char	*split_user_input(char **str_dup)
-{
-	while (**str_dup == ' ')
-		(*str_dup)++;
-	if (!(**str_dup))
-		return (NULL);
-	if (**str_dup == '\'')
-		return (handle_quotes(str_dup, '\''));
-	if (**str_dup == '\"')
-		return (handle_quotes(str_dup, '\"'));
-	if (**str_dup != ' ')
-		return (handle_spaces(str_dup));
-	return (NULL);
-}
-
-void	create_linked_list(t_llnode **head, char *str)
-{
-	t_llnode	*tmp;
-	char		*argument;
-
-	*head = NULL;
-	while (*str != '\0')
+	printf("amount of args %ld\n", i);
+	(*command)->args = (char**)malloc(sizeof(char*) * i + 1);
+	if ((*command)->args == NULL)
 	{
-		argument = split_user_input(&str);
-		if (argument)
-		{
-			if (head != NULL)
-			{
-				tmp = create_new_node();
-				tmp->str = argument;
-				add_list_front(head, tmp);
-			}
-			else
-				(*head)->str = argument;
-		}
-		if (*str)
-			str++;
+		// error check
+		return ;
+	}
+	(*command)->args[i] = NULL;
+	i = 0;
+	while ((*token) && (*token)->type == WORD)
+	{
+		printf("token str = %s\n", (*token)->str);
+		(*command)->args[i] = malloc(sizeof(char*) * (*token)->len + 1);
+		ft_strlcpy((*command)->args[i], (*token)->str, (*token)->len + 1);
+		*token = (*token)->next;
+		i++;
 	}
 }
 
-void	free_linked_list(t_llnode *head)
+void set_files(t_tokens **token, t_commands **command)
 {
-	if (head->next != NULL)
-		free_linked_list(head->next);
-	free(head->str);
-	free(head);
-}
-
-void	print_list(t_llnode *head)
-{
-	while (head != NULL)
+	t_files	*file;
+	
+	file = malloc(sizeof(t_files));
+	file->file_name = malloc(sizeof(char*) * (*token)->len + 1);
+	if (file->file_name == NULL)
 	{
-		printf("|%s|\n", head->str);
-		head = head->next;
+		//todo exit malloc error;
+		return ;
 	}
+	file->type= redirect_type((*token)->str);
+	*token = (*token)->next;
+	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
+	(*command)->files = file;
+	*token = (*token)->next;
 }
 
-t_llnode	*parser(char *str)
-{
-	t_llnode	*head;
+// typedef int (*functions)(t_tokens *token, t_commands *commands);
+// functions func[3] = {&set_command, &set_files};
 
-	head = create_new_node();
-	create_linked_list(&head, str);
-	return (head);
+void	fill_command(t_tokens **token, t_commands **command)
+{
+	if ((*token)->type == WORD && (*command)->cmd == NULL)
+		set_command(token, command);
+	else if ((*token)->type == REDIRECT_OP)
+		set_files(token, command);
+	else
+		set_args(token, command);
+}
+
+t_commands *parser(t_tokens *token)
+{
+	t_commands *command;
+
+	command = malloc(sizeof(*command));
+	init_command(&command);
+	while (token && token->type != PIPE)
+	{
+		fill_command(&token, &command);
+	}
+	return (command);
 }

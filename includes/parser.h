@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/08 13:23:37 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/07/27 17:52:51 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,31 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../src/libft/libft.h"
+#include "minishell.h"
 
-typedef struct s_llnode
+typedef struct s_files
 {
-	char			*str;
-	struct s_llnode	*next;
-}	t_llnode;
+	enum type_t{
+			REDIRECT_IN,
+			REDIRECT_OUT,
+			REDIRECT_APP,
+	} type;
+	char	*file_name;
+}	t_files;
+
+typedef struct s_commands
+{
+	char				*cmd;
+	char				**args;
+	t_files				*files;
+	struct s_commands	*next;
+}	t_commands;
 
 int	closed_quotes(char *str);
 
 char 	*handle_quotes(char **str_dup, char delimiter);
 char 	*handle_spaces(char **str_dup);
 
-t_llnode	*parser(char *str);
+t_commands	*parser(t_tokens *tokens);
 
 #endif
