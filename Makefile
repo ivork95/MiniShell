@@ -1,9 +1,13 @@
 VPATH :=	src:\
-			src/parser:
+			src/parser:\
+			src/tokenizer:
 NAME := minishell
-HEADERS := includes/parser.h
+HEADERS := includes/parser.h \
+			includes/minishell.h
 OBJECTS :=	obj/main.o \
-			obj/parser.o
+			obj/parser.o \
+			obj/tokenizer.o \
+			obj/tokenizer_utils.o
 
 CFLAGS ?= -Wall -Wextra # -Werror
 LDFLAGS ?= -lreadline
