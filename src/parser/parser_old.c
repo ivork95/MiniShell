@@ -6,24 +6,24 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/06/24 19:54:34 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/27 13:59:36 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include "../libft/libft.h"
 #include "../../includes/parser.h"
+typedef struct s_llnode{
+	char *str;
+	t_llnode *next;
+} t_llnode;
 
-
-t_llnode *create_new_node()
+t_llnode	*create_new_node(void)
 {
-	t_llnode *new;
-	
-	new = malloc(sizeof(t_llnode));
-		if (new == NULL)
+	t_llnode	*new;
+
+	new = malloc(sizeof(*new));
+	if (new == NULL)
 		exit(EXIT_FAILURE);
+	new->str = NULL;
 	new->next = NULL;
 	return (new);
 }
@@ -34,36 +34,21 @@ void	add_list_front(t_llnode **head, t_llnode *new_node)
 	*head = new_node;
 }
 
-void	print_arguments(char *str, long int length)
-{
-	int	i;
-
-	i = 0;
-	printf("|");
-	while (length > i)
-	{
-		printf("%c", str[i]);
-		i++;
-	}
-	printf("|\n");
-}
-
 char	*find_closing_quote(char **str_dup, char delimiter)
 {
 	char	*end;
 
-	end = NULL;
 	while (**str_dup != '\0')
 	{
 		if (**str_dup == delimiter)
 		{
 			end = *str_dup;
 			(*str_dup)++;
-			break ;
+			return (end);
 		}
 		(*str_dup)++;
 	}
-	return (end);
+	return (*str_dup);
 }
 
 char	*find_end_word(char **str_dup)
@@ -74,129 +59,104 @@ char	*find_end_word(char **str_dup)
 	while (**str_dup != '\0')
 	{
 		if (**str_dup == ' ')
+		{
 			return (*str_dup);
+		}
 		(*str_dup)++;
 	}
 	end = (*str_dup)--;
 	return (end);
 }
 
-void	handle_quotes(char **str_dup, t_llnode **head, char delimiter)
+char	*handle_quotes(char **str_dup, char delimiter)
 {
 	char		*start;
 	char		*end;
-	t_llnode	*new_node;
+	char		*str;
 
 	(*str_dup)++;
 	start = *str_dup;
 	end = find_closing_quote(str_dup, delimiter);
-	
-	new_node = create_new_node();
-	new_node->str = malloc(end - start + 1);
-	if (new_node->str == NULL)
-		exit(EXIT_FAILURE);
-	ft_strlcpy(new_node->str, start, end - start + 1);
-	add_list_front(head, new_node);
-	
-	print_arguments(start, end - start);
-
+	str = malloc((end - start + 1) * sizeof(char));
+	ft_strlcpy(str, start, end - start + 1);
+	return (str);
 }
 
-void	handle_spaces(char **str_dup, t_llnode **head)
+char	*handle_spaces(char **str_dup)
 {
 	char		*start;
 	char		*end;
-	t_llnode	*new_node;
+	char		*str;
 
 	start = *str_dup;
 	end = find_end_word(str_dup);
-
-	new_node = create_new_node();
-	new_node->str = malloc(end - start + 1);
-	if (new_node->str == NULL)
-		exit(EXIT_FAILURE);
-	ft_strlcpy(new_node->str, start, end - start + 1);
-	add_list_front(head, new_node);
-	
-	print_arguments(start, end - start);
+	str = malloc((end - start + 1) * sizeof(char));
+	ft_strlcpy(str, start, end - start + 1);
+	return (str);
 }
 
-t_llnode	*split_words(char *str)
+char	*split_user_input(char **str_dup)
 {
-	t_llnode *head;
+	while (**str_dup == ' ')
+		(*str_dup)++;
+	if (!(**str_dup))
+		return (NULL);
+	if (**str_dup == '\'')
+		return (handle_quotes(str_dup, '\''));
+	if (**str_dup == '\"')
+		return (handle_quotes(str_dup, '\"'));
+	if (**str_dup != ' ')
+		return (handle_spaces(str_dup));
+	return (NULL);
+}
 
-	head = create_new_node();
-	char	*str_dup;
+void	create_linked_list(t_llnode **head, char *str)
+{
+	t_llnode	*tmp;
+	char		*argument;
 
-	str_dup = str;
-	while (*str_dup != '\0')
+	*head = NULL;
+	while (*str != '\0')
 	{
-		if (*str_dup == '\'')
-			handle_quotes(&str_dup, &head, '\'');
-		if (*str_dup == '\"')
-			handle_quotes(&str_dup, &head, '\"');
-		if (*str_dup != ' ')
-			handle_spaces(&str_dup, &head);
-		str_dup++;
+		argument = split_user_input(&str);
+		if (argument)
+		{
+			if (head != NULL)
+			{
+				tmp = create_new_node();
+				tmp->str = argument;
+				add_list_front(head, tmp);
+			}
+			else
+				(*head)->str = argument;
+		}
+		if (*str)
+			str++;
 	}
-	return (head);
 }
 
-
-void free_linked_list(t_llnode *head)
+void	free_linked_list(t_llnode *head)
 {
-	t_llnode *tmp;
-	
+	if (head->next != NULL)
+		free_linked_list(head->next);
+	free(head->str);
+	free(head);
+}
+
+void	print_list(t_llnode *head)
+{
 	while (head != NULL)
-	{
-		tmp = head;
-		head = head->next;
-		free(tmp->str);
-		free(tmp);
-	}
-}
-
-void print_list(t_llnode *head)
-{
-	while (head->next != NULL)
 	{
 		printf("|%s|\n", head->str);
 		head = head->next;
 	}
 }
 
-// t_llnode	*parser(char *str)
-// {
-// 	// char	*str = "\'ls \' \"-la\" grep '|' \"wc\" -l ";
-
-// 	t_llnode *head;
-
-// 	head = create_new_node();
-
-// 	// printf("before = %p\n", head);
-// 	head = split_words(str);
-// 	// printf("after = %p\n", head);
-
-
-// 	print_list(head);
-// 	free_linked_list(head);
-// 	return (head);
-// }
-
-int	main(void)
+t_llnode	*parser(char *str)
 {
-	char	*str = "\'ls \' \"-la\" grep '|' \"wc\" -l ";
+	t_llnode	*head;
 
-	t_llnode *head;
-
-	// head = create_new_node();
-
-	// printf("before = %p\n", head);
-	head = split_words(str);
-	// printf("after = %p\n", head);
-
-
-	print_list(head);
-	free_linked_list(head);
-	return (0);
+	head = create_new_node();
+	create_linked_list(&head, str);
+	return (head);
 }
