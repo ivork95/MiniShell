@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/27 19:08:32 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/28 11:33:24 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	set_command(t_tokens **token, t_commands **command)
 {
 	char	*cmd;
 
-	cmd = malloc(sizeof(char *) * (*token)->len + 1);
+	cmd = malloc(sizeof(char) * (*token)->len + 1);
 	if (cmd == NULL)
 	{
 		//todo exit mallc error
-		return ;
+		exit(0);
 	}
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
 	(*command)->cmd = cmd;
@@ -60,18 +60,24 @@ void	set_args(t_tokens **token, t_commands **command)
 		tmp = tmp->next;
 	}
 	printf("amount of args %ld\n", i);
-	(*command)->args = (char **)malloc(sizeof(char *) * i + 1);
+	(*command)->args = malloc(sizeof(char *) * (i + 2));
 	if ((*command)->args == NULL)
 	{
 		// error check
-		return ;
+		exit(0);
 	}
-	(*command)->args[i] = NULL;
+	(*command)->args[i + 1] = NULL;
 	i = 0;
+	(*command)->args[i] = (*command)->cmd;
+	i++;
 	while ((*token) && (*token)->type == WORD)
 	{
-		printf("token str = %s\n", (*token)->str);
-		(*command)->args[i] = malloc(sizeof(char *) * (*token)->len + 1);
+		(*command)->args[i] = malloc(sizeof(char) * (*token)->len + 1);
+		if ((*command)->args[i] == NULL)
+		{
+			//todo exit mallc error
+			exit(0);
+		}
 		ft_strlcpy((*command)->args[i], (*token)->str, (*token)->len + 1);
 		*token = (*token)->next;
 		i++;
@@ -83,11 +89,11 @@ void	set_files(t_tokens **token, t_commands **command)
 	t_files	*file;
 
 	file = malloc(sizeof(t_files));
-	file->file_name = malloc(sizeof(char *) * (*token)->len + 1);
+	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
 	if (file->file_name == NULL)
 	{
 		//todo exit malloc error;
-		return ;
+		exit(0);
 	}
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
