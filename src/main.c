@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/27 19:04:37 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/28 10:27:50 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "../includes/parser.h"
+#include "../includes/builtins.h"
 
 void	print_commands(t_commands *cmds)
 {
@@ -23,7 +25,7 @@ void	print_commands(t_commands *cmds)
 	i = 0;
 	printf("--------------------\n");
 	printf("command = %s\n", cmds->cmd);
-	while (cmds->args && cmds->args[i] != NULL)
+	while (cmds->args && cmds->args[i])
 	{
 		printf("args = %s\n", cmds->args[i]);
 		i++;
@@ -36,7 +38,71 @@ void	print_commands(t_commands *cmds)
 	printf("--------------------\n");
 }
 
-int	main(void)
+void	err_func(char *str, int code)
+{
+	perror(str);
+	exit(code);
+}
+
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array[i]);
+	free(array);
+	return ;
+}
+
+char	*get_path(char **arguments, char *cmd)
+{
+	char	*path;
+	char	*full_path;
+	int		i;
+
+	while (*arguments)
+	{
+		if (ft_strncmp(*arguments, "PATH=", 5) == 0)
+			path = ft_strdup(*arguments);
+		arguments++;
+	}
+	arguments = ft_split(path, ':');
+	free(path);
+	i = 0;
+	path = ft_strjoin("/", cmd);
+	while (arguments[i])
+	{
+		full_path = ft_strjoin(arguments[i], path);
+		if (access(full_path, F_OK) == 0)
+			break ;
+		free(full_path);
+		i++;
+	}
+	free_array(arguments);
+	free(path);
+	return (full_path);
+}
+
+void execute_command(t_commands *cmd, char **envp)
+{
+	char *path;
+
+	// if (!ft_strncmp(cmd->cmd, "echo", 5))
+	// {
+	// 	builtin_echo(cmd->args);
+	// 	return ;
+	// }
+	path = get_path(envp, cmd->cmd);
+	printf("path = %s\n", path);
+	execve(path, cmd->args, envp);
+}
+
+int	main(int argc, char **const argv, char **envp)
 {
 	t_commands	*cmds;
 	t_tokens	*tokens;
@@ -48,6 +114,7 @@ int	main(void)
 	cmds = parser(tokens);
 	print_commands(cmds);
 	free(user_input);
+	execute_command(cmds, envp);
 	//todo free commands
 	return (0);
 }
