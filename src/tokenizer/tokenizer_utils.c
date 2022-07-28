@@ -6,11 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:03:53 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/21 11:54:02 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/28 12:58:23 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../includes/tokenizer.h"
 
 bool	ft_isspace(int c)
 {

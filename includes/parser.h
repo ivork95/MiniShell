@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/27 17:52:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/28 12:58:46 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../src/libft/libft.h"
-#include "minishell.h"
+#include "tokenizer.h"
 
 typedef struct s_files
 {

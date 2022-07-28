@@ -3,8 +3,8 @@ VPATH :=	src:\
 			src/tokenizer:
 NAME := minishell
 HEADERS := includes/parser.h \
-			includes/minishell.h
-OBJECTS :=	obj/main.o \
+			includes/tokenizer.h
+OBJECTS :=	obj/minishell.o \
 			obj/parser.o \
 			obj/tokenizer.o \
 			obj/tokenizer_utils.o
