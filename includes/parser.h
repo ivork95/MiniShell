@@ -6,18 +6,21 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/27 17:52:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/07/28 18:20:39 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include "../src/libft/libft.h"
-#include "minishell.h"
+# include <string.h>
+# include <stdio.h>
+# include <unistd.h>
+# include "../src/libft/libft.h"
+# include "minishell.h"
+
+# define SINGLE_QUOTES 1
+# define DOUBLE_QUOTES 2
 
 typedef struct s_files
 {
