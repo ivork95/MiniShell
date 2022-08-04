@@ -6,18 +6,22 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/28 12:58:46 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/04 13:09:02 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include "../src/libft/libft.h"
-#include "tokenizer.h"
+
+# include <string.h>
+# include <stdio.h>
+# include <unistd.h>
+# include "../src/libft/libft.h"
+# include "tokenizer.h"
+
+# define SINGLE_QUOTES 1
+# define DOUBLE_QUOTES 2
 
 typedef struct s_files
 {
