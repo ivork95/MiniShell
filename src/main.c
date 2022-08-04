@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/07/28 10:27:50 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/04 13:00:57 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "../includes/parser.h"
-#include "../includes/builtins.h"
 
 void	print_commands(t_commands *cmds)
 {
@@ -92,11 +91,6 @@ void execute_command(t_commands *cmd, char **envp)
 {
 	char *path;
 
-	// if (!ft_strncmp(cmd->cmd, "echo", 5))
-	// {
-	// 	builtin_echo(cmd->args);
-	// 	return ;
-	// }
 	path = get_path(envp, cmd->cmd);
 	printf("path = %s\n", path);
 	execve(path, cmd->args, envp);
