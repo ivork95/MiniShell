@@ -6,14 +6,14 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/04 12:34:01 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/04 15:18:10 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include <stdlib.h>
 
-void	init_command(t_commands **command)
+void	init_command(t_command **command)
 {
 	(*command)->cmd = NULL;
 	(*command)->args = NULL;
@@ -32,24 +32,21 @@ size_t	redirect_type(char *str)
 	return (-1);
 }
 
-void	set_command(t_tokens **token, t_commands **command)
+void	set_command(t_token **token, t_command **command)
 {
 	char	*cmd;
 
 	cmd = malloc(sizeof(char) * (*token)->len + 1);
 	if (cmd == NULL)
-	{
-		//todo exit mallc error
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
 	(*command)->cmd = cmd;
 	*token = (*token)->next;
 }
 
-void	set_args(t_tokens **token, t_commands **command)
+void	set_args(t_token **token, t_command **command)
 {
-	t_tokens	*tmp;
+	t_token	*tmp;
 	size_t		i;
 
 	tmp = *token;
@@ -62,10 +59,7 @@ void	set_args(t_tokens **token, t_commands **command)
 	printf("amount of args %ld\n", i);
 	(*command)->args = malloc(sizeof(char *) * (i + 2));
 	if ((*command)->args == NULL)
-	{
-		// error check
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	(*command)->args[i + 1] = NULL;
 	i = 0;
 	(*command)->args[i] = (*command)->cmd;
@@ -74,27 +68,21 @@ void	set_args(t_tokens **token, t_commands **command)
 	{
 		(*command)->args[i] = malloc(sizeof(char) * (*token)->len + 1);
 		if ((*command)->args[i] == NULL)
-		{
-			//todo exit mallc error
-			exit(0);
-		}
+			exit(EXIT_FAILURE);
 		ft_strlcpy((*command)->args[i], (*token)->str, (*token)->len + 1);
 		*token = (*token)->next;
 		i++;
 	}
 }
 
-void	set_files(t_tokens **token, t_commands **command)
+void	set_files(t_token **token, t_command **command)
 {
-	t_files	*file;
+	t_file	*file;
 
-	file = malloc(sizeof(t_files));
+	file = malloc(sizeof(t_file));
 	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
 	if (file->file_name == NULL)
-	{
-		//todo exit malloc error;
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
 	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
@@ -102,7 +90,7 @@ void	set_files(t_tokens **token, t_commands **command)
 	*token = (*token)->next;
 }
 
-void	fill_command(t_tokens **token, t_commands **command)
+void	fill_command(t_token **token, t_command **command)
 {
 	if ((*token)->type == WORD && (*command)->cmd == NULL)
 		set_command(token, command);
@@ -112,11 +100,13 @@ void	fill_command(t_tokens **token, t_commands **command)
 		set_args(token, command);
 }
 
-t_commands	*parser(t_tokens *token)
+t_command	*parser(t_token *token)
 {
-	t_commands	*command;
+	t_command	*command;
 
 	command = malloc(sizeof(*command));
+	if (command == NULL)
+		exit(EXIT_FAILURE);
 	init_command(&command);
 	while (token && token->type != PIPE)
 	{

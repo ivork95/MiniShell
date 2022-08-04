@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/07/28 12:58:46 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/04 15:16:56 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "../src/libft/libft.h"
 #include "tokenizer.h"
 
-typedef struct s_files
+typedef struct s_file
 {
 	enum type_t{
 			REDIRECT_IN,
@@ -27,21 +27,21 @@ typedef struct s_files
 			REDIRECT_APP,
 	} type;
 	char	*file_name;
-}	t_files;
+}	t_file;
 
-typedef struct s_commands
+typedef struct s_command
 {
 	char				*cmd;
 	char				**args;
-	t_files				*files;
-	struct s_commands	*next;
-}	t_commands;
+	t_file				*files;
+	struct s_command	*next;
+}	t_command;
 
 int	closed_quotes(char *str);
 
 char 	*handle_quotes(char **str_dup, char delimiter);
 char 	*handle_spaces(char **str_dup);
 
-t_commands	*parser(t_tokens *tokens);
+t_command	*parser(t_token *tokens);
 
 #endif

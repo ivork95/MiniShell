@@ -1,216 +1,77 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
+#include <criterion/redirect.h>
 #include "../includes/parser.h"
-#include "../includes/minishell.h"
-#include "../src/libft/libft.h"
+#include "../includes/tokenizer.h"
 
-void    handle_spaces_test(char *input, char *expected)
+Test(parser, echo_hello_world)
 {
-    char *submitted;
-    submitted = handle_spaces(&input);
-        cr_assert_str_eq( submitted, expected, "called handle_spaces():\ninput:\t%s$\nexpected: %s$\n", submitted, expected);
-}
-Test(handle_spaces, fixed)
-{
-    handle_spaces_test((char *){"ls"} ,"ls");
-    handle_spaces_test((char *){"ls  "}, "ls");
-}
-/* HANDLE_SPACES */
-Test(test_handle_spaces, str1)
-{
-    char *test_string = "ls"; 
-    cr_assert_str_eq( handle_spaces(&test_string), "ls");
+    t_command   *command;
+    t_token     *tokens;
+    char        *input;
+
+    input = "echo hello world";
+    tokens = tokenizer(input);
+    command = parser(tokens);
+
+    cr_assert(eq(str, "echo", command->cmd));
+    cr_assert(eq(str, "echo", command->args[0]));
+    cr_assert(eq(str, "hello", command->args[1]));
+    cr_assert(eq(str, "world", command->args[2]));
+    cr_assert(zero(ptr,command->next));
 }
 
-Test(test_handle_spaces, str2)
+Test(parser, two_commands)
 {
-    char *test_string = "ls  "; 
-    cr_assert_str_eq(handle_spaces(&test_string), "ls");
-}
-
-Test(test_handle_spaces, str3)
-{
-    char *test_string = "ls -la"; 
-    cr_assert_str_eq(handle_spaces(&test_string), "ls");
-}
-
-Test(test_handle_spaces, str4)
-{
-    char *test_string = "ls      "; 
-    cr_assert_str_eq(handle_spaces(&test_string), "ls");
-}
-
-/* HANDLE_QUOTES */
-/* SINGLE_QUOTES */
-Test(test_handle_quotes, single_quotes_str1)
-{
-    char *test_string = "\'ls\' -la";
-    cr_assert_str_eq(handle_quotes(&test_string, '\''), "ls");
-}
-
-Test(test_handle_quotes, single_quotes_str2)
-{
-    char *test_string = "\' ls\'";
-    cr_assert_str_eq(handle_quotes(&test_string, '\''), " ls");
-}
-
-Test(test_handle_quotes, single_quotes_str3)
-{
-    char *test_string =  "\'ls \'";
-    cr_assert_str_eq(handle_quotes(&test_string, '\''), "ls ");
-}
-
-Test(test_handle_quotes, single_quotes_str4)
-{
-    char *test_string ="\'ls\'     ";
-    cr_assert_str_eq(handle_quotes(&test_string, '\''), "ls");
-}
-
-/* DOUBLE_QUOTES */
-Test(test_handle_quotes, double_quotes_str1)
-{
-    char *test_string = "\"ls\"";
-    cr_assert_str_eq(handle_quotes(&test_string, '\"'), "ls");
-}
-
-Test(test_handle_quotes, double_quotes_str2)
-{
-
-    char *test_string = "\" ls\"";
-    cr_assert_str_eq(handle_quotes(&test_string, '\"'), " ls");
-}
-
-Test(test_handle_quotes, double_quotes_str3)
-{
-    char *test_string = "\"ls \"";
-    cr_assert_str_eq(handle_quotes(&test_string, '\"'), "ls ");
-}
-
-Test(test_handle_quotes, double_quotes_str4)
-{
-    char *test_string = "\"ls\"     ";
-    cr_assert_str_eq(handle_quotes(&test_string, '\"'), "ls");
-}
-
-/* PARSER */
-Test(test_parser, met_flags)
-{
-    char *test_string = "ls -lta";
-    t_llnode *arguments = parser(test_string);
-    char *output[2] = {"ls", "-lta"};
+    t_command *commands;
+    t_token *tokens;
+    char *input;
     
-    cr_assert(eq(str, output[1], arguments->str));
-    arguments = arguments->next;
-    cr_assert(eq(str, output[0], arguments->str));
+    input = "ls -la | grep Makefile";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
+
+    cr_assert(eq(str, "ls", commands->cmd));
+    cr_assert(eq(str, "ls", commands->args[0]));
+    cr_assert(eq(str, "-la", commands->args[1]));
+    cr_assert(zero(ptr, commands->files));
+
+    commands = commands->next;
+
+    cr_assert_str_eq(commands->cmd, "grep");
+    cr_assert_str_eq(commands->args[0], "grep");
+    cr_assert_str_eq(commands->args[1], "Makefile");
+    cr_assert(zero(ptr, commands->files));
+    cr_assert(zero(ptr, commands->next));
 }
 
-Test(test_parser, cmd_quotes_option_no_quotes)
+Test(parser, two_redirections)
 {
-    char *test_string = "\'ls\' -la";
+    t_command *commands;
+    t_token *tokens;
+    char *input;
 
-    t_llnode *arguments = parser(test_string);
-    char *output[2] = {"ls", "-la"};
+    input = "< infile cat > outfile";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
 
-    cr_assert(eq(str, output[1], arguments->str));
-    arguments = arguments->next;
-    cr_assert(eq(str, output[0], arguments->str));
-}
+    cr_assert(eq(str, "cat", commands->cmd));
+    cr_assert(eq(str, "cat", commands->args[0]));
+    cr_assert(eq(int, 0, commands->files->type));
+    cr_assert(eq(str, "infile", commands->files->file_name));
 
-Test(test_parser, quote_cmd_space_quote_)
-{
-    char *test_string = "\'ls \' -la";
+    commands->files = commands->files->next;
 
-    t_llnode *arguments = parser(test_string);
-    char *output[2] = {"ls ", "-la"};
-    cr_assert(eq(str, output[1], arguments->str));
-    arguments = arguments->next;
-    cr_assert(eq(str, output[0], arguments->str));
-}
-
-Test(test_parser, cmd_operator_no_space_)
-{
-    char *test_string = "ls -la|grep a.out";
-
-    t_llnode *arguments = parser(test_string);
-    char *output[5] = {"ls ", "-la", "|", "grep", "a.out"};
-
-    int i = 4;
-    while (arguments)
-    {
-        cr_assert(eq(str, output[i], arguments->str));
-        arguments = arguments->next;
-        i--;
-    }
-}
-
-Test(test_parser, cmd_quotes_no_space_)
-{
-    char *test_string = "echo test\'<\'hello";
-
-    t_llnode *arguments = parser(test_string);
-    char *output[2] = {"echo", "test<hello"};
-
-    int i = 1;
-    while (arguments)
-    {
-        cr_assert(eq(str, output[i], arguments->str));
-        arguments = arguments->next;
-        i--;
-    }
-}
-
-Test(test_parser, long_string)
-{
-    char *test_string = "\'ls \' -la | \"grep\" libft \'hello   \'           world      ";
-    char *output[7] = {"world", "hello   ", "libft", "grep", "|", "-la", "ls "};
-    
-    t_llnode *arguments = parser(test_string);
-    int i = 0;
-    while (arguments)
-    {
-        cr_assert(eq(str, output[i], arguments->str));
-        arguments = arguments->next;
-        i++;
-    }
-}
-
-Test(test_parser, is_closed)
-{
-    char *s_closed = "\"ls\"";
-    int is_closed = closed_quotes(s_closed);
-    cr_assert(is_closed, "string is niet geclosed!");
-
-    char *s_niet_closed = "\"ls";
-    is_closed = closed_quotes(s_niet_closed);
-    cr_assert(ne(is_closed, "string is geclosed!"));
-}
-
-Test(test_tokenizer, cmd_line)
-{
-	char	*s = "\'helloo\'   world|test  ||   this \"string   \"        \"forme\"<outfile>>       \"quotes > not | closed  ";
-	t_tokens	*list;
-
-	list = tokenizer(s);
-    char *output[13] = {"\'helloo\'", "world","|","test",  "|", "|"  ,"this", "\"string   \"",   "\"forme\"", "<", "outfile", ">>", "\"quotes > not | closed  "};
-
-    int i = 0;
-    while (list)
-    {
-        char *test_str = malloc(sizeof(char *) * list->len + 1);
-        ft_strlcpy(test_str, list->str, list->len + 1);
-        cr_assert(eq(str, output[i], test_str));
-        list = list->next;
-        free(test_str);
-        i++;
-    }
+    cr_assert(eq(int, 1, commands->files->type));
+    cr_assert(eq(str, "outfile", commands->files->file_name));
+    cr_assert(zero(ptr, commands->next));
 }
 
 /*
 gcc simple.c \
 ../src/parser/parser.c \
-../src/parser/is_closed.c \
+../src/tokenizer/tokenizer.c \
+../src/tokenizer/tokenizer_utils.c \
 ../src/libft/libft.a \
-../src/tokenizer/tokenizer.c \ 
-../src/tokenizer/tokenizer_utils.c \ 
 -lcriterion
 */
