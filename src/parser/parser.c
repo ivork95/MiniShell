@@ -6,12 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/05 12:09:28 by kawish        ########   odam.nl         */
+/*   Updated: 2022/08/05 15:54:27 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
-#include <stdlib.h>
 
 int	check_quote_type(char *str)
 {
@@ -22,12 +21,12 @@ int	check_quote_type(char *str)
 	return (0);
 }
 
-void	init_command(t_commands *command)
+void	init_command(t_command **command)
 {
-	command->cmd = NULL;
-	command->args = NULL;
-	command->files = NULL;
-	command->next = NULL;
+	(*command)->cmd = NULL;
+	(*command)->args = NULL;
+	(*command)->files = NULL;
+	(*command)->next = NULL;
 }
 
 size_t	redirect_type(char *str)
@@ -83,7 +82,7 @@ void	set_args(t_token **token, t_command **command)
 	{
 		if ((*token)->quoted)
 		{
-			quotes = check_quote_type((*token)->str);
+			quotes = check_quote_type((*token)->str); // quotes variabel word niet gebruikt?
 			(*token)->str++;
 			(*token)->len -= 2;
 		}
@@ -101,11 +100,9 @@ void	set_files(t_token **token, t_command **command)
 {
 	t_file	*file;
 
-	file = malloc(sizeof(t_files));
+	file = malloc(sizeof(t_file));
 	if (file == NULL)
-	{
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
 	if ((*token)->quoted)
@@ -115,10 +112,7 @@ void	set_files(t_token **token, t_command **command)
 	}
 	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
 	if (file->file_name == NULL)
-	{
-		//todo exit malloc error;
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
 	(*command)->files = file;
 	*token = (*token)->next;

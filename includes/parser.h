@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/05 12:05:45 by kawish        ########   odam.nl         */
+/*   Updated: 2022/08/05 15:54:36 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSER_H
 
 
+#include <stdlib.h>
 # include <string.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -30,8 +31,9 @@ typedef struct s_file
 			REDIRECT_OUT,
 			REDIRECT_APP,
 	} type;
-	char	*file_name;
-}	t_file;
+	char			*file_name;
+	struct			s_file *next;
+} t_file;
 
 typedef struct s_command
 {
