@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/04 13:10:04 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/05 15:40:45 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include "../includes/parser.h"
 
-void	print_commands(t_commands *cmds)
+void	print_commands(t_command *cmds)
 {
 	size_t	i;
 
@@ -87,7 +87,7 @@ char	*get_path(char **arguments, char *cmd)
 	return (full_path);
 }
 
-void execute_command(t_commands *cmd, char **envp)
+void execute_command(t_command *cmd, char **envp)
 {
 	char *path;
 
@@ -98,8 +98,8 @@ void execute_command(t_commands *cmd, char **envp)
 
 int	main(int argc, char **const argv, char **envp)
 {
-	t_commands	*cmds;
-	t_tokens	*tokens;
+	t_command	*cmds;
+	t_token	*tokens;
 	char		*user_input;
 
 	user_input = readline(">");

@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:03:53 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/04 13:10:31 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/05 15:41:02 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,14 @@ bool	isspecialchar(char c)
 	return (false);
 }
 
-void	print_tokens(t_tokens *head)
+void	print_tokens(t_token *head)
 {
 	size_t	i;
 
 	i = 0;
-	printf("head->str = $%s$\n", head->str);
 	while (head != NULL)
 	{
-		printf("node[%lu]->str = $%.*s$  |  type = %d\n", i, (int)head->len, head->str, head->quoted);
+		printf("node[%lu] = {\n\tstr = $%.*s$\n\tlen = %lu\n\ttype = %lu\n\tquoted = %i\n}\n", i, (int)head->len, head->str, head->len, head->type, head->quoted);
 		head = head->next;
 		i++;
 	}

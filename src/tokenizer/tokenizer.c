@@ -6,15 +6,15 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/04 13:10:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/05 15:41:30 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/tokenizer.h"
 
-t_tokens	*create_new_token(void)
+t_token	*create_new_token(void)
 {
-	t_tokens	*new_token;
+	t_token	*new_token;
 
 	new_token = malloc(sizeof(*new_token));
 	if (new_token == NULL)
@@ -27,9 +27,9 @@ t_tokens	*create_new_token(void)
 	return (new_token);
 }
 
-t_tokens	*tokenize_special_opp(char *str)
+t_token	*tokenize_special_opp(char *str)
 {
-	t_tokens	*token;
+	t_token	*token;
 
 	token = create_new_token();
 	if (*str == '|')
@@ -50,9 +50,9 @@ t_tokens	*tokenize_special_opp(char *str)
 	return (token);
 }
 
-t_tokens	*tokenize_word(char *str)
+t_token	*tokenize_word(char *str)
 {
-	t_tokens	*new_token;
+	t_token	*new_token;
 	size_t		len;
 	int			quote;
 
@@ -77,9 +77,9 @@ t_tokens	*tokenize_word(char *str)
 	return (new_token);
 }
 
-t_tokens	*tokenizer(char *str)
+t_token	*tokenizer(char *str)
 {
-	t_tokens	*token;
+	t_token	*token;
 
 	while (ft_isspace(*str))
 		str++;

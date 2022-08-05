@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/04 13:10:17 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/05 12:09:28 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ size_t	redirect_type(char *str)
 	return (-1);
 }
 
-void	set_command(t_tokens **token, t_commands **command)
+void	set_command(t_token **token, t_command **command)
 {
 	char	*cmd;
 
@@ -52,18 +52,15 @@ void	set_command(t_tokens **token, t_commands **command)
 	}
 	cmd = malloc(sizeof(char) * (*token)->len + 1);
 	if (cmd == NULL)
-	{
-		//todo exit mallc error
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
 	(*command)->cmd = cmd;
 	*token = (*token)->next;
 }
 
-void	set_args(t_tokens **token, t_commands **command)
+void	set_args(t_token **token, t_command **command)
 {
-	t_tokens	*tmp;
+	t_token	*tmp;
 	size_t		i;
 	int			quotes;
 	
@@ -77,10 +74,7 @@ void	set_args(t_tokens **token, t_commands **command)
 	printf("amount of args %ld\n", i);
 	(*command)->args = malloc(sizeof(char *) * (i + 2));
 	if ((*command)->args == NULL)
-	{
-		// error check
-		exit(0);
-	}
+		exit(EXIT_FAILURE);
 	(*command)->args[i + 1] = NULL;
 	i = 0;
 	(*command)->args[i] = (*command)->cmd;
@@ -96,19 +90,16 @@ void	set_args(t_tokens **token, t_commands **command)
 		
 		(*command)->args[i] = malloc(sizeof(char) * (*token)->len + 1);
 		if ((*command)->args[i] == NULL)
-		{
-			//todo exit mallc error
-			exit(0);
-		}
+			exit(EXIT_FAILURE);
 		ft_strlcpy((*command)->args[i], (*token)->str, (*token)->len + 1);
 		*token = (*token)->next;
 		i++;
 	}
 }
 
-void	set_files(t_tokens **token, t_commands **command)
+void	set_files(t_token **token, t_command **command)
 {
-	t_files	*file;
+	t_file	*file;
 
 	file = malloc(sizeof(t_files));
 	if (file == NULL)
@@ -133,7 +124,7 @@ void	set_files(t_tokens **token, t_commands **command)
 	*token = (*token)->next;
 }
 
-void	fill_command(t_tokens **token, t_commands **command)
+void	fill_command(t_token **token, t_command **command)
 {
 	if ((*token)->type == WORD && (*command)->cmd == NULL)
 		set_command(token, command);
@@ -143,16 +134,14 @@ void	fill_command(t_tokens **token, t_commands **command)
 		set_args(token, command);
 }
 
-t_commands	*parser(t_tokens *token)
+t_command	*parser(t_token *token)
 {
-	t_commands	*command;
+	t_command	*command;
 
 	command = malloc(sizeof(*command));
 	if (command == NULL)
-	{
-		exit(0);
-	}
-	init_command(command);
+		exit(EXIT_FAILURE);
+	init_command(&command);
 	while (token && token->type != PIPE)
 	{
 		fill_command(&token, &command);
