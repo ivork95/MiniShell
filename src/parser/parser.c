@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/08 19:34:29 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/08 19:57:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ size_t	redirect_type(char *str)
 	return (-1);
 }
 
-void	set_command(t_token **token, t_command **command)
+void	set_command(t_token **token, t_command *command)
 {
 	char	*cmd;
 
@@ -66,11 +66,11 @@ void	set_command(t_token **token, t_command **command)
 	if (cmd == NULL)
 		exit(EXIT_FAILURE);
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
-	(*command)->cmd = cmd;
+	command->cmd = cmd;
 	*token = (*token)->next;
 }
 
-void	set_args(t_token **token, t_command **command)
+void	set_args(t_token **token, t_command *command)
 {
 	t_token	*tmp;
 	size_t		i;
@@ -82,25 +82,25 @@ void	set_args(t_token **token, t_command **command)
 		i++;
 		tmp = tmp->next;
 	}
-	(*command)->args = malloc(sizeof(char *) * (i + 2));
-	if ((*command)->args == NULL)
+	command->args = malloc(sizeof(char *) * (i + 2));
+	if (command->args == NULL)
 		exit(EXIT_FAILURE);
-	(*command)->args[i + 1] = NULL;
+	command->args[i + 1] = NULL;
 	i = 0;
-	(*command)->args[i] = (*command)->cmd;
+	command->args[i] = command->cmd;
 	i++;
 	while ((*token) && (*token)->type == WORD)
 	{
-		(*command)->args[i] = malloc(sizeof(char) * (*token)->len + 1);
-		if ((*command)->args[i] == NULL)
+		command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
+		if (command->args[i] == NULL)
 			exit(EXIT_FAILURE);
-		ft_strlcpy((*command)->args[i], (*token)->str, (*token)->len + 1);
+		ft_strlcpy(command->args[i], (*token)->str, (*token)->len + 1);
 		*token = (*token)->next;
 		i++;
 	}
 }
 
-void	set_files(t_token **token, t_command **command)
+void	set_files(t_token **token, t_command *command)
 {
 	t_file	*file;
 
@@ -111,13 +111,13 @@ void	set_files(t_token **token, t_command **command)
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
 	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
-	(*command)->files = file;
+	command->files = file;
 	*token = (*token)->next;
 }
 
-void	fill_command(t_token **token, t_command **command)
+void	fill_command(t_token **token, t_command *command)
 {
-	if ((*token)->type == WORD && (*command)->cmd == NULL)
+	if ((*token)->type == WORD && command->cmd == NULL)
 		set_command(token, command);
 	else if ((*token)->type == REDIRECT_OP)
 		set_files(token, command);
@@ -135,7 +135,7 @@ t_command	*parser(t_token *token)
 	{
 		command = create_new_node();
 		while (token && token->type != PIPE)
-			fill_command(&token, &command);
+			fill_command(&token, command);
 		command_add_back(&head, command);
 		if (token != NULL)
 			token = token->next;
