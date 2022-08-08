@@ -6,12 +6,27 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/09 01:17:09 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/09 01:32:51 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include <stdlib.h>
+
+size_t	count_words(t_token **tokens)
+{
+	t_token *tmp;
+	size_t	i;
+	
+	tmp = *tokens;
+	i = 0;
+	while (tmp && tmp->type != PIPE)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
 
 void	init_command(t_command **command)
 {
@@ -68,14 +83,8 @@ void	set_command(t_token **token, t_command *command)
 	if (cmd == NULL)
 		exit(EXIT_FAILURE);
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
-	i = 0;
-	tmp = *token;
-	while (tmp && tmp->type == WORD)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	command->args = malloc(sizeof(char *) * (i + 1));
+	i = count_words(token);
+	command->args = ft_calloc(i + 1, sizeof(char *));
 	if (command->args == NULL)
 		exit(EXIT_FAILURE);
 	command->args[i] = NULL;
@@ -88,7 +97,9 @@ void	set_args(t_token **token, t_command *command)
 {
 	size_t		i;
 
-	i = 1;
+	i = 0;
+	while (command->args[i])
+		i++;
 	while ((*token) && (*token)->type == WORD)
 	{
 		command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
