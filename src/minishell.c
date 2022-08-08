@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/08 19:37:37 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/08 22:45:16 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ void	print_commands(t_command *cmds)
 			printf("args = %s\n", cmds->args[i]);
 			i++;
 		}
-		if (cmds->files)
+		while (cmds->files)
 		{
 			printf("file operattor = %d\nfile_name  = %s\n",
 				cmds->files->type, cmds->files->file_name);
+			cmds->files = cmds->files->next;
 		}
 		printf("--------------------\n");
 		cmds = cmds->next;
