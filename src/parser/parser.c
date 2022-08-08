@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/04 15:18:10 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/08 19:34:29 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,32 @@ void	init_command(t_command **command)
 	(*command)->args = NULL;
 	(*command)->files = NULL;
 	(*command)->next = NULL;
+}
+
+t_command	*create_new_node(void)
+{
+	t_command *command;
+
+	command = malloc(sizeof(*command));
+	if (command == NULL)
+		exit(EXIT_FAILURE);
+	init_command(&command);
+	return (command);
+}
+
+void	command_add_back(t_command **head, t_command *new)
+{
+	t_command *tmp;
+	
+	if (!*head)
+		*head = new;
+	else
+	{
+		tmp = *head;
+		while(tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }
 
 size_t	redirect_type(char *str)
@@ -56,7 +82,6 @@ void	set_args(t_token **token, t_command **command)
 		i++;
 		tmp = tmp->next;
 	}
-	printf("amount of args %ld\n", i);
 	(*command)->args = malloc(sizeof(char *) * (i + 2));
 	if ((*command)->args == NULL)
 		exit(EXIT_FAILURE);
@@ -102,15 +127,18 @@ void	fill_command(t_token **token, t_command **command)
 
 t_command	*parser(t_token *token)
 {
+	t_command	*head;
 	t_command	*command;
 
-	command = malloc(sizeof(*command));
-	if (command == NULL)
-		exit(EXIT_FAILURE);
-	init_command(&command);
-	while (token && token->type != PIPE)
+	head = NULL;
+	while (token)
 	{
-		fill_command(&token, &command);
+		command = create_new_node();
+		while (token && token->type != PIPE)
+			fill_command(&token, &command);
+		command_add_back(&head, command);
+		if (token != NULL)
+			token = token->next;
 	}
-	return (command);
+	return (head);
 }
