@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/08 19:57:59 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/08 22:51:27 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ void	command_add_back(t_command **head, t_command *new)
 
 size_t	redirect_type(char *str)
 {
-	if (ft_strncmp(str, "<", 2))
-		return (REDIRECT_IN);
-	if (ft_strncmp(str, ">", 2))
-		return (REDIRECT_OUT);
-	if (ft_strncmp(str, ">>", 2))
+	if (!ft_strncmp(str, ">>", 2))
 		return (REDIRECT_APP);
+	else if (!ft_strncmp(str, "<", 1))
+		return (REDIRECT_IN);
+	else if (!ft_strncmp(str, ">", 1))
+		return (REDIRECT_OUT);
 	return (-1);
 }
 
@@ -103,6 +103,7 @@ void	set_args(t_token **token, t_command *command)
 void	set_files(t_token **token, t_command *command)
 {
 	t_file	*file;
+	t_file *tmp;
 
 	file = malloc(sizeof(t_file));
 	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
@@ -111,7 +112,16 @@ void	set_files(t_token **token, t_command *command)
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
 	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
-	command->files = file;
+	file->next = NULL;
+	if (!(command)->files)
+		(command)->files = file;
+	else
+	{
+		tmp = (command)->files;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = file;
+	}
 	*token = (*token)->next;
 }
 
