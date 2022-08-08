@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/08 22:51:27 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/09 01:17:09 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,34 @@ size_t	redirect_type(char *str)
 void	set_command(t_token **token, t_command *command)
 {
 	char	*cmd;
+	t_token	*tmp;
+	size_t	i;
 
 	cmd = malloc(sizeof(char) * (*token)->len + 1);
 	if (cmd == NULL)
 		exit(EXIT_FAILURE);
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
+	i = 0;
+	tmp = *token;
+	while (tmp && tmp->type == WORD)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	command->args = malloc(sizeof(char *) * (i + 1));
+	if (command->args == NULL)
+		exit(EXIT_FAILURE);
+	command->args[i] = NULL;
+	command->args[0] = cmd;
 	command->cmd = cmd;
 	*token = (*token)->next;
 }
 
 void	set_args(t_token **token, t_command *command)
 {
-	t_token	*tmp;
 	size_t		i;
 
-	tmp = *token;
-	i = 0;
-	while (tmp && tmp->type == WORD)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	command->args = malloc(sizeof(char *) * (i + 2));
-	if (command->args == NULL)
-		exit(EXIT_FAILURE);
-	command->args[i + 1] = NULL;
-	i = 0;
-	command->args[i] = command->cmd;
-	i++;
+	i = 1;
 	while ((*token) && (*token)->type == WORD)
 	{
 		command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
