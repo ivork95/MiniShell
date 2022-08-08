@@ -67,6 +67,25 @@ Test(parser, two_redirections)
     cr_assert(zero(ptr, commands->next));
 }
 
+Test(parser, sandwiched_redirections)
+{
+    t_command *commands;
+    t_token *tokens;
+    char *input;
+
+    input = "echo hello > outfile world";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
+
+    cr_assert(eq(str, "echo", commands->cmd));
+    cr_assert(eq(str, "echo", commands->args[0]));
+    cr_assert(eq(str, "hello", commands->args[1]));
+    cr_assert(eq(str, "world", commands->args[2]));
+    cr_assert(eq(int, 1, commands->files->type));
+    cr_assert(eq(str, "outfile", commands->files->file_name));
+    cr_assert(zero(ptr, commands->next));
+}
+
 /*
 gcc simple.c \
 ../src/parser/parser.c \
