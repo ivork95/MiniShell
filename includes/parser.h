@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/04 15:16:56 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/08 20:10:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ typedef struct s_file
 			REDIRECT_OUT,
 			REDIRECT_APP,
 	} type;
-	char	*file_name;
+	char			*file_name;
+	struct s_file	*next;
 }	t_file;
 
 typedef struct s_command
