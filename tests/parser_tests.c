@@ -87,7 +87,7 @@ Test(parser, sandwiched_redirections)
 }
 
 /*
-gcc simple.c \
+gcc parser_tests.c \
 ../src/parser/parser.c \
 ../src/tokenizer/tokenizer.c \
 ../src/tokenizer/tokenizer_utils.c \
