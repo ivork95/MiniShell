@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/09 02:15:04 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/09 21:18:45 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ size_t	count_words(t_token **tokens)
 	return (i);
 }
 
-void	init_command(t_command **command)
+void	init_command(t_command *command)
 {
-	(*command)->cmd = NULL;
-	(*command)->args = NULL;
-	(*command)->files = NULL;
-	(*command)->next = NULL;
+	command->cmd = NULL;
+	command->args = NULL;
+	command->files = NULL;
+	command->next = NULL;
 }
 
 t_command	*create_new_node(void)
@@ -43,7 +43,7 @@ t_command	*create_new_node(void)
 	command = malloc(sizeof(*command));
 	if (command == NULL)
 		exit(EXIT_FAILURE);
-	init_command(&command);
+	init_command(command);
 	return (command);
 }
 
@@ -116,11 +116,11 @@ void	set_files(t_token **token, t_command *command)
 	t_file *tmp;
 
 	file = malloc(sizeof(t_file));
+	file->type = redirect_type((*token)->str);
+	*token = (*token)->next;
 	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
 	if (file->file_name == NULL)
 		exit(EXIT_FAILURE);
-	file->type = redirect_type((*token)->str);
-	*token = (*token)->next;
 	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
 	file->next = NULL;
 	if (!(command)->files)
