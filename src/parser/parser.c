@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/09 01:32:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/09 02:15:04 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ size_t	redirect_type(char *str)
 void	set_command(t_token **token, t_command *command)
 {
 	char	*cmd;
-	t_token	*tmp;
 	size_t	i;
 
 	cmd = malloc(sizeof(char) * (*token)->len + 1);
