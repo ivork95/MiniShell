@@ -3,6 +3,9 @@
 
 # include "../includes/parser.h"
 
-t_command *expander(t_command *commands);
+# define SINGLE_QUOTES 1
+# define DOUBLE_QUOTES 2
+
+void    expander(t_command *commands, char **envp);
 
 #endif
