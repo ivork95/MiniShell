@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/11 10:59:00 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/11 16:01:09 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	closed_quotes(char *str);
 
 char 	*handle_quotes(char **str_dup, char delimiter);
 char 	*handle_spaces(char **str_dup);
+
+void free_commands(t_command *head);
 
 t_command	*parser(t_token *tokens);
 
