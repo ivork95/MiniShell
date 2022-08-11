@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/11 10:19:49 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/11 11:23:48 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,11 @@ void	set_files(t_token **token, t_command *command)
 	t_file *tmp;
 
 	file = malloc(sizeof(t_file));
+	file->type = redirect_type((*token)->str);
+	*token = (*token)->next;
 	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
 	if (file->file_name == NULL)
 		exit(EXIT_FAILURE);
-	file->type = redirect_type((*token)->str);
-	*token = (*token)->next;
 	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
 	file->next = NULL;
 	if (!(command)->files)
