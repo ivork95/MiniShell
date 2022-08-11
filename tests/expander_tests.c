@@ -73,3 +73,21 @@ Test(expander, evnp_home_double_quoted)
     cr_assert(eq(str, "/root", commands->args[1]));
     cr_assert(zero(ptr, commands->next));
 }
+
+Test(expander, sandwichde_quotes)
+{
+    t_command *commands;
+    t_token *tokens;
+    char *input;
+
+    input = "e'ch'o \"hell\"o world";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
+    commands = expander(commands);
+
+    cr_assert(eq(str, "echo", commands->cmd));
+    cr_assert(eq(str, "echo", commands->args[0]));
+    cr_assert(eq(str, "hello", commands->args[1]));
+    cr_assert(eq(str, "world", commands->args[2]));
+    cr_assert(zero(ptr, commands->next));
+}
