@@ -25,7 +25,7 @@ all : libft $(NAME)
 libft:
 	make -C $(LIBFT)
 
-$(NAME) : $(OBJECTS)
+$(NAME) : $(OBJECTS) $(MAIN)
 	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) $(LIBFT)/libft.a $(LDFLAGS)
 
 tests : all
