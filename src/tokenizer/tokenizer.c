@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/08 20:20:55 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/11 10:19:18 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ t_token	*create_new_token(void)
 	new_token->str = NULL;
 	new_token->quoted = false;
 	new_token->next = NULL;
+	new_token->quoted = false;
+	new_token->len = 0;
+	new_token->type = 0;
 	return (new_token);
 }
 

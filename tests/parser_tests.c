@@ -26,7 +26,7 @@ Test(parser, two_commands)
     t_command *commands;
     t_token *tokens;
     char *input;
-    
+
     input = "ls -la | grep Makefile";
     tokens = tokenizer(input);
     commands = parser(tokens);

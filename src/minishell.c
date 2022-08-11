@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/08 22:45:16 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/11 10:19:24 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,6 @@ void execute_command(t_command *cmd, char **envp)
 {
 	char *path;
 
-	// if (!ft_strncmp(cmd->cmd, "echo", 5))
-	// {
-	// 	builtin_echo(cmd->args);
-	// 	return ;
-	// }
 	path = get_path(envp, cmd->cmd);
 	printf("path = %s\n", path);
 	execve(path, cmd->args, envp);
