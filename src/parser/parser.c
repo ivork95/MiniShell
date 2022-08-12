@@ -6,23 +6,21 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/11 16:29:16 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/12 10:15:23 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include <stdlib.h>
 
-size_t	count_words(t_token **tokens)
+size_t	count_words(t_token *head)
 {
-	t_token *tmp;
 	size_t	i;
-	
-	tmp = *tokens;
+
 	i = 0;
-	while (tmp && tmp->type != PIPE)
+	while (head && head->type != PIPE)
 	{
-		tmp = tmp->next;
+		head = head->next;
 		i++;
 	}
 	return (i);
@@ -82,7 +80,7 @@ void	set_command(t_token **token, t_command *command)
 	if (cmd == NULL)
 		exit(EXIT_FAILURE);
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
-	i = count_words(token);
+	i = count_words(*token);
 	command->args = ft_calloc(i + 1, sizeof(char *));
 	if (command->args == NULL)
 		exit(EXIT_FAILURE);

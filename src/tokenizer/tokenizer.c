@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/11 10:19:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/12 10:08:32 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_token	*tokenize_special_opp(char *str)
 
 t_token	*tokenize_word(char *str)
 {
-	t_token	*new_token;
+	t_token		*new_token;
 	size_t		len;
 	int			quote;
 
