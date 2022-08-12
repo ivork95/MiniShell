@@ -45,6 +45,44 @@ Test(parser, two_commands)
     cr_assert(zero(ptr, commands->next));
 }
 
+Test(parser, four_commands)
+{
+    t_command *commands;
+    t_token *tokens;
+    char *input;
+
+    input = "ls -la | grep Makefile | wc -l | hello world";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
+
+    cr_assert(eq(str, "ls", commands->cmd));
+    cr_assert(eq(str, "ls", commands->args[0]));
+    cr_assert(eq(str, "-la", commands->args[1]));
+    cr_assert(zero(ptr, commands->files));
+
+    commands = commands->next;
+
+    cr_assert_str_eq(commands->cmd, "grep");
+    cr_assert_str_eq(commands->args[0], "grep");
+    cr_assert_str_eq(commands->args[1], "Makefile");
+    cr_assert(zero(ptr, commands->files));
+    
+    commands = commands->next;
+
+    cr_assert(eq(str, "wc", commands->cmd));
+    cr_assert(eq(str, "wc", commands->args[0]));
+    cr_assert(eq(str, "-l", commands->args[1]));
+    cr_assert(zero(ptr, commands->files));
+
+    commands = commands->next;
+
+    cr_assert_str_eq(commands->cmd, "hello");
+    cr_assert_str_eq(commands->args[0], "hello");
+    cr_assert_str_eq(commands->args[1], "world");
+    cr_assert(zero(ptr, commands->files));
+    cr_assert(zero(ptr, commands->next));
+}
+
 Test(parser, two_redirections)
 {
     t_command *commands;
