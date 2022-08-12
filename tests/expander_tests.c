@@ -5,16 +5,18 @@
 #include "../includes/tokenizer.h"
 #include "../includes/expander.h"
 
+extern char **environ;
+
 Test(expander, quotes)
 {
     t_command *commands;
     t_token *tokens;
     char *input;
 
-    input = "\'echo\' \"hello\" world";
+    input = "\'echo\' hello world";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    commands = expander(commands);
+    expander(commands, environ);
 
     cr_assert(eq(str, "echo", commands->cmd));
     cr_assert(eq(str, "echo", commands->args[0]));
@@ -32,7 +34,7 @@ Test(expander, evnp_home)
     input = "echo $HOME";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    commands = expander(commands);
+    expander(commands, environ);
 
     cr_assert(eq(str, "echo", commands->cmd));
     cr_assert(eq(str, "echo", commands->args[0]));
@@ -49,7 +51,7 @@ Test(expander, evnp_home_quoted)
     input = "echo \'$HOME\'";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    commands = expander(commands);
+    expander(commands, environ);
 
     cr_assert(eq(str, "echo", commands->cmd));
     cr_assert(eq(str, "echo", commands->args[0]));
@@ -66,7 +68,7 @@ Test(expander, evnp_home_double_quoted)
     input = "echo \"$HOME\"";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    commands = expander(commands);
+    expander(commands, environ);
 
     cr_assert(eq(str, "echo", commands->cmd));
     cr_assert(eq(str, "echo", commands->args[0]));
@@ -83,7 +85,7 @@ Test(expander, sandwichde_quotes)
     input = "e'ch'o \"hell\"o world";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    commands = expander(commands);
+    expander(commands, environ);
 
     cr_assert(eq(str, "echo", commands->cmd));
     cr_assert(eq(str, "echo", commands->args[0]));
