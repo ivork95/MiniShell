@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/11 16:32:52 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/12 13:20:52 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "../includes/parser.h"
+#include "../includes/expander.h"
 
 void	print_commands(t_command *cmds)
 {
@@ -113,6 +114,7 @@ int	main(int argc, char **const argv, char **envp)
 	print_tokens(tokens);
 	
 	cmds = parser(tokens);
+	expander(cmds, envp);
 	print_commands(cmds);
 
 	free(user_input);
