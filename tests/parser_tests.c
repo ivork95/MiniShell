@@ -86,6 +86,23 @@ Test(parser, sandwiched_redirections)
     cr_assert(zero(ptr, commands->next));
 }
 
+Test(parser, echo_command_quoted)
+{
+    t_command   *command;
+    t_token     *tokens;
+    char        *input;
+
+    input = "echo \"hello world\"";
+    tokens = tokenizer(input);
+    command = parser(tokens);
+
+    cr_assert(eq(str, "echo", command->cmd));
+    cr_assert(eq(str, "echo", command->args[0]));
+    cr_assert(eq(str, "\"hello world\"", command->args[1]));
+    cr_assert(zero(ptr,command->next));
+}
+
+
 /*
 gcc parser_tests.c \
 ../src/parser/parser.c \
