@@ -93,3 +93,20 @@ Test(expander, sandwichde_quotes)
     cr_assert(eq(str, "world", commands->args[2]));
     cr_assert(zero(ptr, commands->next));
 }
+
+Test(expander, single_quotes_inside_double)
+{
+    t_command *commands;
+    t_token *tokens;
+    char *input;
+
+    input = "e'ch'o \"hello '$HOME'\"";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
+    expander(commands, environ);
+
+    cr_assert(eq(str, "echo", commands->cmd));
+    cr_assert(eq(str, "echo", commands->args[0]));
+    cr_assert(eq(str, "hello '/root'", commands->args[1]));
+    cr_assert(zero(ptr, commands->next));
+}
