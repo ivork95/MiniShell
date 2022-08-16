@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/12 13:20:52 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/16 21:58:39 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,18 @@
 void	print_commands(t_command *cmds)
 {
 	size_t	i;
+	size_t	j;
 
+	j = 0;
 	while (cmds)
 	{
 		i = 0;
 		printf("--------------------\n");
+		printf("cmds[%lu]\n", j);
 		printf("command = %s\n", cmds->cmd);
 		while (cmds->args && cmds->args[i])
 		{
-			printf("args = %s\n", cmds->args[i]);
+			printf("args[%lu] = %s\n", i, cmds->args[i]);
 			i++;
 		}
 		while (cmds->files)
@@ -40,6 +43,7 @@ void	print_commands(t_command *cmds)
 		}
 		printf("--------------------\n");
 		cmds = cmds->next;
+		j++;
 	}
 }
 
@@ -117,10 +121,10 @@ int	main(int argc, char **const argv, char **envp)
 	expander(cmds, envp);
 	print_commands(cmds);
 
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(cmds);
+	// free(user_input);
+	// free_tokens(tokens);
+	// free_commands(cmds);
 	
-	execute_command(cmds, envp);
+	// execute_command(cmds, envp);
 	return (0);
 }

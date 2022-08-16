@@ -8,6 +8,8 @@ HEADERS		:=	includes/parser.h \
 				includes/tokenizer.h
 MAIN		:=	obj/minishell.o
 OBJECTS		:=	obj/parser.o \
+				obj/parser_utils.o \
+				obj/free_breezy.o \
 				obj/tokenizer.o \
 				obj/tokenizer_utils.o \
 				obj/expander.o

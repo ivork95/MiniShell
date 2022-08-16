@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:03:53 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/11 16:30:45 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/12 10:08:47 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	print_tokens(t_token *head)
 	}
 }
 
-void free_tokens(t_token *head)
+void	free_tokens(t_token *head)
 {
 	if (head->next)
 		free_tokens(head->next);
