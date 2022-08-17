@@ -3,7 +3,8 @@ NAME		:=	minishell
 VPATH		:=	src:\
 				src/parser:\
 				src/tokenizer:\
-				src/expander:
+				src/expander: \
+				src/builtins:
 HEADERS		:=	includes/parser.h \
 				includes/tokenizer.h
 MAIN		:=	obj/minishell.o
@@ -12,10 +13,12 @@ OBJECTS		:=	obj/parser.o \
 				obj/free_breezy.o \
 				obj/tokenizer.o \
 				obj/tokenizer_utils.o \
-				obj/expander.o
+				obj/expander.o \
+				obj/echo.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
-				tests/expander_tests.c
+				tests/expander_tests.c \
+				tests/echo_tests.c
 
 CFLAGS		?=	-Wall -Wextra # -Werror
 LDFLAGS		?=	-lreadline
