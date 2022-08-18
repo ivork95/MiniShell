@@ -5,6 +5,7 @@
 #include "../includes/tokenizer.h"
 #include "../includes/expander.h"
 #include "../includes/builtins.h"
+#include <fcntl.h>
 
 extern char **environ;
 
@@ -30,7 +31,7 @@ Test(builtin_echo, simple, .init=redirect_all_std)
     cr_assert_stdout_eq_str(expect);
 }
 
-Test(builtin_echo, empty)
+Test(builtin_echo, empty, .init=redirect_all_std)
 {
     t_command *commands;
     t_token *tokens;
@@ -46,7 +47,7 @@ Test(builtin_echo, empty)
     cr_assert_stdout_eq_str(expect);
 }
 
-Test(builtin_echo, simple_no_new_line)
+Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 {
     t_command *commands;
     t_token *tokens;
@@ -62,66 +63,71 @@ Test(builtin_echo, simple_no_new_line)
     cr_assert_stdout_eq_str(expect);
 }
 
-Test(builtin_echo, echo_to_outfile)
-{
-    t_command *commands;
-    t_token *tokens;
-    char *input;
-    char *expect= "";
+// Test(builtin_echo, echo_to_outfile, .init=redirect_all_std)
+// {
+//     t_command *commands;
+//     t_token *tokens;
+//     char *input;
+//     char *expect= "";
 
-    input = "echo hello world > outfile";
-    tokens = tokenizer(input);
-    commands = parser(tokens);
-    expander(commands, environ);
-    echo_builtin(commands);
+//     input = "echo hello world > outfile.txt";
+//     tokens = tokenizer(input);
+//     commands = parser(tokens);
+//     expander(commands, environ);
+//     echo_builtin(commands);
+// 	// int outfile = open("../../outfile.txt", O_RDONLY);
+// 	FILE *fp;
+// 	printf("test!!!!!!!!!\n");
+// 	fp=fopen("../../outfile.txt", "r");
+// 	printf("file pointer = %p\n", fp);
+// 	cr_assert_file_contents_eq_str(fp, "hello world\n");
+//     //assert equal file contents
+// }
 
-    //assert equal file contents
-}
+// Test(builtin_echo, echo_append_outfile, .init=redirect_all_std)
+// {
+//     t_command *commands;
+//     t_token *tokens;
+//     char *input;
+//     char *expect= "";
 
-Test(builtin_echo, echo_to_outfile)
-{
-    t_command *commands;
-    t_token *tokens;
-    char *input;
-    char *expect= "";
+//     input = "echo hello world >> outfile";
+//     tokens = tokenizer(input);
+//     commands = parser(tokens);
+//     expander(commands, environ);
+//     echo_builtin(commands);
 
-    input = "echo hello world >> outfile";
-    tokens = tokenizer(input);
-    commands = parser(tokens);
-    expander(commands, environ);
-    echo_builtin(commands);
+//     //assert equal file contents
+// }
 
-    //assert equal file contents
-}
+// Test(builtin_echo, echo_double_redirect, .init=redirect_all_std)
+// {
+//     t_command *commands;
+//     t_token *tokens;
+//     char *input;
+//     char *expect= "";
 
-Test(builtin_echo, echo_double_redirect)
-{
-    t_command *commands;
-    t_token *tokens;
-    char *input;
-    char *expect= "";
+//     input = "echo hello world > outfile > outfile2";
+//     tokens = tokenizer(input);
+//     commands = parser(tokens);
+//     expander(commands, environ);
+//     echo_builtin(commands);
 
-    input = "echo hello world > outfile > outfile2";
-    tokens = tokenizer(input);
-    commands = parser(tokens);
-    expander(commands, environ);
-    echo_builtin(commands);
+//     //assert equal file contents
+// }
 
-    //assert equal file contents
-}
+// Test(builtin_echo, echo_append_and_redirect_out, .init=redirect_all_std)
+// {
+//     t_command *commands;
+//     t_token *tokens;
+//     char *input;
+//     char *expect= "";
 
-Test(builtin_echo, echo_append_and_redirect_out)
-{
-    t_command *commands;
-    t_token *tokens;
-    char *input;
-    char *expect= "";
+//     input = "echo hello world >> outfile > outfile2";
+//     tokens = tokenizer(input);
+//     commands = parser(tokens);
+//     expander(commands, environ);
+//     echo_builtin(commands);
 
-    input = "echo hello world >> outfile > outfile2";
-    tokens = tokenizer(input);
-    commands = parser(tokens);
-    expander(commands, environ);
-    echo_builtin(commands);
-
-    //assert equal file contents
-}
+//     //assert equal file contents
+// }
