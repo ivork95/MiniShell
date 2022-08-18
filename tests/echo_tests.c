@@ -8,7 +8,13 @@
 
 extern char **environ;
 
-Test(builtin_echo, simple)
+void redirect_all_std(void)
+{
+    cr_redirect_stdout();
+    cr_redirect_stderr();
+}
+
+Test(builtin_echo, simple, .init=redirect_all_std)
 {
     t_command *commands;
     t_token *tokens;
