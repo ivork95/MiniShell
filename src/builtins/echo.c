@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/18 01:34:56 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/18 15:28:26 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,23 @@ void	write_args(t_command *command)
 		write(1, "\n", 1);
 }
 
-void	duplicate_fd(t_file *files)
+void	duplicate_stdout(t_file *files)
 {
 	int	fd;
 
 	while (files)
 	{
-		if (files->type == REDIRECT_OUT)
+		if (files->type == REDIRECT_IN)
 		{
-			fd = open(files->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-			if (fd == -1)
-				printf("Error opening file\n");
-		}
-		else if (files->type == REDIRECT_APP)
-		{
-			fd = open(files->file_name, O_WRONLY | O_CREAT | O_APPEND, 0664);
-			if (fd == -1)
-				printf("Error opening file\n");
-		}
-		else
 			files = files->next;
+			continue ;
+		}
+		else if (files->type == REDIRECT_OUT)
+			fd = open(files->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+		else if (files->type == REDIRECT_APP)
+			fd = open(files->file_name, O_WRONLY | O_CREAT | O_APPEND, 0664);
+		if (fd == -1)
+			printf("Error opening file\n");
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			printf("Could not duplicate fd\n");
 		if (close(fd) == -1)
@@ -67,7 +64,12 @@ void	duplicate_fd(t_file *files)
 
 void	echo_builtin(t_command *command)
 {
+	int	saved_stdout;
+
+	saved_stdout = dup(1);
 	if (command->files)
-		duplicate_fd(command->files);
+		duplicate_stdout(command->files);
 	write_args(command);
+	if (dup2(saved_stdout, 1) == -1)
+		printf("Error occured with restoring stdout\n");
 }
