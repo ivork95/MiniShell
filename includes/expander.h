@@ -1,5 +1,5 @@
 #ifndef EXPANDER_H
-# define EXPENDER_H
+# define EXPANDER_H
 
 # include "../includes/parser.h"
 
