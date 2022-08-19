@@ -13,7 +13,7 @@ typedef struct s_env_var
 	struct s_env_var *next;
 }	t_env_var;
 
-int get_number_of_nodes(char **environ)
+int count_env_vars(char **environ)
 {
 	int	i;
 
@@ -23,34 +23,7 @@ int get_number_of_nodes(char **environ)
 	return (i);
 }
 
-t_env_var *malloc_linked_list(char** environ)
-{
-	int			i;
-	int			number_of_nodes;
-	t_env_var	*head;
-	t_env_var	*node;
-
-	i = 0;
-	head = NULL;
-	number_of_nodes = get_number_of_nodes(environ);
-	while (i < number_of_nodes)
-	{
-		node = malloc(sizeof(*node));
-		if (node == NULL)
-			exit(EXIT_FAILURE);
-		if (head == NULL)
-			head = node;
-		else
-		{
-			node->next = head;
-			head = node;
-		}
-		i++;
-	}
-	return (head);
-}
-
-t_env_var	*add_new_node(char *content)
+t_env_var	*add_env_var(char *content)
 {
 	t_env_var	*node;
 
@@ -64,18 +37,63 @@ t_env_var	*add_new_node(char *content)
 	return (node);
 }
 
-void copy_env(t_env_var *head, char **environ)
+t_env_var	*environ_to_linked_list(char** environ)
 {
-	int i;
+	int			i;
+	int			number_of_nodes;
+	t_env_var	*head;
+	t_env_var	*node;
 
 	i = 0;
-	while (head != NULL)
+	head = NULL;
+	number_of_nodes = count_env_vars(environ);
+	while (i < number_of_nodes)
 	{
-		head->env_var = ft_strdup(environ[i]);
-		head = head->next;
+		node = add_env_var(environ[i]);
+		if (head == NULL)
+			head = node;
+		else
+		{
+			node->next = head;
+			head = node;
+		}
 		i++;
 	}
+	return (head);
 }
+
+t_env_var *beta(t_env_var *head, char** environ)
+{
+	if (*environ == NULL)
+		return (head);
+	head = malloc(sizeof(*head));
+	head->env_var = ft_strdup(*environ);
+	head->next = beta(head->next, environ + 1);
+	return (head);
+}
+
+void	charlie(t_env_var **head, char** environ)
+{
+	t_env_var	*tmp;
+
+	if (*environ == NULL)
+		return ;
+	*head = malloc(sizeof(*head));
+	tmp = *head;
+	tmp->env_var = ft_strdup(*environ);
+	charlie(&tmp->next, &environ[1]);
+}
+
+void	print_env_vars(t_env_var *head)
+{
+	while (head != NULL)
+	{
+		printf("|%s|\n", head->env_var);
+		head = head->next;
+	}
+	printf("\n");
+}
+
 
 // zet env om in linked list
 // hoeveel nodes heb ik nodig
@@ -124,27 +142,24 @@ int main(void)
 	// int n = get_number_of_nodes(environ);
 	// printf("n = %i\n", n);
 
-	t_env_var *head;
-	head = malloc_linked_list(environ);
-	copy_env(head, environ);
+	// t_env_var *head;
+	// head = environ_to_linked_list(environ);
+	// print_env_vars(head);
 
-	int i = 0;
-	// while (head != NULL)
-	// {
-	// 	printf("|%s|\n", head->env_var);
-	// 	head = head->next;
-	// 	i++;
-	// }
-	printf("\n");
-	t_env_var *new = add_new_node("jon=aegon");
-	new->next = head;
-	head = new;
-	i = 0;
-	while (head != NULL)
-	{
-		printf("|%s|\n", head->env_var);
-		head = head->next;
-		i++;
-	}
+	// t_env_var *new = add_env_var("jon=aegon");
+	// new->next = head;
+	// head = new;
+
+	// print_env_vars(head);
+
+	// t_env_var *head;
+	// head = NULL;
+	// head = beta(head, environ);
+
+	t_env_var *head;
+	head = NULL;
+	charlie(&head, environ);
+	print_env_vars(head);
+
 	return (0);
 }
