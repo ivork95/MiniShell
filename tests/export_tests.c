@@ -23,32 +23,45 @@ int get_number_of_nodes(char **environ)
 	return (i);
 }
 
-// head moet NULL zijn of bestaan
 t_env_var *malloc_linked_list(char** environ)
 {
 	int			i;
 	int			number_of_nodes;
 	t_env_var	*head;
-	t_env_var	*new;
+	t_env_var	*node;
 
 	i = 0;
 	head = NULL;
 	number_of_nodes = get_number_of_nodes(environ);
 	while (i < number_of_nodes)
 	{
-		new = malloc(sizeof(*new));
-		if (new == NULL)
+		node = malloc(sizeof(*node));
+		if (node == NULL)
 			exit(EXIT_FAILURE);
 		if (head == NULL)
-			head = new;
+			head = node;
 		else
 		{
-			new->next = head;
-			head = new;
+			node->next = head;
+			head = node;
 		}
 		i++;
 	}
 	return (head);
+}
+
+t_env_var	*add_new_node(char *content)
+{
+	t_env_var	*node;
+
+	node = malloc(sizeof(*node));
+	if (node == NULL)
+		exit(EXIT_FAILURE);
+	node->env_var = ft_strdup(content);
+	node->next = NULL;
+	if (node->env_var == NULL)
+		exit(EXIT_FAILURE);
+	return (node);
 }
 
 void copy_env(t_env_var *head, char **environ)
@@ -116,12 +129,22 @@ int main(void)
 	copy_env(head, environ);
 
 	int i = 0;
+	// while (head != NULL)
+	// {
+	// 	printf("|%s|\n", head->env_var);
+	// 	head = head->next;
+	// 	i++;
+	// }
+	printf("\n");
+	t_env_var *new = add_new_node("jon=aegon");
+	new->next = head;
+	head = new;
+	i = 0;
 	while (head != NULL)
 	{
-		printf("str = |%s|\n", head->env_var);
+		printf("|%s|\n", head->env_var);
 		head = head->next;
 		i++;
 	}
-	printf("i = %i\n", i);
 	return (0);
 }
