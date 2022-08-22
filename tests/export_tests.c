@@ -13,6 +13,14 @@ typedef struct s_env_var
 	struct s_env_var *next;
 }	t_env_var;
 
+void	free_env_vars(t_env_var *head)
+{
+	if (head->next)
+		free_env_vars(head->next);
+	free(head->env_var);
+	free(head);
+}
+
 int count_env_vars(char **environ)
 {
 	int	i;
@@ -62,26 +70,20 @@ t_env_var	*environ_to_linked_list(char** environ)
 	return (head);
 }
 
-t_env_var *beta(t_env_var *head, char** environ)
+t_env_var *environ_to_linked_list_recursive(t_env_var *head, char** environ)
 {
-	if (*environ == NULL)
-		return (head);
-	head = malloc(sizeof(*head));
-	head->env_var = ft_strdup(*environ);
-	head->next = beta(head->next, environ + 1);
+	if (*environ != NULL)
+	{
+		head = malloc(sizeof(*head));
+		if (head == NULL)
+			exit(EXIT_FAILURE);
+		head->env_var = ft_strdup(*environ);
+		if (head->env_var == NULL)
+			exit(EXIT_FAILURE);
+		head->next = NULL;
+		head->next = environ_to_linked_list_recursive(head->next, environ + 1);
+	}
 	return (head);
-}
-
-void	charlie(t_env_var **head, char** environ)
-{
-	t_env_var	*tmp;
-
-	if (*environ == NULL)
-		return ;
-	*head = malloc(sizeof(*head));
-	tmp = *head;
-	tmp->env_var = ft_strdup(*environ);
-	charlie(&tmp->next, &environ[1]);
 }
 
 void	print_env_vars(t_env_var *head)
@@ -142,24 +144,21 @@ int main(void)
 	// int n = get_number_of_nodes(environ);
 	// printf("n = %i\n", n);
 
-	// t_env_var *head;
-	// head = environ_to_linked_list(environ);
-	// print_env_vars(head);
+	t_env_var *head;
+	head = NULL;
+	head = environ_to_linked_list(environ);
+	print_env_vars(head);
 
 	// t_env_var *new = add_env_var("jon=aegon");
 	// new->next = head;
 	// head = new;
-
 	// print_env_vars(head);
 
 	// t_env_var *head;
 	// head = NULL;
-	// head = beta(head, environ);
+	// head = environ_to_linked_list_recursive(head, environ);
+	// print_env_vars(head);
 
-	t_env_var *head;
-	head = NULL;
-	charlie(&head, environ);
-	print_env_vars(head);
-
+	free_env_vars(head);
 	return (0);
 }
