@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/16 21:58:39 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/19 20:58:13 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include "../includes/parser.h"
 #include "../includes/expander.h"
+#include "../includes/builtins.h"
 
 void	print_commands(t_command *cmds)
 {
@@ -101,9 +102,14 @@ void execute_command(t_command *cmd, char **envp)
 {
 	char *path;
 
-	path = get_path(envp, cmd->cmd);
-	printf("path = %s\n", path);
-	execve(path, cmd->args, envp);
+    for (int i = 0; i < 6; i++)
+    {
+        if (!ft_strncmp(builtins[i], cmd->cmd, ft_strlen(cmd->cmd) + 1))
+            builtin_func[i](cmd);
+    }
+	// path = get_path(envp, cmd->cmd);
+	// printf("path = %s\n", path);
+	// execve(path, cmd->args, envp);
 }
 
 int	main(int argc, char **const argv, char **envp)
@@ -112,18 +118,22 @@ int	main(int argc, char **const argv, char **envp)
 	t_token	*tokens;
 	char		*user_input;
 
-	user_input = readline(">");
-	tokens = tokenizer(user_input);
-	
-	print_tokens(tokens);
-	
-	cmds = parser(tokens);
-	expander(cmds, envp);
-	print_commands(cmds);
-
-	// free(user_input);
-	// free_tokens(tokens);
-	// free_commands(cmds);
+    while (1)
+    {
+        user_input = readline(">");
+        add_history(user_input);
+        tokens = tokenizer(user_input);
+        
+        // print_tokens(tokens);
+        
+        cmds = parser(tokens);
+        expander(cmds, envp);
+        execute_command(cmds, envp);
+        // print_commands(cmds);
+    }
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(cmds);
 	
 	// execute_command(cmds, envp);
 	return (0);

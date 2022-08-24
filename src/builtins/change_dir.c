@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   change_dir.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/19 22:05:57 by ivork         ########   odam.nl         */
+/*   Created: 2022/08/19 20:42:31 by ivork         #+#    #+#                 */
+/*   Updated: 2022/08/20 16:04:35 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/parser.h"
 #include <unistd.h>
-#include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-void print_current_directory(void)
+void change_directory(t_command *cmd)
 {
-	char	*working_dir;
-	size_t	len;
-
-	working_dir = getcwd(NULL, 0);
-	write(1, working_dir, strlen(working_dir));
-    write(1, "\n", 1);
-	free(working_dir);
+    char *old_pwd;
+    
+    old_pwd = getcwd(NULL, 0);
+    if (!cmd->args[1])
+    {
+        if (chdir(getenv("HOME")) == -1)
+            printf("error\n");
+    }
+    else if(chdir(cmd->args[1]) == -1)
+        printf("error\n");
 }

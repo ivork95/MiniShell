@@ -1,27 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/19 22:05:57 by ivork         ########   odam.nl         */
+/*   Created: 2022/08/23 21:15:16 by ivork         #+#    #+#                 */
+/*   Updated: 2022/08/23 21:15:17 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-void print_current_directory(void)
-{
-	char	*working_dir;
-	size_t	len;
-
-	working_dir = getcwd(NULL, 0);
-	write(1, working_dir, strlen(working_dir));
-    write(1, "\n", 1);
-	free(working_dir);
-}
