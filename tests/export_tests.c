@@ -50,37 +50,35 @@ t_env_var	*add_env_var(char *key, char *value)
 	return (node);
 }
 
-t_env_var *environ_to_linked_list_recursive(t_env_var *head, char** environ)
+void	assign_env_key_value(t_env_var *head, char *env_var)
 {
-	char	**env_var;
-	char *p;
+	char		*ptr;
+	size_t		len_val;
+	ptrdiff_t	len_key;
 
+	ptr = ft_strchr(env_var, '=');
+	len_key = (ptr - env_var) + 1;
+	head->key = malloc(sizeof(*(head->key)) * len_key);
+	if (head->key == NULL)
+		exit(EXIT_FAILURE);
+	ft_strlcpy(head->key, env_var, len_key);
+	ptr = ptr + 1;
+	len_val = ft_strlen(ptr) + 1;
+	head->value = malloc(sizeof(*(head->value)) * len_val);
+	if (head->value == NULL)
+		exit(EXIT_FAILURE);
+	ft_strlcpy(head->value, ptr, len_val);
+}
+
+t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char** environ)
+{
 	head = NULL;
 	if (*environ != NULL)
 	{
 		head = malloc(sizeof(*head));
 		if (head == NULL)
 			exit(EXIT_FAILURE);
-
-		// PWD=/pwd/tests
-		p = ft_strchr(*environ, '=');
-		head->key = malloc(sizeof(*(head->key)) * ((p - *environ) + 1));
-		if (head->key == NULL)
-			exit(EXIT_FAILURE);
-		ft_strlcpy(head->key, *environ, (p - *environ) + 1);
-
-		p = p + 1;
-		head->value = malloc(sizeof(*(head->value)) * (ft_strlen(p) + 1));
-		if (head->value == NULL)
-			exit(EXIT_FAILURE);
-		ft_strlcpy(head->value, p, ft_strlen(p) + 1);
-
-		// env_var = ft_split(*environ, '=');
-		// if (env_var == NULL)
-		// 	exit(EXIT_FAILURE);
-		// head->key = env_var[0];
-		// head->value = env_var[1];
-		// free(env_var);
+		assign_env_key_value(head, *environ);
 		head->next = environ_to_linked_list_recursive(head->next, environ + 1);
 	}
 	return (head);
