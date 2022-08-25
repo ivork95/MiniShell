@@ -24,22 +24,23 @@ size_t	count_words(t_token *head)
 	return (i);
 }
 
-void	init_command(t_command *command)
+void	init_command(t_command *command, t_env_var **envp)
 {
+	command->env_vars = envp;
 	command->cmd = NULL;
 	command->args = NULL;
 	command->files = NULL;
 	command->next = NULL;
 }
 
-t_command	*create_new_command(void)
+t_command	*create_new_command(t_env_var **envp)
 {
 	t_command	*command;
 
 	command = malloc(sizeof(*command));
 	if (command == NULL)
 		exit(EXIT_FAILURE);
-	init_command(command);
+	init_command(command, envp);
 	return (command);
 }
 

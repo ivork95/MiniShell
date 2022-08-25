@@ -74,16 +74,38 @@ t_env_var *environ_to_linked_list_recursive(t_env_var *head, char** environ)
 		if (head->value == NULL)
 			exit(EXIT_FAILURE);
 		ft_strlcpy(head->value, p, ft_strlen(p) + 1);
-
-		// env_var = ft_split(*environ, '=');
-		// if (env_var == NULL)
-		// 	exit(EXIT_FAILURE);
-		// head->key = env_var[0];
-		// head->value = env_var[1];
-		// free(env_var);
 		head->next = environ_to_linked_list_recursive(head->next, environ + 1);
 	}
 	return (head);
+}
+
+void delete_env_var(t_env_var **head, char *key)
+{
+	t_env_var	*tmp;
+	t_env_var *envp;
+	tmp = NULL;
+	envp = *head;
+	while (envp)
+	{
+		if (!ft_strncmp(key, envp->key, ft_strlen(key)))
+		{
+			if (!tmp)
+			{
+				tmp = *head;
+				*head = envp->next;
+			}
+			else
+			{
+				tmp->next = envp->next;
+				tmp = envp;
+			}
+			tmp->next = NULL;
+			free_env_vars(tmp);
+			return ;
+		}
+		tmp = envp;
+		envp = envp->next;
+	}
 }
 
 int main(void)
@@ -105,7 +127,9 @@ int main(void)
 	head = NULL;
 	head = environ_to_linked_list_recursive(head, environ);
 	print_env_vars(head);
-
+	delete_env_var(&head, "HOSTNAME");
+	printf("_________________________________\n");
+	print_env_vars(head);
 	free_env_vars(head);
 	return (0);
 }

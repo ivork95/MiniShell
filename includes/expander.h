@@ -1,7 +1,7 @@
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
-# include "../includes/parser.h"
+# include "parser.h"
 
 # define SINGLE_QUOTES 1
 # define DOUBLE_QUOTES 2

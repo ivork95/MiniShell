@@ -3,6 +3,8 @@
 #include <criterion/redirect.h>
 #include "../includes/parser.h"
 #include "../includes/tokenizer.h"
+#include "../includes/builtins.h"
+extern char **environ;
 
 Test(parser, echo_hello_world)
 {
@@ -10,9 +12,12 @@ Test(parser, echo_hello_world)
     t_token     *tokens;
     char        *input;
 
+	t_env_var *envp;
+	envp = environ_to_linked_list_recursive(envp, environ);
+
     input = "echo hello world";
     tokens = tokenizer(input);
-    command = parser(tokens);
+    command = parser(tokens, &envp);
 
     cr_assert(eq(str, "echo", command->cmd));
     cr_assert(eq(str, "echo", command->args[0]));
@@ -26,10 +31,10 @@ Test(parser, two_commands)
     t_command *commands;
     t_token *tokens;
     char *input;
-
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
     input = "ls -la | grep Makefile";
     tokens = tokenizer(input);
-    commands = parser(tokens);
+    commands = parser(tokens, &envp);
 
     cr_assert(eq(str, "ls", commands->cmd));
     cr_assert(eq(str, "ls", commands->args[0]));
@@ -50,10 +55,10 @@ Test(parser, four_commands)
     t_command *commands;
     t_token *tokens;
     char *input;
-
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
     input = "ls -la | grep Makefile | wc -l | hello world";
     tokens = tokenizer(input);
-    commands = parser(tokens);
+    commands = parser(tokens, &envp);
 
     cr_assert(eq(str, "ls", commands->cmd));
     cr_assert(eq(str, "ls", commands->args[0]));
@@ -88,10 +93,10 @@ Test(parser, two_redirections)
     t_command *commands;
     t_token *tokens;
     char *input;
-
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
     input = "< infile cat > outfile";
     tokens = tokenizer(input);
-    commands = parser(tokens);
+    commands = parser(tokens, &envp);
 
     cr_assert(eq(str, "cat", commands->cmd));
     cr_assert(eq(str, "cat", commands->args[0]));
@@ -110,10 +115,10 @@ Test(parser, sandwiched_redirections)
     t_command *commands;
     t_token *tokens;
     char *input;
-
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
     input = "echo hello > outfile world";
     tokens = tokenizer(input);
-    commands = parser(tokens);
+    commands = parser(tokens, &envp);
 
     cr_assert(eq(str, "echo", commands->cmd));
     cr_assert(eq(str, "echo", commands->args[0]));
@@ -129,10 +134,10 @@ Test(parser, echo_command_quoted)
     t_command   *command;
     t_token     *tokens;
     char        *input;
-
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
     input = "echo \"hello world\"";
     tokens = tokenizer(input);
-    command = parser(tokens);
+    command = parser(tokens, &envp);
 
     cr_assert(eq(str, "echo", command->cmd));
     cr_assert(eq(str, "echo", command->args[0]));

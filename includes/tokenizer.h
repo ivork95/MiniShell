@@ -6,12 +6,12 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:09:33 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/11 15:53:46 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/24 17:04:36 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef TOKENIZER_H
+# define TOKENIZER_H
 
 # include <stdio.h>
 # include <stdlib.h>

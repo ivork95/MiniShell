@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/16 21:58:39 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/25 15:57:49 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../includes/parser.h"
 #include "../includes/expander.h"
+#include "../includes/builtins.h"
 
 void	print_commands(t_command *cmds)
 {
@@ -99,32 +99,53 @@ char	*get_path(char **arguments, char *cmd)
 
 void execute_command(t_command *cmd, char **envp)
 {
-	char *path;
+	// char *path;
+	const char *builtins[6] = {"echo",
+            "pwd",
+            "cd",
+            "env",
+            "unset",
+            "export"};
 
-	path = get_path(envp, cmd->cmd);
-	printf("path = %s\n", path);
-	execve(path, cmd->args, envp);
+	void (*builtin_func[5])() = {
+                                echo_builtin,
+                                print_current_directory,
+                                change_directory,
+								print_env_vars,
+								delete_env_var};
+    for (int i = 0; i < 5; i++)
+    {
+        if (!ft_strncmp(builtins[i], cmd->cmd, ft_strlen(cmd->cmd) + 1))
+            builtin_func[i](cmd);
+    }
+	// path = get_path(envp, cmd->cmd);
+	// printf("path = %s\n", path);
+	// execve(path, cmd->args, envp);
 }
 
 int	main(int argc, char **const argv, char **envp)
 {
 	t_command	*cmds;
-	t_token	*tokens;
+	t_token		*tokens;
+	t_env_var	*environ;
+	
 	char		*user_input;
-
-	user_input = readline(">");
-	tokens = tokenizer(user_input);
+	environ = environ_to_linked_list_recursive(environ, envp);
+	// user_input = readline(">");
+	tokens = tokenizer("unset HOSTNAME");
 	
 	print_tokens(tokens);
 	
-	cmds = parser(tokens);
+	cmds = parser(tokens, &environ);
 	expander(cmds, envp);
-	print_commands(cmds);
+	// print_commands(cmds);
 
 	// free(user_input);
 	// free_tokens(tokens);
 	// free_commands(cmds);
-	
-	// execute_command(cmds, envp);
+	print_env_vars(cmds);
+	execute_command(cmds, envp);
+	printf("-----------------------------------\n");
+	print_env_vars(cmds);
 	return (0);
 }

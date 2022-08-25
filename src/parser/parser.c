@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/12 17:52:17 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/08/25 15:17:49 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	fill_command(t_token **token, t_command *command)
 		set_args(token, command);
 }
 
-t_command	*parser(t_token *token)
+t_command	*parser(t_token *token, t_env_var **envp)
 {
 	t_command	*head;
 	t_command	*command;
@@ -93,7 +93,7 @@ t_command	*parser(t_token *token)
 	head = NULL;
 	while (token)
 	{
-		command = create_new_command();
+		command = create_new_command(envp);
 		while (token && token->type != PIPE)
 			fill_command(&token, command);
 		command_add_back(&head, command);

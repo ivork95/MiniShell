@@ -21,10 +21,11 @@ Test(builtin_echo, simple, .init=redirect_all_std)
     t_token *tokens;
     char *input;
     char *expect= "hello world\n";
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
 
     input = "echo hello world";
     tokens = tokenizer(input);
-    commands = parser(tokens);
+    commands = parser(tokens, &envp);
     expander(commands, environ);
     echo_builtin(commands);
 
@@ -37,10 +38,10 @@ Test(builtin_echo, empty, .init=redirect_all_std)
     t_token *tokens;
     char *input;
     char *expect= "\n";
-
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
     input = "echo";
     tokens = tokenizer(input);
-    commands = parser(tokens);
+    commands = parser(tokens, &envp);
     expander(commands, environ);
     echo_builtin(commands);
 
@@ -53,10 +54,10 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
     t_token *tokens;
     char *input;
     char *expect= "hello world";
-
+	t_env_var *envp = environ_to_linked_list_recursive(envp, environ);
     input = "echo -n hello world";
     tokens = tokenizer(input);
-    commands = parser(tokens);
+    commands = parser(tokens, &envp);
     expander(commands, environ);
     echo_builtin(commands);
 
@@ -72,7 +73,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 
 //     input = "echo hello world > outfile.txt";
 //     tokens = tokenizer(input);
-//     commands = parser(tokens);
+//     commands = parser(tokens, &envp);
 //     expander(commands, environ);
 //     echo_builtin(commands);
 // 	// int outfile = open("../../outfile.txt", O_RDONLY);
@@ -93,7 +94,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 
 //     input = "echo hello world >> outfile";
 //     tokens = tokenizer(input);
-//     commands = parser(tokens);
+//     commands = parser(tokens, &envp);
 //     expander(commands, environ);
 //     echo_builtin(commands);
 
@@ -109,7 +110,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 
 //     input = "echo hello world > outfile > outfile2";
 //     tokens = tokenizer(input);
-//     commands = parser(tokens);
+//     commands = parser(tokens, &envp);
 //     expander(commands, environ);
 //     echo_builtin(commands);
 
@@ -125,7 +126,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 
 //     input = "echo hello world >> outfile > outfile2";
 //     tokens = tokenizer(input);
-//     commands = parser(tokens);
+//     commands = parser(tokens, &envp);
 //     expander(commands, environ);
 //     echo_builtin(commands);
 
