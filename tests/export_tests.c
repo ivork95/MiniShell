@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "../src/libft/libft.h"
 
-extern char **environ;
+extern char	**environ;
 
 typedef struct s_env_var
 {
@@ -14,14 +14,41 @@ typedef struct s_env_var
 	struct s_env_var	*next;
 }	t_env_var;
 
-void	print_env_vars(t_env_var *head)
+static unsigned int count_environ_vars(char **environ)
+{
+	unsigned int	count;
+
+	count = 0;
+	while (*environ != NULL)
+	{
+		count++;
+		environ++;
+	}
+	return (count);
+}
+
+static unsigned int count_env_vars(t_env_var *head)
+{
+	unsigned int	count;
+
+	count = 0;
+	while (head != NULL)
+	{
+		count++;
+		head = head->next;
+	}
+	return (count);
+}
+
+void	put_env_vars(t_env_var *head)
 {
 	while (head != NULL)
 	{
-		printf("%s=%s\n", head->key, head->value);
+		ft_putstr_fd(head->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(head->value, 1);
 		head = head->next;
 	}
-	printf("\n");
 }
 
 void	free_env_vars(t_env_var *head)
@@ -33,7 +60,36 @@ void	free_env_vars(t_env_var *head)
 	free(head);
 }
 
-t_env_var	*add_env_var(char *key, char *value)
+void delete_env_var(t_env_var **head, char *key)
+{
+	t_env_var	*tmp;
+	t_env_var *envp;
+	tmp = NULL;
+	envp = *head;
+	while (envp)
+	{
+		if (!ft_strncmp(key, envp->key, ft_strlen(key)))
+		{
+			if (!tmp)
+			{
+				tmp = *head;
+				*head = envp->next;
+			}
+			else
+			{
+				tmp->next = envp->next;
+				tmp = envp;
+			}
+			tmp->next = NULL;
+			free_env_vars(tmp);
+			return ;
+		}
+		tmp = envp;
+		envp = envp->next;
+	}
+}
+
+t_env_var	*create_new_env_var(char *key, char *value)
 {
 	t_env_var	*node;
 
@@ -48,6 +104,28 @@ t_env_var	*add_env_var(char *key, char *value)
 		exit(EXIT_FAILURE);
 	node->next = NULL;
 	return (node);
+}
+
+t_env_var *find_env_var(t_env_var *head, char *key_to_check)
+{
+	while (head != NULL)
+	{
+		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(head->key))))
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
+
+void add_env_var(t_env_var **head, char *key, char *value)
+{
+	t_env_var	*new;
+
+	if (find_env_var(*head, key))
+		delete_env_var(head, key);
+	new = create_new_env_var(key, value);
+	new->next = *head;
+	*head = new;
 }
 
 void	assign_env_key_value(t_env_var *head, char *env_var)
@@ -70,7 +148,7 @@ void	assign_env_key_value(t_env_var *head, char *env_var)
 	ft_strlcpy(head->value, ptr, len_val);
 }
 
-t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char** environ)
+t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ)
 {
 	head = NULL;
 	if (*environ != NULL)
@@ -84,67 +162,83 @@ t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char** environ)
 	return (head);
 }
 
-int main(void)
+Test(export, is_copied)
 {
-	// int n = get_number_of_nodes(environ);
-	// printf("n = %i\n", n);
+	t_env_var		*head;
+	unsigned int	ll_count;
+	unsigned int	actual_count;
+	unsigned int	i;
+	char			*tmp_str;
+	char			*joined_str;
 
-	// t_env_var *head;
-	// head = NULL;
-	// head = environ_to_linked_list(environ);
-	// print_env_vars(head);
-
-	// t_env_var *new = add_env_var("jon=aegon");
-	// new->next = head;
-	// head = new;
-	// print_env_vars(head);
-
-	t_env_var *head;
-	head = NULL;
 	head = environ_to_linked_list_recursive(head, environ);
-	print_env_vars(head);
 
-	free_env_vars(head);
-	return (0);
+	ll_count = count_env_vars(head);
+	actual_count = count_environ_vars(environ);
+	cr_assert(eq(int, actual_count, ll_count));
+
+	i = 0;
+	while (i < actual_count)
+	{
+		tmp_str = ft_strjoin(head->key, "=");
+		joined_str = ft_strjoin(tmp_str, head->value);
+		free(tmp_str);
+		cr_assert_not(ft_strncmp(environ[i], joined_str, ft_strlen(environ[i])));
+		free(joined_str);
+		head = head->next;
+		i++;
+	}
 }
 
-// zet env om in linked list
-// hoeveel nodes heb ik nodig
-// 
+Test(export, add)
+{
+	t_env_var	*head;
+	t_env_var	*new;
+	char		*key_to_add = "jon";
 
-// Test(export, echo_simple)
-// {
-//     /*
-//     input is export jon=aegon
-//     expected output is an additional environmental variable jon=aegon
+	head = environ_to_linked_list_recursive(head, environ);
+	add_env_var(&head, key_to_add, "aegon");
 
-//     je kan checken of er een key value pair bij is gekomen
-//     tel het aantal key value pairs
-//     na het runnen van de function moet er een bij zijn gekomen
-//     hoe pak je in c env values op? getenv()
-//     hoe voeg je environment variable to met c?
+	// put_env_vars(head);
+	cr_assert_not_null(find_env_var(head, key_to_add));
+}
 
-//     pak hele environment
-//     malloc en kopieer
-//     voeg nieuwe entry toe
-//     vervang oude environment door nieuwe, hoe? verplaats pointer?
-//     */
+Test(export, delete)
+{
+	t_env_var	*head;
+	char		*key_to_delete = "HOSTNAME";
 
-//     // char *env_var = getenv("HOME"); // /root
-//     // printf("env_var = |%s|\n", env_var);
-//     // cr_assert(eq(str, "/root", env_var));
+	head = environ_to_linked_list_recursive(head, environ);
+	delete_env_var(&head, key_to_delete);
 
-//     // char *env_var = getenv("JON"); // null
-//     // printf("env_var = |%s|\n", env_var);
-//     // cr_assert(eq(str, "/root", env_var));
+	// put_env_vars(head);
+	cr_assert(zero(ptr,find_env_var(head, key_to_delete)));
+}
 
-//     // char *env_var = getenv("jon"); // /root
-//     // cr_assert(eq(str, "aegon", env_var));
+Test(export, overwrite)
+{
+	t_env_var	*head;
+	char		*value;
+	char		*key_to_overwrite = "HOSTNAME";
+	char		*value_to_overwrite = "KAWISH";
 
-//     int i = 0;
-//     while (environ[i])
-//     {
-//         printf("|%s|\n", environ[i]);
-//         i++;
-//     }
-// }
+	head = environ_to_linked_list_recursive(head, environ);
+	add_env_var(&head, key_to_overwrite,value_to_overwrite);
+	value = find_env_var(head, key_to_overwrite)->value;
+	// put_env_vars(head);
+	cr_assert(eq(str, value_to_overwrite, value));
+}
+
+Test(export, overwrite_empty_val)
+{
+	t_env_var	*head;
+	char		*value;
+	char		*key_to_overwrite = "HOSTNAME";
+	char		*value_to_overwrite = "\0";
+
+	head = environ_to_linked_list_recursive(head, environ);
+	add_env_var(&head, key_to_overwrite,value_to_overwrite);
+	value = find_env_var(head, key_to_overwrite)->value;
+	put_env_vars(head);
+	cr_assert(eq(str, value_to_overwrite, value));
+}
