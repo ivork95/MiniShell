@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/16 21:58:39 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/26 12:52:13 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ char	*get_path(char **arguments, char *cmd)
 	return (full_path);
 }
 
-void execute_command(t_command *cmd, char **envp)
+void	execute_command(t_command *cmd, char **envp)
 {
-	char *path;
+	char	*path;
 
 	path = get_path(envp, cmd->cmd);
 	printf("path = %s\n", path);
@@ -109,22 +109,18 @@ void execute_command(t_command *cmd, char **envp)
 int	main(int argc, char **const argv, char **envp)
 {
 	t_command	*cmds;
-	t_token	*tokens;
+	t_token		*tokens;
 	char		*user_input;
 
 	user_input = readline(">");
 	tokens = tokenizer(user_input);
-	
 	print_tokens(tokens);
-	
 	cmds = parser(tokens);
 	expander(cmds, envp);
 	print_commands(cmds);
-
 	// free(user_input);
 	// free_tokens(tokens);
 	// free_commands(cmds);
-	
 	// execute_command(cmds, envp);
 	return (0);
 }

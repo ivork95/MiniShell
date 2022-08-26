@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/18 16:02:00 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/26 12:51:35 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void print_current_directory(void)
+void	print_current_directory(void)
 {
 	char	*working_dir;
 	size_t	len;
