@@ -9,7 +9,7 @@
 typedef struct s_expand_data
 {
 	size_t len;
-	char *position_dollar_sign;
+	char *pos_dollar_sign;
 	char *env_str;
 	char *env_name;
 	char *first_part_str;
@@ -19,5 +19,9 @@ typedef struct s_expand_data
 }	t_expand_data;
 
 void	expander(t_command *commands, char **envp);
-
+size_t	is_expandable(char *str, char *position_dollar_sign);
+size_t	get_len_place_holder(char *str);
+size_t	count_letters(char *str, char delimiter);
+size_t	check_quote_type(char *str);
+char	*get_env_value(char **envp, char *var, int var_len);
 #endif

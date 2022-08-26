@@ -14,6 +14,7 @@ OBJECTS		:=	obj/parser.o \
 				obj/tokenizer.o \
 				obj/tokenizer_utils.o \
 				obj/expander.o \
+				obj/expander_utils.o \
 				obj/echo.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
