@@ -6,7 +6,9 @@ VPATH		:=	src:\
 				src/expander: \
 				src/builtins:
 HEADERS		:=	includes/parser.h \
-				includes/tokenizer.h
+				includes/tokenizer.h \
+				includes/expander.h \
+				includes/structs.h
 MAIN		:=	obj/minishell.o
 OBJECTS		:=	obj/parser.o \
 				obj/parser_utils.o \
