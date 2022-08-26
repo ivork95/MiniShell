@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   expander.h                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ivork <ivork@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/08/26 14:02:50 by ivork         #+#    #+#                 */
+/*   Updated: 2022/08/26 14:03:17 by ivork         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
@@ -8,14 +20,14 @@
 
 typedef struct s_expand_data
 {
-	size_t len;
-	char *pos_dollar_sign;
-	char *env_str;
-	char *env_name;
-	char *first_part_str;
-	char *last_part_str;
-	char *joined_str;
-	char *new_str;
+	size_t	len;
+	char	*pos_dollar_sign;
+	char	*env_str;
+	char	*env_name;
+	char	*first_part_str;
+	char	*last_part_str;
+	char	*joined_str;
+	char	*new_str;
 }	t_expand_data;
 
 void	expander(t_command *commands, char **envp);
