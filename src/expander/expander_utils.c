@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:36:45 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 12:49:03 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/26 13:01:23 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char	*get_env_value(char **envp, char *var, int var_len)
 {
 	char	*env_var;
 	char	*empty;
-	char	*full_path;
 
 	empty = "\0";
 	while (*envp)
@@ -77,7 +76,6 @@ char	*get_env_value(char **envp, char *var, int var_len)
 size_t	is_expandable(char *str, char *position_dollar_sign)
 {
 	bool	expandable;
-	size_t	i;
 
 	if (!position_dollar_sign)
 		return (false);
