@@ -19,14 +19,16 @@ Test(builtin_echo, simple, .init=redirect_all_std)
 {
     t_command *commands;
     t_token *tokens;
+	t_env_var *head;
+
     char *input;
     char *expect= "hello world\n";
-
     input = "echo hello world";
     tokens = tokenizer(input);
     commands = parser(tokens);
     expander(commands, environ);
-    echo_builtin(commands);
+	head = environ_to_linked_list_recursive(head, environ);
+    echo_builtin(commands, NULL);
 
     cr_assert_stdout_eq_str(expect);
 }
@@ -42,7 +44,7 @@ Test(builtin_echo, empty, .init=redirect_all_std)
     tokens = tokenizer(input);
     commands = parser(tokens);
     expander(commands, environ);
-    echo_builtin(commands);
+    echo_builtin(commands, NULL);
 
     cr_assert_stdout_eq_str(expect);
 }
@@ -58,7 +60,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
     tokens = tokenizer(input);
     commands = parser(tokens);
     expander(commands, environ);
-    echo_builtin(commands);
+    echo_builtin(commands, NULL);
 
     cr_assert_stdout_eq_str(expect);
 }
@@ -74,7 +76,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
 //     expander(commands, environ);
-//     echo_builtin(commands);
+//     echo_builtin(commands, NULL);
 // 	// int outfile = open("../../outfile.txt", O_RDONLY);
 // 	FILE *fp;
 // 	printf("test!!!!!!!!!\n");
@@ -95,7 +97,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
 //     expander(commands, environ);
-//     echo_builtin(commands);
+//     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
 // }
@@ -111,7 +113,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
 //     expander(commands, environ);
-//     echo_builtin(commands);
+//     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
 // }
@@ -127,7 +129,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
 //     expander(commands, environ);
-//     echo_builtin(commands);
+//     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
 // }

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 12:52:13 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/26 18:34:52 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include "../includes/parser.h"
 #include "../includes/expander.h"
+#include "../includes/builtins.h"
 
 void	print_commands(t_command *cmds)
 {
@@ -97,30 +98,49 @@ char	*get_path(char **arguments, char *cmd)
 	return (full_path);
 }
 
-void	execute_command(t_command *cmd, char **envp)
+void	execute_command(t_command *cmd, t_env_var **head)
 {
-	char	*path;
+	size_t i;
 
-	path = get_path(envp, cmd->cmd);
-	printf("path = %s\n", path);
-	execve(path, cmd->args, envp);
+	i = 0;
+	while (lookup_table[i].builtin_name)
+	{
+		if (!ft_strncmp(cmd->cmd, lookup_table[i].builtin_name, ft_strlen(cmd->cmd)))	
+			lookup_table[i].function(cmd, head);
+		i++;
+	}
+}
+
+void	print_env(t_env_var *head)
+{
+	while (head != NULL)
+	{
+		ft_putstr_fd(head->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(head->value, 1);
+		head = head->next;
+	}
 }
 
 int	main(int argc, char **const argv, char **envp)
 {
 	t_command	*cmds;
 	t_token		*tokens;
+	t_env_var	*environ;
 	char		*user_input;
 
+	environ = environ_to_linked_list_recursive(environ, envp);
 	user_input = readline(">");
 	tokens = tokenizer(user_input);
-	print_tokens(tokens);
+	// print_tokens(tokens);
 	cmds = parser(tokens);
 	expander(cmds, envp);
-	print_commands(cmds);
+	// print_commands(cmds);
 	// free(user_input);
 	// free_tokens(tokens);
 	// free_commands(cmds);
-	// execute_command(cmds, envp);
+	print_env(environ);
+	execute_command(cmds, &environ);
+	print_env(environ);
 	return (0);
 }

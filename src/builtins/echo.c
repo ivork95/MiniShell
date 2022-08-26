@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/18 15:28:26 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/26 18:52:56 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,13 @@ void	duplicate_stdout(t_file *files)
 	}
 }
 
-void	echo_builtin(t_command *command)
+void	echo_builtin(t_command *command, t_env_var *environ)
 {
+	//should only work with option -n or no options
+	//todo create error check for options 
 	int	saved_stdout;
 
+	environ = NULL;
 	saved_stdout = dup(1);
 	if (command->files)
 		duplicate_stdout(command->files);

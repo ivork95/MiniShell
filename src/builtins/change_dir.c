@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   change_dir.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 18:54:22 by ivork         ########   odam.nl         */
+/*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
+/*   Updated: 2022/08/26 18:54:52 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "../../includes/structs.h"
+#include "../../includes/builtins.h"
+#include <unistd.h>
+#include <stdio.h>
 
-void	print_current_directory(t_command *cmd, t_env_var *environ)
+void change_directory(t_command *cmd, t_env_var *environ)
 {
-	//check for argument amounts ->> print error when to many arguments
-	char	*working_dir;
-
-	environ = NULL;
-	working_dir = getcwd(NULL, 0);
-	write(1, working_dir, strlen(working_dir));
-	write(1, "\n", 1);
-	free(working_dir);
+    char *old_pwd;
+    
+    old_pwd = getcwd(NULL, 0);
+    if (!cmd->args[1])
+    {
+        if (chdir(getenv("HOME")) == -1)
+		{
+            printf("error\n");
+			return ;
+		}
+    }
+    else if(chdir(cmd->args[1]) == -1)
+	{
+        printf("error\n");
+		return ;
+	}
+	// add_env_var(environ, "OLDPWD", old_pwd);
 }

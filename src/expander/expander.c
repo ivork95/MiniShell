@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 12:48:47 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/26 16:24:27 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	expand_args(t_command *command, char **envp)
 
 void	expander(t_command *commands, char **envp)
 {
+	//todo set t_env_var struct to 2D array
 	expand_command(commands, envp);
 	expand_args(commands, envp);
 }
