@@ -8,7 +8,8 @@ VPATH		:=	src:\
 HEADERS		:=	includes/parser.h \
 				includes/tokenizer.h \
 				includes/expander.h \
-				includes/structs.h
+				includes/structs.h \
+				includes/builtins.h
 MAIN		:=	obj/minishell.o
 OBJECTS		:=	obj/parser.o \
 				obj/parser_utils.o \
@@ -17,7 +18,10 @@ OBJECTS		:=	obj/parser.o \
 				obj/tokenizer_utils.o \
 				obj/expander.o \
 				obj/expander_utils.o \
-				obj/echo.o
+				obj/echo.o \
+				obj/pwd.o \
+				obj/env.o \
+				obj/change_dir.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
 				tests/expander_tests.c \
