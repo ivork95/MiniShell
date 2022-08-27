@@ -14,7 +14,9 @@ typedef struct s_env_var
 	struct s_env_var	*next;
 }	t_env_var;
 
-static unsigned int count_environ_vars(char **environ)
+t_env_var	*head;
+
+static unsigned int	count_environ_vars(char **environ)
 {
 	unsigned int	count;
 
@@ -27,7 +29,7 @@ static unsigned int count_environ_vars(char **environ)
 	return (count);
 }
 
-static unsigned int count_env_vars(t_env_var *head)
+static unsigned int	count_env_vars(t_env_var *head)
 {
 	unsigned int	count;
 
@@ -60,10 +62,11 @@ void	free_env_vars(t_env_var *head)
 	free(head);
 }
 
-void delete_env_var(t_env_var **head, char *key)
+void	delete_env_var(t_env_var **head, char *key)
 {
 	t_env_var	*tmp;
-	t_env_var *envp;
+	t_env_var	*envp;
+
 	tmp = NULL;
 	envp = *head;
 	while (envp)
@@ -106,7 +109,7 @@ t_env_var	*create_new_env_var(char *key, char *value)
 	return (node);
 }
 
-t_env_var *find_env_var(t_env_var *head, char *key_to_check)
+t_env_var	*find_env_var(t_env_var *head, char *key_to_check)
 {
 	while (head != NULL)
 	{
@@ -117,7 +120,7 @@ t_env_var *find_env_var(t_env_var *head, char *key_to_check)
 	return (head);
 }
 
-void add_env_var(t_env_var **head, char *key, char *value)
+void	add_env_var(t_env_var **head, char *key, char *value)
 {
 	t_env_var	*new;
 
@@ -162,16 +165,17 @@ t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ)
 	return (head);
 }
 
-Test(export, is_copied)
+void setup(void) {
+	head = environ_to_linked_list_recursive(head, environ);
+}
+
+Test(export, is_copied, .init = setup)
 {
-	t_env_var		*head;
 	unsigned int	ll_count;
 	unsigned int	actual_count;
 	unsigned int	i;
 	char			*tmp_str;
 	char			*joined_str;
-
-	head = environ_to_linked_list_recursive(head, environ);
 
 	ll_count = count_env_vars(head);
 	actual_count = count_environ_vars(environ);
@@ -190,55 +194,47 @@ Test(export, is_copied)
 	}
 }
 
-Test(export, add)
+Test(export, add, .init = setup)
 {
-	t_env_var	*head;
 	t_env_var	*new;
 	char		*key_to_add = "jon";
 
-	head = environ_to_linked_list_recursive(head, environ);
 	add_env_var(&head, key_to_add, "aegon");
 
 	// put_env_vars(head);
 	cr_assert_not_null(find_env_var(head, key_to_add));
 }
 
-Test(export, delete)
+Test(export, delete, .init = setup)
 {
-	t_env_var	*head;
 	char		*key_to_delete = "HOSTNAME";
 
-	head = environ_to_linked_list_recursive(head, environ);
 	delete_env_var(&head, key_to_delete);
 
 	// put_env_vars(head);
 	cr_assert(zero(ptr,find_env_var(head, key_to_delete)));
 }
 
-Test(export, overwrite)
+Test(export, overwrite, .init = setup)
 {
-	t_env_var	*head;
 	char		*value;
 	char		*key_to_overwrite = "HOSTNAME";
 	char		*value_to_overwrite = "KAWISH";
 
-	head = environ_to_linked_list_recursive(head, environ);
 	add_env_var(&head, key_to_overwrite,value_to_overwrite);
 	value = find_env_var(head, key_to_overwrite)->value;
 	// put_env_vars(head);
 	cr_assert(eq(str, value_to_overwrite, value));
 }
 
-Test(export, overwrite_empty_val)
+Test(export, overwrite_empty_val, .init = setup)
 {
-	t_env_var	*head;
 	char		*value;
 	char		*key_to_overwrite = "HOSTNAME";
 	char		*value_to_overwrite = "\0";
 
-	head = environ_to_linked_list_recursive(head, environ);
 	add_env_var(&head, key_to_overwrite,value_to_overwrite);
 	value = find_env_var(head, key_to_overwrite)->value;
-	put_env_vars(head);
+	// put_env_vars(head);
 	cr_assert(eq(str, value_to_overwrite, value));
 }
