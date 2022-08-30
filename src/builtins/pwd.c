@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 18:54:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/27 01:52:06 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include "../../includes/structs.h"
 
-void	print_current_directory(t_command *cmd, t_env_var *environ)
+void	print_current_directory(t_command *cmd, t_env_var **environ)
 {
 	//check for argument amounts ->> print error when to many arguments
 	char	*working_dir;

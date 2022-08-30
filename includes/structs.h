@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 13:27:42 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 18:53:34 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/27 15:14:21 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_command
 typedef struct s_builtins
 {
 	char	*builtin_name;
-	void	(*function)(t_command *command, t_env_var *environ);
+	void	(*function)(t_command *command, t_env_var **environ);
 } t_builtins;
 
 #endif
