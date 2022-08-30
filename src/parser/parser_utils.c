@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:31:23 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 12:31:24 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/28 22:19:22 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,34 @@ void	command_add_back(t_command **head, t_command *new)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
+	}
+}
+
+void	print_commands(t_command *cmds)
+{
+	size_t	i;
+	size_t	j;
+
+	j = 0;
+	while (cmds)
+	{
+		i = 0;
+		printf("--------------------\n");
+		printf("cmds[%lu]\n", j);
+		printf("command = %s\n", cmds->cmd);
+		while (cmds->args && cmds->args[i])
+		{
+			printf("args[%lu] = %s\n", i, cmds->args[i]);
+			i++;
+		}
+		while (cmds->files)
+		{
+			printf("file operattor = %d\nfile_name  = %s\n",
+				cmds->files->type, cmds->files->file_name);
+			cmds->files = cmds->files->next;
+		}
+		printf("--------------------\n");
+		cmds = cmds->next;
+		j++;
 	}
 }
