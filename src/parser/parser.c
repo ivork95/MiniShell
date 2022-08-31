@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/30 23:29:50 by kawish        ########   odam.nl         */
+/*   Updated: 2022/08/31 18:07:51 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	set_command(t_token **token, t_command *command)
 		exit(EXIT_FAILURE);
 	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
 	i = count_words(*token);
-	command->args = calloc(i + 1, sizeof(char *));
+	command->args = ft_calloc(i + 1, sizeof(char *));
 	if (command->args == NULL)
 		exit(EXIT_FAILURE);
 	command->args[i] = NULL;

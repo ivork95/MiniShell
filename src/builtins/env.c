@@ -1,114 +1,71 @@
-#include "../../includes/structs.h"
-#include "../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   env.c                                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: kawish <kawish@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
+/*   Updated: 2022/08/31 17:43:55 by kawish        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/builtins.h"
 
 void	free_env_vars(t_env_var *head)
 {
-	if (head->next)
-		free_env_vars(head->next);
-	free(head->key);
-	free(head->value);
-	free(head);
-}
-
-
-void delete_env_var(t_env_var **head, char *key)
-{
 	t_env_var	*tmp;
-	t_env_var *envp;
-	tmp = NULL;
-	envp = *head;
-	while (envp)
+
+	while (head != NULL)
 	{
-		if (!ft_strncmp(key, envp->key, ft_strlen(key)))
-		{
-			if (!tmp)
-			{
-				tmp = *head;
-				*head = envp->next;
-			}
-			else
-			{
-				tmp->next = envp->next;
-				tmp = envp;
-			}
-			tmp->next = NULL;
-			free_env_vars(tmp);
-			return ;
-		}
-		tmp = envp;
-		envp = envp->next;
+		tmp = head;
+		head = head->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
 	}
 }
 
-t_env_var *find_env_var(t_env_var *head, char *key_to_check)
+void	put_env_vars(t_env_var *head)
 {
 	while (head != NULL)
 	{
-		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(head->key))))
-			return (head);
+		ft_putstr_fd(head->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(head->value, 1);
 		head = head->next;
 	}
-	return (head);
 }
 
-t_env_var	*create_new_env_var(char *key, char *value)
+void	put_env_vars_declare(t_env_var *head)
 {
-	t_env_var	*node;
-
-	node = malloc(sizeof(*node));
-	if (node == NULL)
-		exit(EXIT_FAILURE);
-	node->key = ft_strdup(key);
-	if (node->key == NULL)
-		exit(EXIT_FAILURE);
-	node->value = ft_strdup(value);
-	if (node->value == NULL)
-		exit(EXIT_FAILURE);
-	node->next = NULL;
-	return (node);
-}
-
-void add_env_var(t_env_var **head, char *key, char *value)
-{
-	t_env_var	*new;
-
-	if (find_env_var(*head, key))
-		delete_env_var(head, key);
-	new = create_new_env_var(key, value);
-	new->next = *head;
-	*head = new;
-}
-
-void	assign_env_key_value(t_env_var *head, char *env_var)
-{
-	char		*ptr;
-	size_t		len_val;
-	ptrdiff_t	len_key;
-
-	ptr = ft_strchr(env_var, '=');
-	len_key = (ptr - env_var) + 1;
-	head->key = malloc(sizeof(*(head->key)) * len_key);
-	if (head->key == NULL)
-		exit(EXIT_FAILURE);
-	ft_strlcpy(head->key, env_var, len_key);
-	ptr = ptr + 1;
-	len_val = ft_strlen(ptr) + 1;
-	head->value = malloc(sizeof(*(head->value)) * len_val);
-	if (head->value == NULL)
-		exit(EXIT_FAILURE);
-	ft_strlcpy(head->value, ptr, len_val);
+	while (head != NULL)
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(head->key, 1);
+		ft_putstr_fd("=\"", 1);
+		ft_putstr_fd(head->value, 1);
+		ft_putendl_fd("\"", 1);
+		head = head->next;
+	}
 }
 
 t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ)
 {
+	char	*ptr;
+
 	head = NULL;
 	if (*environ != NULL)
 	{
-		head = malloc(sizeof(*head));
-		if (head == NULL)
-			exit(EXIT_FAILURE);
-		assign_env_key_value(head, *environ);
-		head->next = environ_to_linked_list_recursive(head->next, environ + 1);
+		ptr = ft_strchr(*environ, '=');
+		if (ptr == NULL)
+			head = environ_to_linked_list_recursive(head->next, environ + 1);
+		else
+		{
+			head = assign_env_key_value(*environ, ptr);
+			head->next = environ_to_linked_list_recursive(head->next,
+					environ + 1);
+		}
 	}
 	return (head);
 }

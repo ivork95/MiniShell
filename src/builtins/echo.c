@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/27 01:53:58 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/31 17:38:09 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-void	write_args(t_command *command)
+static void	write_args(t_command *command)
 {
 	int	new_line;
 	int	i;
@@ -37,7 +37,7 @@ void	write_args(t_command *command)
 		write(1, "\n", 1);
 }
 
-void	duplicate_stdout(t_file *files)
+static void	duplicate_stdout(t_file *files)
 {
 	int	fd;
 

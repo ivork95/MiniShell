@@ -6,11 +6,10 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/27 01:58:02 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/31 17:50:31 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/structs.h"
 #include "../../includes/builtins.h"
 #include <unistd.h>
 #include <stdio.h>
@@ -33,5 +32,5 @@ void change_directory(t_command *cmd, t_env_var **environ)
         printf("error\n");
 		return ;
 	}
-	add_env_var(environ, "OLDPWD", old_pwd);
+	add_env_var(environ, old_pwd);
 }

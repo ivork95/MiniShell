@@ -21,7 +21,9 @@ OBJECTS		:=	obj/parser.o \
 				obj/echo.o \
 				obj/pwd.o \
 				obj/env.o \
-				obj/change_dir.o
+				obj/change_dir.o \
+				obj/export.o \
+				obj/unset.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
 				tests/expander_tests.c \
