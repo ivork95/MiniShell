@@ -10,11 +10,6 @@
 extern char	**environ;
 t_env_var	*head;
 
-void	deze_functie_word_niet_eens_gecalled_zn_moer(void)
-{
-	ft_strlcpy(NULL, NULL, 0); // deze functie is heilig ah mattie
-}
-
 static unsigned int	count_environ_vars(char **environ)
 {
 	unsigned int	count;
@@ -54,11 +49,16 @@ static t_env_var	*find_env_var(t_env_var *head, char *key_to_check)
 
 void		free_env_vars(t_env_var *head)
 {
-	if (head->next)
-		free_env_vars(head->next);
-	free(head->key);
-	free(head->value);
-	free(head);
+	t_env_var	*tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+	}
 }
 
 void		delete_env_var(t_env_var **head, char *key)
@@ -149,6 +149,7 @@ void		add_env_var(t_env_var **head, char *env_var)
 	else
 	{
 		new = assign_env_key_value(env_var, ptr);
+		delete_env_var(head, new->key);
 		add_front(head, new);
 	}
 }
@@ -177,7 +178,32 @@ void	setup(void)
 	head = environ_to_linked_list_recursive(head, environ);
 }
 
-Test(export, nieuw, .init = setup)
+Test(export, clone_env_ll, .init = setup)
+{
+	unsigned int	ll_count;
+	unsigned int	actual_count;
+	unsigned int	i;
+	char			*tmp_str;
+	char			*joined_str;
+
+	ll_count = count_env_vars(head);
+	actual_count = count_environ_vars(environ);
+	cr_assert(eq(int, actual_count, ll_count));
+
+	i = 0;
+	while (i < actual_count)
+	{
+		tmp_str = ft_strjoin(head->key, "=");
+		joined_str = ft_strjoin(tmp_str, head->value);
+		free(tmp_str);
+		cr_assert_not(ft_strncmp(environ[i], joined_str, ft_strlen(environ[i])));
+		free(joined_str);
+		head = head->next;
+		i++;
+	}
+}
+
+Test(export, simple_export, .init = setup)
 {
 	char		*input_str = "export jon=aegon";
 	t_token		*tokens = tokenizer(input_str);
@@ -187,87 +213,50 @@ Test(export, nieuw, .init = setup)
 	// put_env_vars(head);
 
 	cr_assert_not_null(find_env_var(head, "jon"));
-
-	free_env_vars(head);
 }
 
-// Test(export, is_copied, .init = setup)
-// {
-// 	unsigned int	ll_count;
-// 	unsigned int	actual_count;
-// 	unsigned int	i;
-// 	char			*tmp_str;
-// 	char			*joined_str;
+Test(export, delete, .init = setup)
+{
+	char		*input_str = "unset HOSTNAME";
+	t_token		*tokens = tokenizer(input_str);
+	t_command	*cmds = parser(tokens);
 
-// 	ll_count = count_env_vars(head);
-// 	actual_count = count_environ_vars(environ);
-// 	cr_assert(eq(int, actual_count, ll_count));
+	delete_env_var(&head, cmds->args[1]);
+	// put_env_vars(head);
 
-// 	i = 0;
-// 	while (i < actual_count)
-// 	{
-// 		tmp_str = ft_strjoin(head->key, "=");
-// 		joined_str = ft_strjoin(tmp_str, head->value);
-// 		free(tmp_str);
-// 		cr_assert_not(ft_strncmp(environ[i], joined_str, ft_strlen(environ[i])));
-// 		free(joined_str);
-// 		head = head->next;
-// 		i++;
-// 	}
-// }
+	cr_assert(zero(ptr,find_env_var(head, cmds->args[1])));
+}
 
-// Test(export, add, .init = setup)
-// {
-// 	t_env_var	*new;
-// 	char		*key_to_add = "jon";
+Test(export, overwrite, .init = setup)
+{
+	char		*input_str = "export PWD=KAWISH";
+	t_token		*tokens = tokenizer(input_str);
+	t_command	*cmds = parser(tokens);
 
-// 	add_env_var(&head, key_to_add, "aegon");
+	char *value = find_env_var(head, "PWD")->value;
+	cr_assert(eq(str, "/pwd/tests", value));
 
-// 	put_env_vars(head);
-// 	cr_assert_not_null(find_env_var(head, key_to_add));
-// }
+	add_env_var(&head, cmds->args[1]);
+	value = find_env_var(head, "PWD")->value;
+	// put_env_vars(head);
 
-// Test(export, delete, .init = setup)
-// {
-// 	char		*key_to_delete = "HOSTNAME";
+	cr_assert(eq(str, "KAWISH", value));
+	// voeg assertion toe die checkt hoeveel entries er
+	// met deze key in zitten.
+}
 
-// 	delete_env_var(&head, key_to_delete);
+Test(export, overwrite_empty_val, .init = setup)
+{
+	char		*input_str = "export PWD=";
+	t_token		*tokens = tokenizer(input_str);
+	t_command	*cmds = parser(tokens);
 
-// 	// put_env_vars(head);
-// 	cr_assert(zero(ptr,find_env_var(head, key_to_delete)));
-// }
+	add_env_var(&head, cmds->args[1]);
+	char *value = find_env_var(head, "PWD")->value;
+	put_env_vars(head);
 
-// Test(export, overwrite, .init = setup)
-// {
-// 	char		*value;
-// 	char		*key_to_overwrite = "PWD";
-// 	char		*value_to_overwrite = "KAWISH";
-
-// 	value = find_env_var(head, key_to_overwrite)->value;
-// 	cr_assert(eq(str, "/pwd/tests", value));
-
-// 	add_env_var(&head, key_to_overwrite, value_to_overwrite);
-// 	value = find_env_var(head, key_to_overwrite)->value;
-// 	// put_env_vars(head);
-// 	cr_assert(eq(str, value_to_overwrite, value));
-// }
-
-// Test(export, overwrite_empty_val, .init = setup)
-// {
-// 	char		*value;
-// 	char		*key_to_overwrite = "HOSTNAME";
-// 	char		*value_to_overwrite = "\0";
-
-// 	add_env_var(&head, key_to_overwrite,value_to_overwrite);
-// 	value = find_env_var(head, key_to_overwrite)->value;
-// 	// put_env_vars(head);
-// 	cr_assert(eq(str, value_to_overwrite, value));
-// }
-
-// Test(export, export_without_args, .init = setup)
-// {
-// 	put_env_vars_declare(head);
-// }
+	cr_assert(eq(str, "\0", value));
+}
 
 /*
 gcc \
@@ -278,4 +267,15 @@ export_tests.c \
 ../src/tokenizer/tokenizer.c \
 ../src/tokenizer/tokenizer_utils.c \
 -lcriterion
+*/
+
+/*
+gcc \
+export_tests.c \
+-lcriterion \
+../src/parser/parser.c \
+../src/parser/parser_utils.c \
+../src/tokenizer/tokenizer.c \
+../src/tokenizer/tokenizer_utils.c \
+-L../src/libft -l:libft.a
 */
