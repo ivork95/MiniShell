@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/08/31 17:44:03 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/01 15:10:14 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	add_env_var(t_env_var **head, char *env_var)
 	else
 	{
 		new = assign_env_key_value(env_var, ptr);
-		delete_env_var(head, new->key);
+		search_and_destroy(head, new->key);
 		add_front(head, new);
 	}
 }
