@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   minishell.c                                        :+:    :+:            */
+/*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/31 00:23:47 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/01 13:49:26 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,10 @@ int	main(int argc, char **const argv, char **envp)
 	// free(user_input);
 	// free_tokens(tokens);
 	// free_commands(cmds);
-	print_env(environ);
+	// print_env(environ);
+	// printf("\n");
 	execute_command(cmds, &environ);
-	print_env(environ);
+	// printf("\n");
+	// print_env(environ);
 	return (0);
 }

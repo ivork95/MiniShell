@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/08/31 17:43:55 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/01 13:50:37 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void	free_env_vars(t_env_var *head)
 	}
 }
 
-void	put_env_vars(t_env_var *head)
+void	env(t_command *command, t_env_var **vars)
 {
-	while (head != NULL)
+	while ((*vars) != NULL)
 	{
-		ft_putstr_fd(head->key, 1);
+		ft_putstr_fd((*vars)->key, 1);
 		ft_putchar_fd('=', 1);
-		ft_putendl_fd(head->value, 1);
-		head = head->next;
+		ft_putendl_fd((*vars)->value, 1);
+		*vars = (*vars)->next;
 	}
 }
 
