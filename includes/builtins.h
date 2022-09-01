@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 14:26:55 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/01 15:24:42 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void		add_env_var(t_env_var **head, char *env_var);
 void	export_builtin(t_command *command, t_env_var **environ);
 
 /* unset.c */
-void		delete_env_var(t_env_var **head, char *key);
+void		search_and_destroy(t_env_var **head, char *key);
+void		unset_builtin(t_command *command, t_env_var **environ);
 
 /* echo.c */
 void		echo_builtin(t_command *command, t_env_var **vars);
