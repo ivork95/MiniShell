@@ -6,11 +6,22 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/01 13:50:37 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/01 15:36:29 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
+
+t_env_var	*find_env_var(t_env_var *head, char *key_to_check)
+{
+	while (head != NULL)
+	{
+		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(head->key))))
+			return (head);
+		head = head->next;
+	}
+	return (head);
+}
 
 void	free_env_vars(t_env_var *head)
 {
