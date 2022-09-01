@@ -1,5 +1,4 @@
 NAME		:=	minishell
-
 VPATH		:=	src:\
 				src/parser:\
 				src/tokenizer:\
@@ -28,10 +27,8 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
 				tests/expander_tests.c \
 				tests/echo_tests.c
-
 CFLAGS		?=	-Wall -Wextra # -Werror
 LDFLAGS		?=	-lreadline
-
 LIBFT		:=	src/libft
 
 all : libft $(NAME)

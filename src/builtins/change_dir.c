@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/31 17:50:31 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/01 11:46:32 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,29 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void change_directory(t_command *cmd, t_env_var **environ)
+void	change_directory(t_command *cmd, t_env_var **environ)
 {
-    char *old_pwd;
-    
-    old_pwd = getcwd(NULL, 0);
-    if (!cmd->args[1])
-    {
-        if (chdir(getenv("HOME")) == -1)
+	char	*old_pwd;
+	char	*env_var;
+
+	old_pwd = getcwd(NULL, 0);
+	if (!cmd->args[1])
+	{
+		if (chdir(getenv("HOME")) == -1)
 		{
-            printf("error\n");
+			printf("error\n");
 			return ;
 		}
-    }
-    else if(chdir(cmd->args[1]) == -1)
+	}
+	else if (chdir(cmd->args[1]) == -1)
 	{
-        printf("error\n");
+		printf("error\n");
 		return ;
 	}
-	add_env_var(environ, old_pwd);
+	env_var = ft_strjoin("OLDPWD=", old_pwd);
+	free(old_pwd);
+	if (env_var == NULL)
+		exit(EXIT_FAILURE);
+	add_env_var(environ, env_var);
+	free(env_var);
 }

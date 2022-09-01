@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/31 18:07:51 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/01 10:27:04 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	set_files(t_token **token, t_command *command)
 	t_file	*tmp;
 
 	file = malloc(sizeof(t_file));
+	if (file == NULL)
+		exit(EXIT_FAILURE);
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
 	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
