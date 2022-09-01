@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 16:17:31 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/01 18:00:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static void	change_env_old_pwd(char *old_pwd, t_env_var *environ)
+static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 {
 	char	*env_var;
 
@@ -26,7 +26,7 @@ static void	change_env_old_pwd(char *old_pwd, t_env_var *environ)
 	free(env_var);
 }
 
-static void	change_env_pwd(t_env_var *environ)
+static void	change_env_pwd(t_env_var **environ)
 {
 	char	*env_var;
 	char	*pwd;
@@ -40,23 +40,23 @@ static void	change_env_pwd(t_env_var *environ)
 	free(env_var);
 }
 
-void	change_directory(t_command *command, t_env_var *environ)
+void	change_directory(t_command *command, t_env_var **environ)
 {
 	char		*old_pwd;
 	t_env_var	*home;
 
 	old_pwd = getcwd(NULL, 0);
-	if (command->args[1] != NULL)
+	if (command->args[1] == NULL)
 	{
-		home = find_env_var(environ, "HOME");
+		home = find_env_var(*environ, "HOME");
 		if (home == NULL)
 		{
-			ft_putendl_fd("error\n", 2);
+			ft_putendl_fd("error home\n", 2);
 			return ;
 		}
 		else if (chdir(home->value) == -1)
 		{
-			ft_putendl_fd("error\n", 2);
+			ft_putendl_fd("error value\n", 2);
 			return ;
 		}
 	}
@@ -81,5 +81,5 @@ void	cd_builtin(t_command *cmd, t_env_var **environ)
 		ft_putendl_fd("To many args\n", 2);
 		return ;
 	}
-	change_directory(cmd, *environ);
+	change_directory(cmd, environ);
 }
