@@ -9,5 +9,9 @@ RUN apt-get update && \
                     valgrind \
                     libreadline-dev \
                     strace \
+                    lldb \
                     -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /usr/lib/local/lib/python3.10 && \
+    ln -s /usr/lib/llvm-14/lib/python3.10/dist-packages /usr/lib/local/lib/python3.10/dist-packages
