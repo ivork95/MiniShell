@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 11:46:32 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/01 12:01:23 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	change_directory(t_command *cmd, t_env_var **environ)
 	{
 		if (chdir(getenv("HOME")) == -1)
 		{
-			printf("error\n");
+			ft_putendl_fd("error\n", 2);
 			return ;
 		}
 	}
 	else if (chdir(cmd->args[1]) == -1)
 	{
-		printf("error\n");
+		ft_putendl_fd("error\n", 2);
 		return ;
 	}
 	env_var = ft_strjoin("OLDPWD=", old_pwd);
