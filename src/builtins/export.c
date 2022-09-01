@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/01 13:08:55 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/01 14:29:08 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,22 @@ void	add_env_var(t_env_var **head, char *env_var)
 		new = assign_env_key_value(env_var, ptr);
 		delete_env_var(head, new->key);
 		add_front(head, new);
+	}
+}
+
+void	export_builtin(t_command *command, t_env_var **environ)
+{
+	size_t	i;
+
+	i = 0;
+	while (command->args[i] != NULL)
+		i++;
+	if (i == 1)
+		put_env_vars_declare(*environ);
+	i = 1;
+	while (command->args[i] != NULL)
+	{
+		add_env_var(environ, command->args[i]);
+		i++;
 	}
 }

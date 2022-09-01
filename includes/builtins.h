@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 13:50:40 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/01 14:26:55 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ);
 /* export.c */
 t_env_var	*assign_env_key_value(char *env_var, char *ptr);
 void		add_env_var(t_env_var **head, char *env_var);
+void	export_builtin(t_command *command, t_env_var **environ);
 
 /* unset.c */
 void		delete_env_var(t_env_var **head, char *key);
@@ -47,7 +48,7 @@ static t_builtins	lookup_table[] = {
 {"pwd", &print_current_directory},
 {"cd", &change_directory},
 {"env", &env},
-	// {"export", &echo_builtin},
+{"export", &export_builtin},
 	// {"unset", &echo_builtin},
 {NULL, NULL}
 };
