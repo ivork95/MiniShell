@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 16:41:10 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 18:00:03 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,41 +41,11 @@ char	*remove_quotes(char *str, char delimiter)
 	return (new_str);
 }
 
-t_expand_data null_data(void)
-{
-	t_expand_data	data;
-
-	data.env_name = NULL;
-	data.env_str = NULL;
-	data.first_part_str = NULL;
-	data.joined_str = NULL;
-	data.last_part_str = NULL;
-	data.pos_dollar_sign = NULL;
-	return (data);
-}
-
-t_expand_data set_data(t_expand_data data, char *str)
-{
-	data.len = get_len_place_holder(data.pos_dollar_sign + 1);
-	data.env_name = ft_substr(data.pos_dollar_sign, 1, data.len);
-	data.first_part_str = ft_substr(str, 0, data.pos_dollar_sign - str);
-	data.last_part_str = ft_substr(data.pos_dollar_sign, data.len + 1, \
-	ft_strlen(data.pos_dollar_sign));
-	return (data);
-}
-
-void	free_expand_data(t_expand_data data)
-{
-	free(data.env_name);
-	free(data.first_part_str);
-	free(data.joined_str);
-	free(data.last_part_str);	
-}
 char	*expand_envp(char *str, t_env_var *envp)
 {
 	t_expand_data	data;
 
-	data = null_data();
+	null_data(&data);
 	data.pos_dollar_sign = ft_strchr(str, '$');
 	if (data.pos_dollar_sign)
 	{
@@ -93,7 +63,7 @@ char	*expand_envp(char *str, t_env_var *envp)
 			data.new_str = ft_strjoin(data.env_str, data.last_part_str);
 		else
 			data.new_str = ft_strdup(data.env_str);
-		free_expand_data(data);
+		free_expand_data(&data);
 		return (data.new_str);
 	}
 	return (str);
