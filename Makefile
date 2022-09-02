@@ -27,7 +27,7 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
 				tests/expander_tests.c \
 				tests/echo_tests.c
-CFLAGS		?=	-Wall -Wextra # -Werror
+CFLAGS		?=	-Wall -Wextra -g # -Werror
 LDFLAGS		?=	-lreadline
 LIBFT		:=	src/libft
 
@@ -36,11 +36,11 @@ all : libft $(NAME)
 libft:
 	make -C $(LIBFT)
 
-$(NAME) : $(OBJECTS)
+$(NAME) : $(MAIN) $(OBJECTS)
 	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS)
 
 tests : all
-	$(CC) -o run_tests $(TEST_FILES) $(OBJECTS) $(LIBFT)/libft.a $(LDFLAGS) -lcriterion
+	$(CC) -o run_tests $(TEST_FILES) -lcriterion $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS) 
 
 obj/%.o : %.c $(HEADERS)
 	@mkdir -p $(dir $@)

@@ -8,26 +8,26 @@
 #include <fcntl.h>
 
 extern char **environ;
+t_env_var	*head2;
 
 void redirect_all_std(void)
 {
     cr_redirect_stdout();
     cr_redirect_stderr();
+	head2 = environ_to_linked_list_recursive(head2, environ);
 }
 
 Test(builtin_echo, simple, .init=redirect_all_std)
 {
     t_command *commands;
     t_token *tokens;
-	t_env_var *head;
 
     char *input;
     char *expect= "hello world\n";
     input = "echo hello world";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    expander(commands, environ);
-	head = environ_to_linked_list_recursive(head, environ);
+    expander(commands, head2);
     echo_builtin(commands, NULL);
 
     cr_assert_stdout_eq_str(expect);
@@ -43,7 +43,7 @@ Test(builtin_echo, empty, .init=redirect_all_std)
     input = "echo";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    expander(commands, environ);
+    expander(commands, head2);
     echo_builtin(commands, NULL);
 
     cr_assert_stdout_eq_str(expect);
@@ -59,7 +59,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
     input = "echo -n hello world";
     tokens = tokenizer(input);
     commands = parser(tokens);
-    expander(commands, environ);
+    expander(commands, head2);
     echo_builtin(commands, NULL);
 
     cr_assert_stdout_eq_str(expect);
@@ -75,7 +75,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world > outfile.txt";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, environ);
+//     expander(commands, head2);
 //     echo_builtin(commands, NULL);
 // 	// int outfile = open("../../outfile.txt", O_RDONLY);
 // 	FILE *fp;
@@ -96,7 +96,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world >> outfile";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, environ);
+//     expander(commands, head2);
 //     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
@@ -112,7 +112,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world > outfile > outfile2";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, environ);
+//     expander(commands, head2);
 //     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
@@ -128,7 +128,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world >> outfile > outfile2";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, environ);
+//     expander(commands, head2);
 //     echo_builtin(commands, NULL);
 
 //     //assert equal file contents

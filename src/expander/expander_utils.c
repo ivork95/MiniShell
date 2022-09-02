@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:36:45 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 13:01:23 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 14:52:02 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,6 @@ size_t	check_quote_type(char *str)
 		str++;
 	}
 	return (0);
-}
-
-size_t	count_letters(char *str, char delimiter)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] && str[i] != delimiter)
-		i++;
-	return (i);
 }
 
 size_t	get_len_place_holder(char *str)

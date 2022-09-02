@@ -6,7 +6,7 @@
 #    By: ivork <ivork@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/11/05 12:53:39 by ivork         #+#    #+#                  #
-#    Updated: 2022/09/01 11:55:06 by kgajadie      ########   odam.nl          #
+#    Updated: 2022/09/02 13:44:54 by ivork         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ OBJS_B	=	$(SRCS_B:.c=.o)
 LIBC	=	ar -rcs
 RM		=	rm -f
 CC		=	gcc
-FLAGS	=	-Wall -Werror -Wextra
+FLAGS	=	-Wall -Werror -Wextra -g
 INCS	=	.
 
 RELEVANT_OBJS = $(OBJS) $(OBJS_B)
