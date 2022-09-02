@@ -8,9 +8,9 @@
 #include "../includes/builtins.h"
 
 extern char	**environ;
-t_env_var	*head;
+static t_env_var	*head;
 
-void	setup(void)
+static void	setup(void)
 {
 	head = environ_to_linked_list_recursive(head, environ);
 }
@@ -25,16 +25,13 @@ Test(cd, cd_home, .init = setup)
 
 	old_pwd = getcwd(NULL, 0);
 	cd_builtin(cmds, &head);
-	printf("old_pwd = %s\n", old_pwd);
-	printf("OLDPWD = %s\n", find_env_var(head, "OLDPWD")->value);
-	printf("PWD = %s\n", find_env_var(head, "PWD")->value);
 	cr_assert(eq(str,find_env_var(head, "OLDPWD")->value, old_pwd));
 	cr_assert(eq(str,find_env_var(head, "PWD")->value, getcwd(NULL, 0)));
 }
 
-Test(cd, cd_.., .init = setup)
+Test(cd, change_directory_parent, .init = setup)
 {
-	char		*input_str = "cd";
+	char		*input_str = "cd ..";
 	t_token		*tokens = tokenizer(input_str);
 	t_command	*cmds = parser(tokens);
 	char *old_pwd;
@@ -42,9 +39,6 @@ Test(cd, cd_.., .init = setup)
 
 	old_pwd = getcwd(NULL, 0);
 	cd_builtin(cmds, &head);
-	printf("old_pwd = %s\n", old_pwd);
-	printf("OLDPWD = %s\n", find_env_var(head, "OLDPWD")->value);
-	printf("PWD = %s\n", find_env_var(head, "PWD")->value);
 	cr_assert(eq(str,find_env_var(head, "OLDPWD")->value, old_pwd));
 	cr_assert(eq(str,find_env_var(head, "PWD")->value, getcwd(NULL, 0)));
 }

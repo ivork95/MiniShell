@@ -24,9 +24,12 @@ OBJECTS		:=	obj/parser.o \
 				obj/export.o \
 				obj/unset.o
 TEST_FILES	:=	tests/parser_tests.c \
-				tests/tokenizer_tests.c \
+				tests/cd_tests.c \
+				tests/echo_tests.c \
 				tests/expander_tests.c \
-				tests/echo_tests.c
+				tests/export_tests.c \
+				tests/tokenizer_tests.c \
+				tests/unset_tests.c
 CFLAGS		?=	-Wall -Wextra -g # -Werror
 LDFLAGS		?=	-lreadline
 LIBFT		:=	src/libft

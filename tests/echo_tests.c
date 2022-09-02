@@ -8,64 +8,69 @@
 #include <fcntl.h>
 
 extern char **environ;
-t_env_var	*head2;
+static t_env_var	*head;
 
-void redirect_all_std(void)
+static void redirect_all_std(void)
 {
-    cr_redirect_stdout();
-    cr_redirect_stderr();
-	head2 = environ_to_linked_list_recursive(head2, environ);
+	cr_redirect_stdout();
+	cr_redirect_stderr();
 }
 
-Test(builtin_echo, simple, .init=redirect_all_std)
+static void	setup(void)
 {
-    t_command *commands;
-    t_token *tokens;
-
-    char *input;
-    char *expect= "hello world\n";
-    input = "echo hello world";
-    tokens = tokenizer(input);
-    commands = parser(tokens);
-    expander(commands, head2);
-    echo_builtin(commands, NULL);
-
-    cr_assert_stdout_eq_str(expect);
+	redirect_all_std();
+	head = environ_to_linked_list_recursive(head, environ);
 }
 
-Test(builtin_echo, empty, .init=redirect_all_std)
+Test(builtin_echo, simple, .init=setup)
 {
-    t_command *commands;
-    t_token *tokens;
-    char *input;
-    char *expect= "\n";
+	t_command *commands;
+	t_token *tokens;
 
-    input = "echo";
-    tokens = tokenizer(input);
-    commands = parser(tokens);
-    expander(commands, head2);
-    echo_builtin(commands, NULL);
+	char *input;
+	char *expect= "hello world\n";
+	input = "echo hello world";
+	tokens = tokenizer(input);
+	commands = parser(tokens);
+	expander(commands, head);
+	echo_builtin(commands, NULL);
 
-    cr_assert_stdout_eq_str(expect);
+	cr_assert_stdout_eq_str(expect);
 }
 
-Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
+Test(builtin_echo, empty, .init=setup)
 {
-    t_command *commands;
-    t_token *tokens;
-    char *input;
-    char *expect= "hello world";
+	t_command *commands;
+	t_token *tokens;
+	char *input;
+	char *expect= "\n";
 
-    input = "echo -n hello world";
-    tokens = tokenizer(input);
-    commands = parser(tokens);
-    expander(commands, head2);
-    echo_builtin(commands, NULL);
+	input = "echo";
+	tokens = tokenizer(input);
+	commands = parser(tokens);
+	expander(commands, head);
+	echo_builtin(commands, NULL);
 
-    cr_assert_stdout_eq_str(expect);
+	cr_assert_stdout_eq_str(expect);
 }
 
-// Test(builtin_echo, echo_to_outfile, .init=redirect_all_std)
+Test(builtin_echo, simple_no_new_line, .init=setup)
+{
+	t_command *commands;
+	t_token *tokens;
+	char *input;
+	char *expect= "hello world";
+
+	input = "echo -n hello world";
+	tokens = tokenizer(input);
+	commands = parser(tokens);
+	expander(commands, head);
+	echo_builtin(commands, NULL);
+
+	cr_assert_stdout_eq_str(expect);
+}
+
+// Test(builtin_echo, echo_to_outfile, .init=setup)
 // {
 //     t_command *commands;
 //     t_token *tokens;
@@ -75,7 +80,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world > outfile.txt";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, head2);
+//     expander(commands, head);
 //     echo_builtin(commands, NULL);
 // 	// int outfile = open("../../outfile.txt", O_RDONLY);
 // 	FILE *fp;
@@ -86,7 +91,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     //assert equal file contents
 // }
 
-// Test(builtin_echo, echo_append_outfile, .init=redirect_all_std)
+// Test(builtin_echo, echo_append_outfile, .init=setup)
 // {
 //     t_command *commands;
 //     t_token *tokens;
@@ -96,13 +101,13 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world >> outfile";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, head2);
+//     expander(commands, head);
 //     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
 // }
 
-// Test(builtin_echo, echo_double_redirect, .init=redirect_all_std)
+// Test(builtin_echo, echo_double_redirect, .init=setup)
 // {
 //     t_command *commands;
 //     t_token *tokens;
@@ -112,13 +117,13 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world > outfile > outfile2";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, head2);
+//     expander(commands, head);
 //     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
 // }
 
-// Test(builtin_echo, echo_append_and_redirect_out, .init=redirect_all_std)
+// Test(builtin_echo, echo_append_and_redirect_out, .init=setup)
 // {
 //     t_command *commands;
 //     t_token *tokens;
@@ -128,7 +133,7 @@ Test(builtin_echo, simple_no_new_line, .init=redirect_all_std)
 //     input = "echo hello world >> outfile > outfile2";
 //     tokens = tokenizer(input);
 //     commands = parser(tokens);
-//     expander(commands, head2);
+//     expander(commands, head);
 //     echo_builtin(commands, NULL);
 
 //     //assert equal file contents
