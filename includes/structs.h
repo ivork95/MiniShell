@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 13:27:42 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/27 15:14:21 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 16:38:40 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,18 @@ typedef struct s_builtins
 	char	*builtin_name;
 	void	(*function)(t_command *command, t_env_var **environ);
 } t_builtins;
+
+typedef struct s_expand_data
+{
+	size_t	len;
+	char	*pos_dollar_sign;
+	char	*env_str;
+	char	*env_name;
+	char	*first_part_str;
+	char	*last_part_str;
+	char	*joined_str;
+	char	*new_str;
+}	t_expand_data;
+
 
 #endif
