@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 16:24:09 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 16:26:42 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*expand_envp(char *str, t_env_var *envp)
 		else if (data.last_part_str[0])
 			data.new_str = ft_strjoin(data.env_str, data.last_part_str);
 		else
-			data.new_str = ft_strdup(data.env_str); // fout
+			data.new_str = ft_strdup(data.env_str);
 		free_expand_data(data);
 		return (data.new_str);
 	}
