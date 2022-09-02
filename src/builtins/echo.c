@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/31 17:38:09 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/02 11:18:06 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,26 +53,28 @@ static void	duplicate_stdout(t_file *files)
 		else if (files->type == REDIRECT_APP)
 			fd = open(files->file_name, O_WRONLY | O_CREAT | O_APPEND, 0664);
 		if (fd == -1)
-			printf("Error opening file\n");
+			ft_putendl_fd("Error: opening file", 2);
 		if (dup2(fd, STDOUT_FILENO) == -1)
-			printf("Could not duplicate fd\n");
+			ft_putendl_fd("Error: Could not duplicate fd", 2);
 		if (close(fd) == -1)
-			printf("COuld not close fd\n");
+			ft_putendl_fd("Error: could not close fd", 2);
 		files = files->next;
 	}
 }
 
-void	echo_builtin(t_command *command, t_env_var **environ)
+/*
+should only work with option -n or no options
+todo create error check for options 
+*/
+void	echo_builtin(t_command *command,
+	__attribute__ ((unused)) t_env_var **environ)
 {
-	//should only work with option -n or no options
-	//todo create error check for options 
 	int	saved_stdout;
 
-	environ = NULL;
 	saved_stdout = dup(1);
 	if (command->files)
 		duplicate_stdout(command->files);
 	write_args(command);
 	if (dup2(saved_stdout, 1) == -1)
-		printf("Error occured with restoring stdout\n");
+		ft_putendl_fd("Error occured with restoring stdout", 2);
 }

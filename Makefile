@@ -36,7 +36,7 @@ all : libft $(NAME)
 libft:
 	make -C $(LIBFT)
 
-$(NAME) : $(MAIN) $(OBJECTS)
+$(NAME) :$(MAIN) $(OBJECTS)
 	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS)
 
 tests : all
@@ -48,11 +48,12 @@ obj/%.o : %.c $(HEADERS)
 
 clean :
 	make clean -C $(LIBFT)
-	rm -f $(OBJECTS)
+	rm -rf obj
 
 fclean : clean
 	make fclean -C $(LIBFT)
 	rm -f $(NAME)
+	rm -f run_tests
 
 re : fclean all
 
