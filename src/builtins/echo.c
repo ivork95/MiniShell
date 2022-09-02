@@ -6,13 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 11:18:06 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/02 17:41:11 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/expander.h"
-#include <unistd.h>
-#include <fcntl.h>
+#include "../../includes/builtins.h"
 
 static void	write_args(t_command *command)
 {

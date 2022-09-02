@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/02 16:55:25 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/02 17:44:37 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	free_env_vars(t_env_var *head)
 
 void	env(__attribute__ ((unused)) t_command *command, t_env_var **head)
 {
-	t_env_var *vars;
-	
+	t_env_var	*vars;
+
 	vars = *head;
 	while (vars != NULL)
 	{

@@ -6,13 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 10:30:44 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/02 17:37:48 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
-#include <unistd.h>
-#include <stdio.h>
 
 static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 {

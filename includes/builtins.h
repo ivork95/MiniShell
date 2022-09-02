@@ -6,19 +6,24 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 16:49:28 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/02 17:45:08 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-/* Public libraries */
-# include <stddef.h>
-
 /* Private libraries */
 # include "structs.h"
 # include "../src/libft/libft.h"
+
+/* Public libraries */
+# include <stddef.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <string.h>
+# include <stdlib.h>
 
 /* env.c */
 void		free_env_vars(t_env_var *head);

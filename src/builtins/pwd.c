@@ -6,16 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 11:20:35 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/02 17:43:22 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "../../includes/structs.h"
-#include "../libft/libft.h"
+#include "../../includes/builtins.h"
 
 /*
 check for argument amounts ->> print error when to many arguments
