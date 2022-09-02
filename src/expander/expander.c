@@ -6,16 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 16:26:42 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 16:41:10 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdbool.h>
 #include "../../includes/expander.h"
-#include "../../includes/builtins.h"
-#include "../libft/libft.h"
-#include <string.h>
 
 char	*remove_quotes(char *str, char delimiter)
 {
@@ -30,7 +25,7 @@ char	*remove_quotes(char *str, char delimiter)
 		exit(EXIT_FAILURE);
 	i = 0;
 	j = 0;
-	last_occurence = strrchr(str, delimiter);
+	last_occurence = ft_strrchr(str, delimiter);
 	first_occurence = ft_strchr(str, delimiter);
 	while (str[i])
 	{
