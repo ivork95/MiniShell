@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 10:27:17 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/02 10:30:44 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,6 @@
 static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 {
 	char	*env_var;
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	env_var = ft_strjoin("PWD=", pwd);
-	free(pwd);
-	if (env_var == NULL)
-		exit(EXIT_FAILURE);
-	add_env_var(environ, env_var);
-	free(env_var);
-}
-
-void	change_directory(t_command *command, t_env_var **environ)
-{
-	char		*old_pwd;
-	t_env_var	*home;
 
 	env_var = ft_strjoin("OLDPWD=", old_pwd);
 	free(old_pwd);

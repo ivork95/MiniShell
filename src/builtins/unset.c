@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:24:29 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/01 15:19:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 11:20:44 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	search_and_destroy(t_env_var **head, char *key)
 
 void	unset_builtin(t_command *command, t_env_var **environ)
 {
-	char	*key;
 	size_t	i;
 
 	i = 1;

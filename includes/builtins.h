@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 16:13:46 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 16:49:28 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,20 @@ void		export_builtin(t_command *command, t_env_var **environ);
 /* unset.c */
 void		search_and_destroy(t_env_var **head, char *key);
 void		unset_builtin(t_command *command, t_env_var **environ);
+void		delete_env_var(t_env_var **head, t_env_var *prev, t_env_var *envp);
 
 /* echo.c */
 void		echo_builtin(t_command *command, t_env_var **vars);
 
 /* pwd.c */
-void		print_current_directory(t_command *cmd, t_env_var **vars);
+void		pwd_builtin(t_command *cmd, t_env_var **vars);
 
 /* change_dir.c */
 void		cd_builtin(t_command *cmd, t_env_var **vars);
 
 static t_builtins	lookup_table[] = {
 {"echo", &echo_builtin},
-{"pwd", &print_current_directory},
+{"pwd", &pwd_builtin},
 {"cd", &cd_builtin},
 {"env", &env},
 {"export", &export_builtin},
