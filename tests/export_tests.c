@@ -73,19 +73,19 @@ Test(export, simple_export, .init = setup)
 	t_token		*tokens = tokenizer(input_str);
 	t_command	*cmds = parser(tokens);
 
-	add_env_var(&head, cmds->args[1]);
+	export_builtin(cmds, &head);
 	// put_env_vars(head);
 
 	cr_assert_not_null(find_env_var(head, "jon"));
 }
 
-Test(export, delete, .init = setup)
+Test(unset, delete, .init = setup)
 {
 	char		*input_str = "unset HOSTNAME";
 	t_token		*tokens = tokenizer(input_str);
 	t_command	*cmds = parser(tokens);
 
-	search_and_destroy(&head, cmds->args[1]);
+	unset_builtin(cmds, &head);
 	// put_env_vars(head);
 
 	cr_assert(zero(ptr,find_env_var(head, cmds->args[1])));
@@ -100,7 +100,7 @@ Test(export, overwrite, .init = setup)
 	char *value = find_env_var(head, "PWD")->value;
 	cr_assert(eq(str, "/pwd/tests", value));
 
-	add_env_var(&head, cmds->args[1]);
+	export_builtin(cmds, &head);
 	value = find_env_var(head, "PWD")->value;
 	// put_env_vars(head);
 
@@ -115,7 +115,7 @@ Test(export, overwrite_empty_val, .init = setup)
 	t_token		*tokens = tokenizer(input_str);
 	t_command	*cmds = parser(tokens);
 
-	add_env_var(&head, cmds->args[1]);
+	export_builtin(cmds, &head);
 	char *value = find_env_var(head, "PWD")->value;
 	// put_env_vars(head);
 
