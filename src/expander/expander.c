@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 15:53:52 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 16:24:09 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,47 +45,6 @@ char	*remove_quotes(char *str, char delimiter)
 	free(str);
 	return (new_str);
 }
-
-// char	*expand_envp(char *str, t_env_var *envp)
-// {
-// 	t_expand_data	data;
-
-// 	data.env_name = NULL;
-// 	data.env_str = NULL;
-// 	data.first_part_str = NULL;
-// 	data.joined_str = NULL;
-// 	data.last_part_str = NULL;
-// 	data.pos_dollar_sign = NULL;
-
-// 	data.pos_dollar_sign = ft_strchr(str, '$');
-// 	if (data.pos_dollar_sign)
-// 	{
-// 		data.len = get_len_place_holder(data.pos_dollar_sign + 1);
-// 		data.env_name = ft_substr(data.pos_dollar_sign, 1, data.len);
-// 		data.first_part_str = ft_substr(str, 0, data.pos_dollar_sign - str);
-// 		data.last_part_str = ft_substr(data.pos_dollar_sign, data.len + 1, \
-// 		ft_strlen(data.pos_dollar_sign));
-// 		if (find_env_var(envp, data.env_name))
-// 			data.env_str = find_env_var(envp, data.env_name)->value;
-// 		if (data.last_part_str[0] && data.first_part_str[0])
-// 		{
-// 			data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
-// 			data.new_str = ft_strjoin(data.joined_str, data.last_part_str);
-// 		}
-// 		else if (data.first_part_str[0])
-// 			data.new_str = ft_strjoin(data.first_part_str, data.env_str);
-// 		else if (data.last_part_str[0])
-// 			data.new_str = ft_strjoin(data.env_str, data.last_part_str);
-// 		else
-// 			data.new_str = ft_strdup(data.env_str); // fout
-// 		free(data.env_name);
-// 		free(data.first_part_str);
-// 		free(data.joined_str);
-// 		free(data.last_part_str);
-// 		return (data.new_str);
-// 	}
-// 	return (str);
-// }
 
 t_expand_data null_data(void)
 {
