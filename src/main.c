@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 15:29:20 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 16:46:25 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,15 @@ int	main(int argc, char **const argv, char **envp)
 	environ = environ_to_linked_list_recursive(environ, envp);
 	while (1)
 	{
-		// user_input = readline(">");
-		tokens = tokenizer("echo \"$HOME\"");
+		user_input = readline(">");
+		tokens = tokenizer(user_input);
 		cmds = parser(tokens);
 		expander(cmds, environ);
 		execute_command(cmds, &environ);
-		// add_history(user_input);
-		// free(user_input);
+		add_history(user_input);
+		free(user_input);
 		free_tokens(tokens);
 		free_commands(cmds);
-		break ;
 	}
 	free_env_vars(environ);
 	return (0);
