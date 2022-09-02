@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 14:30:06 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/02 16:46:25 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,19 +101,18 @@ int	main(int argc, char **const argv, char **envp)
 	char		*user_input;
 
 	environ = environ_to_linked_list_recursive(environ, envp);
-	user_input = readline(">");
-	tokens = tokenizer(user_input);
-	// print_tokens(tokens);
-	cmds = parser(tokens);
-	expander(cmds, envp);
-	// print_commands(cmds);
-	// free(user_input);
-	// free_tokens(tokens);
-	// free_commands(cmds);
-	print_env(environ);
-	printf("\n");
-	execute_command(cmds, &environ);
-	printf("\n");
-	print_env(environ);
+	while (1)
+	{
+		user_input = readline(">");
+		tokens = tokenizer(user_input);
+		cmds = parser(tokens);
+		expander(cmds, environ);
+		execute_command(cmds, &environ);
+		add_history(user_input);
+		free(user_input);
+		free_tokens(tokens);
+		free_commands(cmds);
+	}
+	free_env_vars(environ);
 	return (0);
 }

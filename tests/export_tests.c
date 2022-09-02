@@ -85,7 +85,7 @@ Test(export, delete, .init = setup)
 	t_token		*tokens = tokenizer(input_str);
 	t_command	*cmds = parser(tokens);
 
-	delete_env_var(&head, cmds->args[1]);
+	search_and_destroy(&head, cmds->args[1]);
 	// put_env_vars(head);
 
 	cr_assert(zero(ptr,find_env_var(head, cmds->args[1])));
@@ -117,7 +117,7 @@ Test(export, overwrite_empty_val, .init = setup)
 
 	add_env_var(&head, cmds->args[1]);
 	char *value = find_env_var(head, "PWD")->value;
-	put_env_vars(head);
+	// put_env_vars(head);
 
 	cr_assert(eq(str, "\0", value));
 }

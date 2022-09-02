@@ -6,52 +6,82 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 16:24:27 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 16:41:10 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdbool.h>
 #include "../../includes/expander.h"
-#include "../libft/libft.h"
 
 char	*remove_quotes(char *str, char delimiter)
 {
-	size_t	len;
 	size_t	i;
 	size_t	j;
 	char	*new_str;
+	char	*last_occurence;
+	char	*first_occurence;
 
-	len = count_letters(str, delimiter);
-	new_str = malloc(sizeof(char) * len + 1);
+	new_str = malloc(sizeof(char) * (ft_strlen(str) - 2) + 1);
+	if (new_str == NULL)
+		exit(EXIT_FAILURE);
 	i = 0;
 	j = 0;
+	last_occurence = ft_strrchr(str, delimiter);
+	first_occurence = ft_strchr(str, delimiter);
 	while (str[i])
 	{
-		if (str[i] != delimiter)
+		if (str + i != last_occurence && str + i != first_occurence)
 		{
 			new_str[j] = str[i];
 			j++;
 		}
 		i++;
 	}
+	new_str[j] = '\0';
 	free(str);
 	return (new_str);
 }
 
-char	*expand_envp(char *str, char **envp)
+t_expand_data null_data(void)
 {
 	t_expand_data	data;
 
+	data.env_name = NULL;
+	data.env_str = NULL;
+	data.first_part_str = NULL;
+	data.joined_str = NULL;
+	data.last_part_str = NULL;
+	data.pos_dollar_sign = NULL;
+	return (data);
+}
+
+t_expand_data set_data(t_expand_data data, char *str)
+{
+	data.len = get_len_place_holder(data.pos_dollar_sign + 1);
+	data.env_name = ft_substr(data.pos_dollar_sign, 1, data.len);
+	data.first_part_str = ft_substr(str, 0, data.pos_dollar_sign - str);
+	data.last_part_str = ft_substr(data.pos_dollar_sign, data.len + 1, \
+	ft_strlen(data.pos_dollar_sign));
+	return (data);
+}
+
+void	free_expand_data(t_expand_data data)
+{
+	free(data.env_name);
+	free(data.first_part_str);
+	free(data.joined_str);
+	free(data.last_part_str);	
+}
+char	*expand_envp(char *str, t_env_var *envp)
+{
+	t_expand_data	data;
+
+	data = null_data();
 	data.pos_dollar_sign = ft_strchr(str, '$');
 	if (data.pos_dollar_sign)
 	{
-		data.len = get_len_place_holder(data.pos_dollar_sign + 1);
-		data.env_name = ft_substr(data.pos_dollar_sign, 1, data.len);
-		data.first_part_str = ft_substr(str, 0, data.pos_dollar_sign - str);
-		data.last_part_str = ft_substr(data.pos_dollar_sign, data.len + 1, \
-		ft_strlen(data.pos_dollar_sign));
-		data.env_str = get_env_value(envp, data.env_name, data.len);
+		data = set_data(data, str);
+		if (find_env_var(envp, data.env_name))
+			data.env_str = find_env_var(envp, data.env_name)->value;
 		if (data.last_part_str[0] && data.first_part_str[0])
 		{
 			data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
@@ -62,13 +92,14 @@ char	*expand_envp(char *str, char **envp)
 		else if (data.last_part_str[0])
 			data.new_str = ft_strjoin(data.env_str, data.last_part_str);
 		else
-			data.new_str = data.env_str;
+			data.new_str = ft_strdup(data.env_str);
+		free_expand_data(data);
 		return (data.new_str);
 	}
 	return (str);
 }
 
-void	expand_command(t_command *command, char **envp)
+void	expand_command(t_command *command, t_env_var *envp)
 {
 	size_t	quote_type;
 
@@ -87,7 +118,7 @@ void	expand_command(t_command *command, char **envp)
 	command->args[0] = command->cmd;
 }
 
-void	expand_args(t_command *command, char **envp)
+void	expand_args(t_command *command, t_env_var *envp)
 {
 	size_t	i;
 	size_t	quote_type;
@@ -111,9 +142,8 @@ void	expand_args(t_command *command, char **envp)
 	}
 }
 
-void	expander(t_command *commands, char **envp)
+void	expander(t_command *commands, t_env_var *envp)
 {
-	//todo set t_env_var struct to 2D array
 	expand_command(commands, envp);
 	expand_args(commands, envp);
 }
