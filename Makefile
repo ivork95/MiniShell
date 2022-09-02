@@ -9,8 +9,8 @@ HEADERS		:=	includes/parser.h \
 				includes/expander.h \
 				includes/structs.h \
 				includes/builtins.h
-OBJECTS		:=	obj/main.o \
-				obj/parser.o \
+MAIN		:=	obj/main.o
+OBJECTS		:=	obj/parser.o \
 				obj/parser_utils.o \
 				obj/free_breezy.o \
 				obj/tokenizer.o \
@@ -37,7 +37,7 @@ libft:
 	make -C $(LIBFT)
 
 $(NAME) : $(OBJECTS)
-	$(CC) -o $(NAME) $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS)
+	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS)
 
 tests : all
 	$(CC) -o run_tests $(TEST_FILES) $(OBJECTS) $(LIBFT)/libft.a $(LDFLAGS) -lcriterion

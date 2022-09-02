@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 15:24:42 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/01 16:13:46 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ void		free_env_vars(t_env_var *head);
 void		env(t_command *command, t_env_var **vars);
 void		put_env_vars_declare(t_env_var *head);
 t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ);
+t_env_var	*find_env_var(t_env_var *head, char *key_to_check);
 
 /* export.c */
 t_env_var	*assign_env_key_value(char *env_var, char *ptr);
 void		add_env_var(t_env_var **head, char *env_var);
-void	export_builtin(t_command *command, t_env_var **environ);
+void		export_builtin(t_command *command, t_env_var **environ);
 
 /* unset.c */
 void		search_and_destroy(t_env_var **head, char *key);
@@ -42,15 +43,15 @@ void		echo_builtin(t_command *command, t_env_var **vars);
 void		print_current_directory(t_command *cmd, t_env_var **vars);
 
 /* change_dir.c */
-void		change_directory(t_command *cmd, t_env_var **vars);
+void		cd_builtin(t_command *cmd, t_env_var **vars);
 
 static t_builtins	lookup_table[] = {
 {"echo", &echo_builtin},
 {"pwd", &print_current_directory},
-{"cd", &change_directory},
+{"cd", &cd_builtin},
 {"env", &env},
 {"export", &export_builtin},
-	// {"unset", &echo_builtin},
+{"unset", &unset_builtin},
 {NULL, NULL}
 };
 

@@ -36,16 +36,6 @@ static unsigned int	count_env_vars(t_env_var *head)
 	return (count);
 }
 
-static t_env_var	*find_env_var(t_env_var *head, char *key_to_check)
-{
-	while (head != NULL)
-	{
-		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(head->key))))
-			return (head);
-		head = head->next;
-	}
-	return (head);
-}
 
 void	setup(void)
 {
