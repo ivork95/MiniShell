@@ -10,7 +10,7 @@ Draai container op basis van image genaamd  ubuntu-c-dev met mounted eigen folde
 docker run -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 ```
-
+--cap-add=SYS_PTRACE --security-opt seccomp=unconfined = nodig om lldb te kunnen runnen in container
 -i = interactive so bash doesn’t immediately quit because there is no input\
 -t = bash shows prompt\
 --rm = delete container on exit to not waste space\
@@ -23,10 +23,5 @@ Run code met readline in Ubuntu:
 ```bash
 gcc code.c -L/usr/local/lib -I/usr/local/include -lreadline
 ```
-
-apt-get update
-apt install lldb
-mkdir -p /usr/lib/local/lib/python3.10 && ln -s /usr/lib/llvm-14/lib/python3.10/dist-packages /usr/lib/local/lib/python3.10/dist-packages
-
 
 show current frame - f
