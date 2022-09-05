@@ -1,3 +1,4 @@
+#include <sys/wait.h>
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 #include <criterion/redirect.h>
@@ -33,7 +34,7 @@ void	print_env(t_env_var *head)
 	}
 }
 
-static char	*get_full_path(char *path, const char *cmd)
+char	*get_full_path(char *path, const char *cmd)
 {
 	char	**paths;
 	char	*full_path;
@@ -55,8 +56,8 @@ static char	*get_full_path(char *path, const char *cmd)
 	if (paths[i] == NULL)
 	{
 		free_splitted_array(paths);
-		ft_putendl_fd("Error: command not recoginized. Exiting...", STDERR_FILENO);
-		exit(127);
+		ft_putendl_fd("Error: command not recognized. Exiting...", STDERR_FILENO);
+		exit(EXIT_FAILURE);
 	}
 	free_splitted_array(paths);
 	return (full_path);
@@ -81,6 +82,7 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 		full_path = get_full_path(path, command->args[0]);
 	execve(full_path, command->args, NULL);
 	perror("execve");
+	exit(EXIT_FAILURE);
 }
 
 // Test(execve_tests, foo)
@@ -94,16 +96,32 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 // 	exec_ll(ll_environ, commands);
 // }
 
-Test(execve_tests, path_ls)
-{
-	char *input_str = "/bin/ls";
+// Test(execve_tests, path_ls)
+// {
+// 	char *input_str = "/bin/ls";
 
-	t_token *tokens = tokenizer(input_str);
-	t_command *commands = parser(tokens);
-	t_env_var *ll_environ = environ_to_linked_list_recursive(ll_environ, environ);
+// 	t_token *tokens = tokenizer(input_str);
+// 	t_command *commands = parser(tokens);
+// 	t_env_var *ll_environ = environ_to_linked_list_recursive(ll_environ, environ);
 
-	exec_ll(ll_environ, commands);
-}
+// 	pid_t w;
+// 	pid_t cpid = fork();
+// 	if (cpid == -1) {
+// 		perror("fork");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	if (cpid == 0)
+// 		exec_ll(ll_environ, commands);
+// 	else
+// 	{
+// 		w = waitpid(cpid, NULL, 0);
+// 		if (w == -1) {
+// 			perror("waitpid");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 	}
+// 	printf("Returned to parent function\n");
+// }
 
 // Test(execve_tests, path_ls_flags)
 // {
@@ -119,6 +137,17 @@ Test(execve_tests, path_ls)
 // Test(execve_tests, path_ls_flags_seperate)
 // {
 // 	char *input_str = "/bin/ls -l -a -F";
+
+// 	t_token *tokens = tokenizer(input_str);
+// 	t_command *commands = parser(tokens);
+// 	t_env_var *ll_environ = environ_to_linked_list_recursive(ll_environ, environ);
+
+// 	exec_ll(ll_environ, commands);
+// }
+
+// Test(execve_tests, path_ls_flags_seperate)
+// {
+// 	char *input_str = "ls";
 
 // 	t_token *tokens = tokenizer(input_str);
 // 	t_command *commands = parser(tokens);
