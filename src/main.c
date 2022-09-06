@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/05 11:57:19 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/05 17:16:06 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main(int argc, char **const argv, char **envp)
 	{
 		user_input = readline(">");
 		tokens = tokenizer(user_input);
-		print_tokens(tokens);
+		// print_tokens(tokens);
 		cmds = parser(tokens);
 		expander(cmds, environ);
 		execute_command(cmds, &environ);

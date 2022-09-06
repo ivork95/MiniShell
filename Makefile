@@ -23,7 +23,8 @@ OBJECTS		:=	obj/parser.o \
 				obj/env.o \
 				obj/change_dir.o \
 				obj/export.o \
-				obj/unset.o
+				obj/unset.o \
+				obj/exit.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/cd_tests.c \
 				tests/echo_tests.c \
