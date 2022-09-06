@@ -9,7 +9,7 @@
 
 extern char	**environ;
 
-void	print_env(t_env_var *head)
+static void	print_env(t_env_var *head)
 {
 	while (head != NULL)
 	{
@@ -31,7 +31,7 @@ static void	setup(void)
 	redirect_all_std();
 }
 
-Test(exit, without_args, .exit_code=0, .init=setup)
+Test(exit, without_args, .init=setup)
 {
 	char	*input_str = "exit";
 	char	*expected = "exit\n";
@@ -44,7 +44,7 @@ Test(exit, without_args, .exit_code=0, .init=setup)
 	cr_assert_stdout_eq_str(expected);
 }
 
-Test(exit, with_numeric_arg, .exit_code=42, .init=setup)
+Test(exit, with_numeric_arg, .init=setup)
 {
 	char	*input_str = "exit 42";
 	char	*expected = "exit\n";
@@ -57,7 +57,7 @@ Test(exit, with_numeric_arg, .exit_code=42, .init=setup)
 	cr_assert_stdout_eq_str(expected);
 }
 
-Test(exit, with_non_numeric_arg, .exit_code=2, .init=setup)
+Test(exit, with_non_numeric_arg, .init=setup)
 {
 	char	*input_str = "exit hello";
 	char	*expected = "exit\nminishell: exit: hello: numeric argument required\n";
@@ -70,8 +70,7 @@ Test(exit, with_non_numeric_arg, .exit_code=2, .init=setup)
 	cr_assert_stdout_eq_str(expected);
 }
 
-// Failed door exit code, maar prog hoort niet te exiten, hoe veranderen we code?
-Test(exit, with_multiple_numeric_args, .exit_code=1, .init=setup)
+Test(exit, with_multiple_numeric_args, .init=setup)
 {
 	char	*input_str = "exit 42 19";
 	char	*expected = "exit\nminishell: exit: too many arguments\n";
@@ -84,10 +83,10 @@ Test(exit, with_multiple_numeric_args, .exit_code=1, .init=setup)
 	cr_assert_stdout_eq_str(expected);
 }
 
-Test(exit, with_multiple_non_numeric_args, .exit_code=2, .init=setup)
+Test(exit, with_multiple_non_numeric_args, .init=setup)
 {
 	char	*input_str = "exit hello world";
-	char	*expected = "exit\nminishell: hello: numeric argument required\n";
+	char	*expected = "exit\nminishell: exit: hello: numeric argument required\n";
 
 	t_token *tokens = tokenizer(input_str);
 	t_command *commands = parser(tokens);
@@ -97,10 +96,10 @@ Test(exit, with_multiple_non_numeric_args, .exit_code=2, .init=setup)
 	cr_assert_stdout_eq_str(expected);
 }
 
-Test(exit, with_multiple_mixed_args, .exit_code=2, .init=setup)
+Test(exit, with_nonn_numerical_mixed, .init=setup)
 {
 	char	*input_str = "exit hello 42";
-	char	*expected = "exit\nminishell: hello: numeric argument required\n";
+	char	*expected = "exit\nminishell: exit: hello: numeric argument required\n";
 
 	t_token *tokens = tokenizer(input_str);
 	t_command *commands = parser(tokens);
@@ -110,7 +109,7 @@ Test(exit, with_multiple_mixed_args, .exit_code=2, .init=setup)
 	cr_assert_stdout_eq_str(expected);
 }
 
-Test(exit, with_multiple_mixed_args_2, .exit_code=1, .init=setup)
+Test(exit, with_numerical_nonn_mixed, .init=setup)
 {
 	char	*input_str = "exit 42 hello";
 	char	*expected = "exit\nminishell: exit: too many arguments\n";
