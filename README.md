@@ -25,3 +25,5 @@ gcc code.c -L/usr/local/lib -I/usr/local/include -lreadline
 ```
 
 show current frame - f
+
+cat < README.md | cat > outfile2 < Makefile

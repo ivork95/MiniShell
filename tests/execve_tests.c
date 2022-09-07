@@ -56,7 +56,7 @@ char	*get_full_path(char *path, const char *cmd)
 	if (paths[i] == NULL)
 	{
 		free_splitted_array(paths);
-		ft_putendl_fd("Error: command not recognized. Exiting...", STDERR_FILENO);
+		printf("minishell: %s: command not found\n", cmd);
 		exit(EXIT_FAILURE);
 	}
 	free_splitted_array(paths);
@@ -72,7 +72,7 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 	path_node = find_env_var(ll_environ, "PATH");
 	if (path_node == NULL)
 	{
-		ft_putendl_fd("Error: PATH not found. Exiting...", STDERR_FILENO);
+		printf("minishell: %s: No such file or directory\n", command->args[0]);
 		exit(EXIT_FAILURE);
 	}
 	path = path_node->value;
@@ -93,6 +93,18 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 // 	t_command *commands = parser(tokens);
 // 	t_env_var *ll_environ = environ_to_linked_list_recursive(ll_environ, environ);
 
+// 	exec_ll(ll_environ, commands);
+// }
+
+// Test(execve_tests, foo_deleted_path)
+// {
+// 	char *input_str = "foo";
+
+// 	t_token *tokens = tokenizer(input_str);
+// 	t_command *commands = parser(tokens);
+// 	t_env_var *ll_environ = environ_to_linked_list_recursive(ll_environ, environ);
+
+// 	search_and_destroy(&ll_environ, "PATH");
 // 	exec_ll(ll_environ, commands);
 // }
 
@@ -170,5 +182,6 @@ execve_tests.c \
 ../src/builtins/change_dir.c \
 ../src/builtins/echo.c \
 ../src/builtins/pwd.c \
+../src/builtins/exit.c \
 -L../src/libft -l:libft.a
 */
