@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 15:04:56 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/08 13:32:52 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ t_token	*tokenize_special_opp(char *str)
 	}
 	return (token);
 }
-//" "he'        llo"
+
+/* " "he'        llo" */
 t_token	*tokenize_word(char *str)
 {
 	t_token		*new_token;

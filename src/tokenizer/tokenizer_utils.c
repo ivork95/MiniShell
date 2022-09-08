@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:03:53 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/08/26 12:31:04 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/08 13:32:02 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ void	print_tokens(t_token *head)
 
 void	free_tokens(t_token *head)
 {
-	if (head->next)
-		free_tokens(head->next);
-	free(head);
+	t_token	*tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
 }
