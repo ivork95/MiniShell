@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 13:27:42 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 16:38:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/08 16:30:18 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_command
 	char				*cmd;
 	char				**args;
 	t_file				*files;
+	pid_t				cpid;
 	struct s_command	*next;
 }	t_command;
 
