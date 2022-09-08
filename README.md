@@ -27,3 +27,8 @@ gcc code.c -L/usr/local/lib -I/usr/local/include -lreadline
 show current frame - f
 
 cat < README.md | cat > outfile2 < Makefile
+
+TODO:
+	-echo ?$
+	-trowh error when quotes not closed
+	-echo 'hallo '$PATH' '
