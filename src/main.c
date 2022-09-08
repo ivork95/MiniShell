@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/07 18:17:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/08 13:26:19 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,8 @@ void	executor(t_command *cmd, t_env_var **head)
 
 	i = 0;
 	read_end = -1;
+	pipe_fd[0] = -1;
+	pipe_fd[1] = -1;
 	while (cmd != NULL)
 	{
 		if (cmd->next != NULL) // Als er een volgend command is...
@@ -258,8 +260,15 @@ void	executor(t_command *cmd, t_env_var **head)
 				exit(EXIT_FAILURE);
 			}
 			read_end = pipe_fd[0];
-			printf("read_end = %d\n",read_end);
-			close(pipe_fd[1]);
+			// printf("read_end = %d\n",read_end);
+			if (pipe_fd[1] != -1)
+			{
+				if (close(pipe_fd[1]) == -1)
+				{
+					perror("close");
+					exit(EXIT_FAILURE);
+				}
+			}
 			i++;
 			cmd = cmd->next;
 		}
@@ -292,7 +301,12 @@ int	main(int argc, char **const argv, char **envp)
 	{
 		user_input = readline(">");
 		tokens = tokenizer(user_input);
-		// print_tokens(tokens);
+		if (tokens == NULL)
+		{
+			free(user_input);
+			free_tokens(tokens);
+			continue;
+		}
 		cmds = parser(tokens);
 		expander(cmds, environ);
 		executor(cmds, &environ);
