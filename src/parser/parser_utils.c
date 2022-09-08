@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:31:23 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/01 10:31:15 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/08 16:30:06 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	init_command(t_command *command)
 	command->cmd = NULL;
 	command->args = NULL;
 	command->files = NULL;
+	command->cpid = -1;
 	command->next = NULL;
 }
 
