@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/06 18:40:13 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/08 16:40:58 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ bool	str_is_numeric(char *s)
 	return (false);
 }
 
-void	handle_exit_multiple_args(char **cmd_args)
+void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 {
 	if (!str_is_numeric(cmd_args[1]))
 	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
+		if (cpid != 0)
+			ft_putendl_fd("exit", STDOUT_FILENO);
 		ft_putstr_fd("minishell: exit: ", STDOUT_FILENO);
 		ft_putstr_fd(cmd_args[1], STDOUT_FILENO);
 		ft_putendl_fd(": numeric argument required", STDOUT_FILENO);
@@ -33,12 +34,14 @@ void	handle_exit_multiple_args(char **cmd_args)
 	{
 		if (cmd_args[2] == NULL)
 		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
+			if (cpid != 0)
+				ft_putendl_fd("exit", STDOUT_FILENO);
 			exit(ft_atoi(cmd_args[1]));
 		}
 		else
 		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
+			if (cpid != 0)
+				ft_putendl_fd("exit\n", STDOUT_FILENO);
 			ft_putendl_fd("minishell: exit: too many arguments", STDOUT_FILENO);
 		}
 	}
@@ -53,9 +56,10 @@ void	exit_builtin(t_command *cmd, t_env_var **vars)
 		argc++;
 	if (argc == 1)
 	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
+		if (cmd->cpid != 0)
+			ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
 	else if (argc > 1)
-		handle_exit_multiple_args(cmd->args);
+		handle_exit_multiple_args(cmd->args, cmd->cpid);
 }
