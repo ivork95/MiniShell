@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/07 18:17:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/08 14:13:15 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,22 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 	exit(EXIT_FAILURE);
 }
 
+void	exec_builtin(t_env_var **head, t_command *cmd)
+{
+	size_t i;
+
+	i = 0;
+	while (lookup_table[i].builtin_name)
+	{
+		if (!ft_strncmp(cmd->cmd, lookup_table[i].builtin_name, ft_strlen(cmd->cmd)))
+		{
+			lookup_table[i].function(cmd, head);
+			exit(EXIT_SUCCESS);
+		}
+		i++;
+	}
+}
+
 static void	handle_redirect_in(t_file *files)
 {
 	int	fd;
@@ -121,8 +137,8 @@ static void	handle_redirect_in(t_file *files)
 			ft_putendl_fd("Error: opening file", 2);
 		if (dup2(fd, STDIN_FILENO) == -1)
 			ft_putendl_fd("Error: Could not duplicate fd", 2);
-		// if (close(fd) == -1)
-		// 	ft_putendl_fd("Error: could not close fd", 2);
+		if (close(fd) == -1)
+			ft_putendl_fd("Error: could not close fd", 2);
 		files = files->next;
 	}
 }
@@ -146,8 +162,8 @@ static void	handle_redirect_out(t_file *files)
 			ft_putendl_fd("Error: opening file", 2);
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			ft_putendl_fd("Error: Could not duplicate fd", 2);
-		// if (close(fd) == -1)
-		// 	ft_putendl_fd("Error: could not close fd", 2);
+		if (close(fd) == -1)
+			ft_putendl_fd("Error: could not close fd", 2);
 		files = files->next;
 	}
 }
@@ -163,21 +179,35 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 		exit(EXIT_FAILURE);
 	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 		exit(EXIT_FAILURE);
-	// if (close(pipe_fd[1]) == -1)
-	// 	exit(EXIT_FAILURE);
+	if (close(pipe_fd[1]) == -1)
+		exit(EXIT_FAILURE);
 	if (cmd->files != NULL)
 	{
 		// er is een redirect in/redirect out
 		handle_redirect_in(cmd->files);
 	}
+	exec_builtin(head, cmd);
 	exec_ll(*head, cmd);
 	exit(EXIT_SUCCESS);
 }
 
-void	middle_process(t_command *cmd, int pipe_fd[2])
+void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2], int read_end)
 {
 	// handle middle process
 	printf("middle_process\n");
+	if (close(pipe_fd[0]) == -1)
+		exit(EXIT_FAILURE);
+	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1 || dup2(read_end, STDIN_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	if (close(pipe_fd[1]) == -1)
+		exit(EXIT_FAILURE);
+	if (cmd->files != NULL)
+	{
+		handle_redirect_in(cmd->files);
+		handle_redirect_out(cmd->files);
+	}
+	exec_builtin(head, cmd);
+	exec_ll(*head, cmd);
 	exit(EXIT_SUCCESS);
 }
 
@@ -188,8 +218,8 @@ void	last_process(t_env_var **head, t_command *cmd, int read_end)
 	{
 		if (dup2(read_end, STDIN_FILENO) == -1)
 			exit(EXIT_FAILURE);
-		// if (close(read_end) == -1)
-		// 	exit(EXIT_FAILURE);
+		if (close(read_end) == -1)
+			exit(EXIT_FAILURE);
 	}
 	if (cmd->files != NULL)
 	{
@@ -197,22 +227,13 @@ void	last_process(t_env_var **head, t_command *cmd, int read_end)
 		handle_redirect_in(cmd->files);
 		handle_redirect_out(cmd->files);
 	}
+	exec_builtin(head, cmd);
 	exec_ll(*head, cmd);
 	exit(EXIT_SUCCESS);
 }
 
 void	executor(t_command *cmd, t_env_var **head)
 {
-	// size_t i;
-
-	// i = 0;
-	// while (lookup_table[i].builtin_name)
-	// {
-	// 	if (!ft_strncmp(cmd->cmd, lookup_table[i].builtin_name, ft_strlen(cmd->cmd)))
-	// 		lookup_table[i].function(cmd, head);
-	// 	i++;
-	// }
-
 	pid_t	w;
 	pid_t	cpid;
 	int 	pipe_fd[2];
@@ -221,6 +242,8 @@ void	executor(t_command *cmd, t_env_var **head)
 
 	i = 0;
 	read_end = -1;
+	if (cmd->next != NULL) // Als er een volgend command is...
+		exec_builtin(head, cmd);
 	while (cmd != NULL)
 	{
 		if (cmd->next != NULL) // Als er een volgend command is...
@@ -246,7 +269,7 @@ void	executor(t_command *cmd, t_env_var **head)
 			else if (i == 0)
 				first_process(head, cmd, pipe_fd);
 			else
-				middle_process(cmd, pipe_fd);
+				middle_process(head, cmd, pipe_fd, read_end);
 		}
 		else // Parent
 		{
@@ -258,7 +281,6 @@ void	executor(t_command *cmd, t_env_var **head)
 				exit(EXIT_FAILURE);
 			}
 			read_end = pipe_fd[0];
-			printf("read_end = %d\n",read_end);
 			close(pipe_fd[1]);
 			i++;
 			cmd = cmd->next;
