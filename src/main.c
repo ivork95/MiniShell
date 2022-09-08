@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/08 14:39:41 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/08 17:14:23 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 	exit(EXIT_FAILURE);
 }
 
-void	exec_builtin(t_env_var **head, t_command *cmd)
+int	exec_builtin(t_env_var **head, t_command *cmd)
 {
 	size_t i;
 
@@ -114,10 +114,11 @@ void	exec_builtin(t_env_var **head, t_command *cmd)
 		if (!ft_strncmp(cmd->cmd, lookup_table[i].builtin_name, ft_strlen(cmd->cmd)))
 		{
 			lookup_table[i].function(cmd, head);
-			exit(EXIT_SUCCESS);
+			return (1);
 		}
 		i++;
 	}
+	return (0);
 }
 
 static void	handle_redirect_in(t_file *files)
@@ -173,7 +174,6 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 	int fd_out;
 	// handle first process
 	//TODO add exec_builtin functin
-	printf("first_process\n");
 
 	if (close(pipe_fd[0]) == -1)
 		exit(EXIT_FAILURE);
@@ -186,15 +186,14 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 		// er is een redirect in/redirect out
 		handle_redirect_in(cmd->files);
 	}
-	exec_builtin(head, cmd);
+	if (exec_builtin(head, cmd))
+		exit(EXIT_SUCCESS);
 	exec_ll(*head, cmd);
-	exit(EXIT_SUCCESS);
 }
 
 void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2], int read_end)
 {
 	// handle middle process
-	printf("middle_process\n");
 	if (close(pipe_fd[0]) == -1)
 		exit(EXIT_FAILURE);
 	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1 || dup2(read_end, STDIN_FILENO) == -1)
@@ -206,9 +205,9 @@ void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2], int read_e
 		handle_redirect_in(cmd->files);
 		handle_redirect_out(cmd->files);
 	}
-	exec_builtin(head, cmd);
+	if (exec_builtin(head, cmd))
+		exit(EXIT_SUCCESS);
 	exec_ll(*head, cmd);
-	exit(EXIT_SUCCESS);
 }
 
 void	last_process(t_env_var **head, t_command *cmd, int read_end)
@@ -227,9 +226,9 @@ void	last_process(t_env_var **head, t_command *cmd, int read_end)
 		handle_redirect_in(cmd->files);
 		handle_redirect_out(cmd->files);
 	}
-	exec_builtin(head, cmd);
+	if (exec_builtin(head, cmd))
+		exit(EXIT_SUCCESS);
 	exec_ll(*head, cmd);
-	exit(EXIT_SUCCESS);
 }
 
 void	executor(t_command *cmd, t_env_var **head)
@@ -242,10 +241,16 @@ void	executor(t_command *cmd, t_env_var **head)
 
 	i = 0;
 	read_end = -1;
-	pipe_fd[0] = -1;
-	pipe_fd[1] = -1;
+
+	if (cmd->next == NULL)
+	{
+		if (exec_builtin(head, cmd))
+			return ;
+	}
 	while (cmd != NULL)
 	{
+		pipe_fd[0] = -1;
+		pipe_fd[1] = -1;
 		if (cmd->next != NULL) // Als er een volgend command is...
 		{
 			if (pipe(pipe_fd) == -1) // Maak pipe
@@ -255,13 +260,13 @@ void	executor(t_command *cmd, t_env_var **head)
 			}
 		}
 
-		cpid = fork();
-		if (cpid == -1) {
+		cmd->cpid = fork();
+		if (cmd->cpid == -1) {
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
 
-		if (cpid == 0) // Child
+		if (cmd->cpid == 0) // Child
 		{
 			// hier moeten we pipe_fd meegeven
 			if (cmd->next == NULL) // Als er een volgend command is...
@@ -275,18 +280,18 @@ void	executor(t_command *cmd, t_env_var **head)
 		{
 			//Check if closing pipes is needed
 			// close(pipe_fd[0]);
-			w = waitpid(cpid, NULL, 0);
-			if (w == -1) {
-				perror("waitpid");
-				exit(EXIT_FAILURE);
-			}
+			// w = waitpid(cmd->cpid, NULL, 0);
+			// if (w == -1) {
+			// 	perror("waitpid");
+			// 	exit(EXIT_FAILURE);
+			// }
 			read_end = pipe_fd[0];
 			// printf("read_end = %d\n",read_end);
 			if (pipe_fd[1] != -1)
 			{
 				if (close(pipe_fd[1]) == -1)
 				{
-					perror("close");
+					perror("closeygf");
 					exit(EXIT_FAILURE);
 				}
 			}
@@ -294,6 +299,7 @@ void	executor(t_command *cmd, t_env_var **head)
 			cmd = cmd->next;
 		}
 	}
+	while (wait(NULL) != -1);
 	// voor elke command creeer een nieuw process
 	// tussen elke twee commands creer een pipe -> als er een cmd.next is maak een int pipe_fd[2] aan, of geef mee
 	// als cmd.files niet null is -> dan moeten we redirecten
