@@ -6,100 +6,100 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/01 10:27:04 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/13 09:31:26 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-void	set_command(t_token **token, t_command *command)
+void	set_command(t_token **tokens, t_command *command)
 {
 	char	*cmd;
 	size_t	i;
 
-	cmd = malloc(sizeof(*cmd) * ((*token)->len + 1));
+	cmd = malloc(sizeof(*cmd) * ((*tokens)->len + 1));
 	if (cmd == NULL)
 		exit(EXIT_FAILURE);
-	ft_strlcpy(cmd, (*token)->str, (*token)->len + 1);
-	i = count_words(*token);
+	ft_strlcpy(cmd, (*tokens)->str, (*tokens)->len + 1);
+	i = count_words(*tokens);
 	command->args = ft_calloc(i + 1, sizeof(char *));
 	if (command->args == NULL)
 		exit(EXIT_FAILURE);
 	command->args[i] = NULL;
 	command->args[0] = cmd;
 	command->cmd = cmd;
-	*token = (*token)->next;
+	*tokens = (*tokens)->next;
 }
 
-void	set_args(t_token **token, t_command *command)
+void	set_args(t_token **tokens, t_command *command)
 {
-	size_t		i;
+	size_t	i;
 
 	i = 0;
 	while (command->args[i])
 		i++;
-	while ((*token) && (*token)->type == WORD)
+	while ((*tokens) && (*tokens)->type == WORD)
 	{
-		command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
+		command->args[i] = malloc(sizeof(char) * (*tokens)->len + 1);
 		if (command->args[i] == NULL)
 			exit(EXIT_FAILURE);
-		ft_strlcpy(command->args[i], (*token)->str, (*token)->len + 1);
-		*token = (*token)->next;
+		ft_strlcpy(command->args[i], (*tokens)->str, (*tokens)->len + 1);
+		*tokens = (*tokens)->next;
 		i++;
 	}
 }
 
-void	set_files(t_token **token, t_command *command)
+void	set_files(t_token **tokens, t_command *command)
 {
-	t_file	*file;
+	t_file	*files;
 	t_file	*tmp;
 
-	file = malloc(sizeof(t_file));
-	if (file == NULL)
+	files = malloc(sizeof(*files));
+	if (files == NULL)
 		exit(EXIT_FAILURE);
-	file->type = redirect_type((*token)->str);
-	*token = (*token)->next;
-	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
-	if (file->file_name == NULL)
+	files->type = redirect_type((*tokens)->str);
+	*tokens = (*tokens)->next;
+	files->file_name = malloc(sizeof(char) * (*tokens)->len + 1);
+	if (files->file_name == NULL)
 		exit(EXIT_FAILURE);
-	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
-	file->next = NULL;
+	ft_strlcpy(files->file_name, (*tokens)->str, (*tokens)->len + 1);
+	files->next = NULL;
 	if (!(command)->files)
-		(command)->files = file;
+		(command)->files = files;
 	else
 	{
 		tmp = (command)->files;
 		while (tmp->next)
 			tmp = tmp->next;
-		tmp->next = file;
+		tmp->next = files;
 	}
-	*token = (*token)->next;
+	*tokens = (*tokens)->next;
 }
 
-void	fill_command(t_token **token, t_command *command)
+void	fill_command(t_token **tokens, t_command *command)
 {
-	if ((*token)->type == WORD && command->cmd == NULL)
-		set_command(token, command);
-	else if ((*token)->type == REDIRECT_OP)
-		set_files(token, command);
+	if ((*tokens)->type == WORD && command->cmd == NULL)
+		set_command(tokens, command);
+	else if ((*tokens)->type == REDIRECT_OP)
+		set_files(tokens, command);
 	else
-		set_args(token, command);
+		set_args(tokens, command);
 }
 
-t_command	*parser(t_token *token)
+t_command	*parser(t_token *tokens)
 {
 	t_command	*head;
-	t_command	*command;
+	t_command	*node;
 
 	head = NULL;
-	while (token)
+	while (tokens)
 	{
-		command = create_new_command();
-		while (token && token->type != PIPE)
-			fill_command(&token, command);
-		command_add_back(&head, command);
-		if (token != NULL)
-			token = token->next;
+		node = create_new_command();
+		while (tokens && tokens->type != PIPE)
+			fill_command(&tokens, node);
+		command_add_back(&head, node);
+		if (tokens != NULL)
+			tokens = tokens->next;
 	}
 	return (head);
 }

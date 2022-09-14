@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/02 17:44:37 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/09 19:16:25 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,22 @@ void	put_env_vars_declare(t_env_var *head)
 	}
 }
 
-t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ)
+t_env_var	*environ_to_linked_list_recursive(t_env_var *environ, char **envp)
 {
-	char	*ptr;
+	char	*p_equal_sign;
 
-	head = NULL;
-	if (*environ != NULL)
+	environ = NULL;
+	if (*envp != NULL)
 	{
-		ptr = ft_strchr(*environ, '=');
-		if (ptr == NULL)
-			head = environ_to_linked_list_recursive(head->next, environ + 1);
+		p_equal_sign = ft_strchr(*envp, '=');
+		if (p_equal_sign == NULL)
+			environ = environ_to_linked_list_recursive(environ->next, envp + 1);
 		else
 		{
-			head = assign_env_key_value(*environ, ptr);
-			head->next = environ_to_linked_list_recursive(head->next,
-					environ + 1);
+			environ = assign_env_key_value(*envp, p_equal_sign);
+			environ->next = environ_to_linked_list_recursive(environ->next,
+					envp + 1);
 		}
 	}
-	return (head);
+	return (environ);
 }

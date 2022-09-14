@@ -6,13 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/08 13:32:52 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/09 19:29:10 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/tokenizer.h"
 
-t_token	*create_new_token(void)
+t_token	*malloc_new_token(void)
 {
 	t_token	*new_token;
 
@@ -28,22 +28,22 @@ t_token	*create_new_token(void)
 	return (new_token);
 }
 
-t_token	*tokenize_special_opp(char *str)
+t_token	*tokenize_special_opp(char *user_input)
 {
 	t_token	*token;
 
-	token = create_new_token();
-	if (*str == '|')
+	token = malloc_new_token();
+	if (*user_input == '|')
 	{
-		token->str = str;
+		token->str = user_input;
 		token->type = PIPE;
 		token->len = 1;
 	}
-	else if (*str == '<' || *str == '>')
+	else if (*user_input == '<' || *user_input == '>')
 	{
-		token->str = str;
+		token->str = user_input;
 		token->type = REDIRECT_OP;
-		if (*(str + 1) == *str)
+		if (*(user_input + 1) == *user_input)
 			token->len = 2;
 		else
 			token->len = 1;
@@ -52,49 +52,49 @@ t_token	*tokenize_special_opp(char *str)
 }
 
 /* " "he'        llo" */
-t_token	*tokenize_word(char *str)
+t_token	*tokenize_word(char *user_input)
 {
-	t_token		*new_token;
+	t_token		*token;
 	size_t		len;
 	int			quote;
 
-	new_token = create_new_token();
+	token = malloc_new_token();
 	quote = 0;
 	len = 0;
-	while ((str[len] && quote) || (str[len] != '\0'
-			&& !ft_isspace(str[len]) && !isspecialchar(str[len])))
+	while ((user_input[len] && quote) || (user_input[len] != '\0'
+			&& !ft_isspace(user_input[len]) && !isspecialchar(user_input[len])))
 	{
-		if ((str[len] == '\'' || str[len] == '\"') && quote == 0)
+		if ((user_input[len] == '\'' || user_input[len] == '\"') && quote == 0)
 		{
-			quote = str[len];
-			new_token->quoted = true;
+			quote = user_input[len];
+			token->quoted = true;
 		}
-		else if (str[len] == quote)
+		else if (user_input[len] == quote)
 			quote = 0;
 		len++;
 	}
-	new_token->type = WORD;
-	new_token->str = str;
-	new_token->len = len;
-	return (new_token);
+	token->type = WORD;
+	token->str = user_input;
+	token->len = len;
+	return (token);
 }
 
-t_token	*tokenizer(char *str)
+t_token	*tokenizer(char *user_input)
 {
 	t_token	*token;
 
-	while (ft_isspace(*str))
-		str++;
-	if (!(*str))
+	while (ft_isspace(*user_input))
+		user_input++;
+	if (!(*user_input))
 		return (NULL);
-	if (isspecialchar(*str))
+	if (isspecialchar(*user_input))
 	{
-		token = tokenize_special_opp(str);
-		token->next = tokenizer(str + token->len);
+		token = tokenize_special_opp(user_input);
+		token->next = tokenizer(user_input + token->len);
 		return (token);
 	}
-	token = tokenize_word(str);
-	if (str[token->len] != '\0')
-		token->next = tokenizer(str + token->len);
+	token = tokenize_word(user_input);
+	if (user_input[token->len] != '\0')
+		token->next = tokenizer(user_input + token->len);
 	return (token);
 }

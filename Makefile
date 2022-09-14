@@ -3,7 +3,8 @@ VPATH		:=	src:\
 				src/parser:\
 				src/tokenizer:\
 				src/expander: \
-				src/builtins:
+				src/builtins: \
+				src/executor:
 HEADERS		:=	includes/parser.h \
 				includes/tokenizer.h \
 				includes/expander.h \
@@ -24,7 +25,10 @@ OBJECTS		:=	obj/parser.o \
 				obj/change_dir.o \
 				obj/export.o \
 				obj/unset.o \
-				obj/exit.o
+				obj/exit.o \
+				obj/executor.o \
+				obj/executor_utils.o \
+				obj/executor_utils_cont.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/cd_tests.c \
 				tests/echo_tests.c \

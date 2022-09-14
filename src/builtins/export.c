@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/02 11:20:03 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/09 19:16:15 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	add_front(t_env_var **lst, t_env_var *new)
 	*lst = new;
 }
 
-t_env_var	*assign_env_key_value(char *env_var, char *ptr)
+t_env_var	*assign_env_key_value(char *env_var, char *p_equal_sign)
 {
 	t_env_var	*head;
 	ptrdiff_t	len_key;
@@ -26,11 +26,11 @@ t_env_var	*assign_env_key_value(char *env_var, char *ptr)
 	head = malloc(sizeof(*head));
 	if (head == NULL)
 		exit(EXIT_FAILURE);
-	len_key = (ptr - env_var);
+	len_key = (p_equal_sign - env_var);
 	head->key = ft_substr(env_var, 0, len_key);
 	if (head->key == NULL)
 		exit(EXIT_FAILURE);
-	head->value = ft_substr(env_var, len_key + 1, ft_strlen(ptr));
+	head->value = ft_substr(env_var, len_key + 1, ft_strlen(p_equal_sign));
 	if (head->value == NULL)
 		exit(EXIT_FAILURE);
 	return (head);

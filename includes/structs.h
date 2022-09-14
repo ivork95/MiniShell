@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 13:27:42 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/08 16:30:18 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/14 12:57:46 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_builtins
 {
 	char	*builtin_name;
 	void	(*function)(t_command *command, t_env_var **environ);
-} t_builtins;
+}	t_builtins;
 
 typedef struct s_expand_data
 {
@@ -71,6 +71,5 @@ typedef struct s_expand_data
 	char	*joined_str;
 	char	*new_str;
 }	t_expand_data;
-
 
 #endif
