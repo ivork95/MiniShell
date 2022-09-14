@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/13 12:51:15 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/14 14:27:22 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
 		commands = parser(tokens);
+		
+		print_tokens(tokens);
+		printf("\n");
+		print_commands(commands);
+
 		expander(commands, environ);
 		executor(commands, &environ);
 		add_history(user_input);
@@ -50,3 +55,5 @@ int	main(int argc, char **argv, char **envp)
 	free_env_vars(environ);
 	return (0);
 }
+
+// waarom ga je met $ in expander, en met ? niet?

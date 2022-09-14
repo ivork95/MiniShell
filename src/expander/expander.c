@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 18:00:03 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/14 15:41:35 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,19 @@ char	*expand_envp(char *str, t_env_var *envp)
 	data.pos_dollar_sign = ft_strchr(str, '$');
 	if (data.pos_dollar_sign)
 	{
+
+		/*
+		als substring van str == $? // echo 123$?
+		print dan de hele string behalve de substring // 123
+		expand 
+		*/
+		if (ft_strlen(data.pos_dollar_sign) == 1)
+			return (str);
 		data = set_data(data, str);
 		if (find_env_var(envp, data.env_name))
 			data.env_str = find_env_var(envp, data.env_name)->value;
+		else
+			data.env_str =  ft_strdup("\0");
 		if (data.last_part_str[0] && data.first_part_str[0])
 		{
 			data.joined_str = ft_strjoin(data.first_part_str, data.env_str);

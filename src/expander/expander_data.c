@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/02 17:51:48 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 18:01:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/14 15:41:39 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	null_data(t_expand_data *data)
 	data->joined_str = NULL;
 	data->last_part_str = NULL;
 	data->pos_dollar_sign = NULL;
+	data->new_str = NULL;
 }
 
 t_expand_data	set_data(t_expand_data data, char *str)
