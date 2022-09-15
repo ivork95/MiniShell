@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/15 05:23:35 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 05:31:11 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	heredoc_function(t_token *token)
 		if (!ft_strncmp(user_input, delimiter, ft_strlen(delimiter) + 1))
 			break ;
 		joined_str = ft_strjoin(user_input, "\n");
-		write(fd, joined_str, ft_strlen(joined_str));
+		write(pipe_fd[1], joined_str, ft_strlen(joined_str));
 		free(user_input);
 		free(joined_str);
 	}
