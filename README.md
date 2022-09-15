@@ -32,3 +32,6 @@ TODO:
 	-echo ?$
 	-trowh error when quotes not closed
 	-echo 'hallo '$PATH' '
+	-<< a < Makefile cat
+	-<<a echo hallo | cat
+	-find newline when exeec $NOT-EXIST
