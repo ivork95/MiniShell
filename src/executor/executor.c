@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 18:57:06 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 20:06:40 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,9 @@ int	exec_builtin(t_env_var **head, t_command *cmd)
 	return (0);
 }
 
-void	child_procces(t_command *cmd, t_env_var **head, int read_end, int i, int pipe_fd[2])
-{
-	if (cmd->next == NULL)
-		last_process(head, cmd, read_end);
-	else if (i == 0)
-		first_process(head, cmd, pipe_fd);
-	else
-		middle_process(head, cmd, pipe_fd, read_end);
-}
-
-void error_handeling(char *str)
-{
-	perror(str);
-	exit(EXIT_FAILURE);
-}
-
 void	create_processes(t_command *cmd, t_env_var **head)
 {
-	int		pipe_fd[2];
+	int		*pipe_fd;
 	int		read_end;
 	size_t	i;
 
@@ -98,38 +82,20 @@ void	create_processes(t_command *cmd, t_env_var **head)
 	while (cmd != NULL)
 	{
 		if (cmd->next != NULL)
-		{
-			if (pipe(pipe_fd) == -1)
-				error_handeling("pipe");
-		}
-		cmd->cpid = fork();
-		if (cmd->cpid == -1)
-			error_handeling("fork");
-		if (cmd->cpid == 0)
-		{
-			if (cmd->next == NULL)
-				last_process(head, cmd, read_end);
-			else if (i == 0)
-				first_process(head, cmd, pipe_fd);
-			else
-				middle_process(head, cmd, pipe_fd, read_end);
-		}
+			pipe_fd = create_pipe();
+		if (cmd->next == NULL)
+			last_process(head, cmd, read_end);
+		else if (i == 0)
+			first_process(head, cmd, pipe_fd);
 		else
-		{
-			if (i > 0)
-			{
-				if (close(read_end) == -1)
-					error_handeling("close");
-			}
-			read_end = pipe_fd[0];
-			if (cmd->next != NULL)
-			{
-				if (close(pipe_fd[1]) == -1)
-					error_handeling("close");
-			}
-			i++;
-			cmd = cmd->next;
-		}
+			middle_process(head, cmd, pipe_fd, read_end);
+		if (i > 0)
+			close_pipe(read_end);
+		read_end = pipe_fd[0];
+		if (cmd->next != NULL)
+			close_pipe(pipe_fd[1]);
+		i++;
+		cmd = cmd->next;
 	}
 }
 

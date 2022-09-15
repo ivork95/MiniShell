@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:31:23 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 04:55:58 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 20:58:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	redirect_type(char *str)
 		return (REDIRECT_IN);
 	else if (!ft_strncmp(str, ">", 1))
 		return (REDIRECT_OUT);
-	return (-1); // kan deze case ooit afgaan? Kan een enum -1 assigned krijgen?
+	return (-1);
 }
 
 size_t	count_words(t_token *head)

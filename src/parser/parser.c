@@ -6,10 +6,9 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/15 16:35:59 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 20:58:40 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <stdio.h>
 #include <readline/readline.h>
@@ -79,9 +78,8 @@ int	heredoc_function(t_token *token)
 		free(joined_str);
 	}
 	close(pipe_fd[1]);
-	return(pipe_fd[0]);
+	return (pipe_fd[0]);
 }
-
 
 void	set_files(t_token **token, t_command *command)
 {
@@ -91,7 +89,7 @@ void	set_files(t_token **token, t_command *command)
 	file = malloc(sizeof(t_file));
 	if (file == NULL)
 		exit(EXIT_FAILURE);
-    if (redirect_type((*token)->str) == HEREDOC)
+	if (redirect_type((*token)->str) == HEREDOC)
 		file->heredoc_fd = heredoc_function((*token)->next);
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;

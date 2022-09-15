@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 15:33:53 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 20:14:04 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,28 @@
 #include "../../includes/parser.h"
 #include "../../includes/expander.h"
 #include "../../includes/builtins.h"
+
+void	error_handeling(char *str)
+{
+	perror(str);
+	exit(EXIT_FAILURE);
+}
+
+int	*create_pipe(void)
+{
+	int	*pipe_fd;
+
+	pipe_fd = malloc(sizeof(int) * 2);
+	if (pipe(pipe_fd) == -1)
+		error_handeling("pipe");
+	return (pipe_fd);
+}
+
+void	close_pipe(int pipe_fd)
+{
+	if (close(pipe_fd) == -1)
+		error_handeling("close");
+}
 
 static void	free_splitted_array(char **splitted_array)
 {

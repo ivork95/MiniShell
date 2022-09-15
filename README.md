@@ -34,4 +34,5 @@ TODO:
 	-echo 'hallo '$PATH' '
 	-<< a < Makefile cat
 	-<<a echo hallo | cat
+	-  << a < Makefile < Dockerfile cat > outfile
 	-find newline when exeec $NOT-EXIST

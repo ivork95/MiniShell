@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 15:04:48 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 20:54:24 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*remove_quotes(char *str, char delimiter)
 char	*expand_envp(char *str, t_env_var *envp)
 {
 	t_expand_data	data;
-
+	//needs refactor
 	null_data(&data);
 	data.pos_dollar_sign = ft_strchr(str, '$');
 	if (data.pos_dollar_sign)
