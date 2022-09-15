@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/15 05:31:11 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 16:35:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../../includes/parser.h"
 #include "../../includes/expander.h"
 #include "../../includes/builtins.h"
+
 void	set_command(t_token **token, t_command *command)
 {
 	char	*cmd;
@@ -62,13 +63,11 @@ int	heredoc_function(t_token *token)
 	char	*joined_str;
 	char	*delimiter;
 	int		pipe_fd[2];
-    int fd;
 
 	delimiter = malloc(sizeof(char) * token->len + 1);
 	ft_strlcpy(delimiter, token->str, token->len + 1);
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
-    fd = open("heredocccc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	while (1)
 	{
 		user_input = readline("heredoc>");

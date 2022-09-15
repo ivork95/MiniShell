@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/08 16:40:58 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 16:44:15 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 	}
 }
 
-void	exit_builtin(t_command *cmd, t_env_var **vars)
+void	exit_builtin(t_command *cmd,
+	__attribute__ ((unused)) t_env_var **vars)
 {
 	unsigned int	argc;
 

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 17:41:11 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/15 18:04:16 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,7 @@ void	echo_builtin(t_command *command,
 	write_args(command);
 	if (dup2(saved_stdout, 1) == -1)
 		ft_putendl_fd("Error occured with restoring stdout", 2);
+	if (close(saved_stdout) == -1)
+		ft_putendl_fd("Error: could not close fd", 2);
+	
 }
