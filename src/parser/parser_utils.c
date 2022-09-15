@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:31:23 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/08 16:30:06 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 04:55:58 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	redirect_type(char *str)
 {
 	if (!ft_strncmp(str, ">>", 2))
 		return (REDIRECT_APP);
+	else if (!ft_strncmp(str, "<<", 2))
+		return (HEREDOC);
 	else if (!ft_strncmp(str, "<", 1))
 		return (REDIRECT_IN);
 	else if (!ft_strncmp(str, ">", 1))

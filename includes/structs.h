@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 13:27:42 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/08 16:30:18 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 04:52:06 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 typedef enum t_redirect{
 	REDIRECT_IN,
 	REDIRECT_OUT,
-	REDIRECT_APP
+	REDIRECT_APP,
+    HEREDOC
 }	t_redirect;
 
 typedef struct s_env_var
@@ -42,6 +43,7 @@ typedef struct s_file
 {
 	t_redirect		type;
 	char			*file_name;
+    int             heredoc_fd;
 	struct s_file	*next;
 }	t_file;
 

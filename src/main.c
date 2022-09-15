@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/08 17:14:23 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 05:27:34 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,18 @@ static void	handle_redirect_in(t_file *files)
 
 	while (files)
 	{
+        if (files->type == HEREDOC)
+        {
+            fd = open("heredoc_tmp.txt", O_RDONLY);
+            if (fd == -1)
+                exit(EXIT_FAILURE);
+		    if (dup2(fd, STDIN_FILENO) == -1)
+		    	ft_putendl_fd("Error: Could not duplicate fdddd", 2);
+		    if (close(fd) == -1)
+	    		ft_putendl_fd("Error: could not close fdddd", 2);
+            files = files->next;
+            break;
+        }
 		if (files->type == REDIRECT_OUT)
 		{
 			files = files->next;
@@ -137,9 +149,9 @@ static void	handle_redirect_in(t_file *files)
 		if (fd == -1)
 			ft_putendl_fd("Error: opening file", 2);
 		if (dup2(fd, STDIN_FILENO) == -1)
-			ft_putendl_fd("Error: Could not duplicate fd", 2);
+			ft_putendl_fd("Error1: Could not duplicate fd1", 2);
 		if (close(fd) == -1)
-			ft_putendl_fd("Error: could not close fd", 2);
+			ft_putendl_fd("Error1: could not close fd1", 2);
 		files = files->next;
 	}
 }
@@ -150,7 +162,7 @@ static void	handle_redirect_out(t_file *files)
 
 	while (files)
 	{
-		if (files->type == REDIRECT_IN)
+		if (files->type == REDIRECT_IN || files->type == HEREDOC)
 		{
 			files = files->next;
 			continue ;
@@ -162,9 +174,9 @@ static void	handle_redirect_out(t_file *files)
 		if (fd == -1)
 			ft_putendl_fd("Error: opening file", 2);
 		if (dup2(fd, STDOUT_FILENO) == -1)
-			ft_putendl_fd("Error: Could not duplicate fd", 2);
+			ft_putendl_fd("Error3: Could not duplicate fd", 2);
 		if (close(fd) == -1)
-			ft_putendl_fd("Error: could not close fd", 2);
+			ft_putendl_fd("Error3: could not close fd", 2);
 		files = files->next;
 	}
 }
