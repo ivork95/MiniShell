@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/16 16:03:54 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 16:54:18 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,11 @@ void	create_processes(t_command *cmd, t_env_var **head)
 			middle_process(head, cmd, pipe_fd, read_end);
 		if (i > 0)
 			close_pipe(read_end);
-		read_end = pipe_fd[0];
 		if (cmd->next != NULL)
+		{
+			read_end = pipe_fd[0];
 			close_pipe(pipe_fd[1]);
+		}
 		i++;
 		cmd = cmd->next;
 	}
