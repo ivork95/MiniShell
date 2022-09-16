@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/15 16:44:15 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 12:56:19 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 		else
 		{
 			if (cpid != 0)
-				ft_putendl_fd("exit\n", STDOUT_FILENO);
+				ft_putendl_fd("exit", STDOUT_FILENO);
 			ft_putendl_fd("minishell: exit: too many arguments", STDOUT_FILENO);
 		}
 	}
