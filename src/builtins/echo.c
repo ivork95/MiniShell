@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/16 13:36:24 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 17:14:26 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	write_args(t_command *command)
 
 	new_line = 1;
 	i = 1;
-	if (!ft_strncmp(command->args[1], "-n", 3))
+	if (command->args[1] && !ft_strncmp(command->args[1], "-n", 3))
 	{
 		new_line = 0;
 		i++;
