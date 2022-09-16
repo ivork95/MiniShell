@@ -49,7 +49,7 @@ Test(minishell_tests, bin_ls, .init=setup)
 	free_env_vars(onze_env);
 }
 
-/* Simple Command & global variables */
+/* Arguments & history */
 Test(minishell_tests, bin_ls_l_t, .init=setup)
 {
 	char *user_input;
@@ -183,6 +183,29 @@ Test(minishell_tests, echo_n, .init=setup)
 	executor(commands, &onze_env);
 
 	cr_assert_stdout_eq_str("");
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
+Test(minishell_tests, echo_$, .init=setup)
+{
+	char *user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("echo $?");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+
+	cr_assert_stdout_eq_str("0\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
@@ -354,6 +377,167 @@ Test(minishell_tests, exit_42_hello, .init=setup)
 	free_commands(commands);
 	free_env_vars(onze_env);
 }
+
+/* Return value of a process */
+// Hebben we echo $? voor nodig
+
+/* Signals */
+// Moeten we nog bouwen
+
+/* Double Quotes */
+Test(minishell_tests, echo_double_quotes, .init=setup)
+{
+	char *user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("echo \"cat lol.c | cat > lol.c\"");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+
+	cr_assert_stdout_eq_str("cat lol.c | cat > lol.c\n");
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
+/* Single Quotes */
+Test(minishell_tests, echo_$_user, .init=setup)
+{
+	char *user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("echo \'$USER\'");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+
+	cr_assert_stdout_eq_str("$USER\n");
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
+Test(minishell_tests, echo_idan, .init=setup)
+{
+	char *user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("echo \'hallo \'$PATH\' \'");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+
+	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n");
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
+/* Env */
+// is wel te schrijven
+
+/* Export */
+// is wel te schrijven
+
+/* Unset */
+// is wel te schrijven
+
+/* Cd */
+// is wel te schrijven
+
+/* Pwd */
+// is wel te schrijven
+
+/* Relative path */
+Test(minishell_tests, relative_path, .init=setup)
+{
+	char *user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("../../usr/bin/ls ../includes");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+
+	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nparser.h\nstructs.h\ntokenizer.h\n");
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
+
+/* Environment path */
+Test(minishell_tests, environment_path, .init=setup)
+{
+	unsigned int	i = 0;
+	char			*user_inputs[4];
+
+	user_inputs[0] = ft_strdup("unset PATH");
+	user_inputs[1] = ft_strdup("export PATH=/bla/bla:/usr/bin");
+	user_inputs[2] = ft_strdup("ls ../includes");
+	user_inputs[3] = 0;
+
+
+	char	*user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	while (user_inputs[i])
+	{
+		user_input = user_inputs[i];
+		tokens = tokenizer(user_input);
+		if (tokens == NULL)
+		{
+			free(user_input);
+			free_tokens(tokens);
+		}
+		commands = parser(tokens);
+		expander(commands, onze_env);
+		executor(commands, &onze_env);
+
+		free(user_input);
+		free_tokens(tokens);
+		free_commands(commands);
+
+		i++;
+	}	
+	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nparser.h\nstructs.h\ntokenizer.h\n");
+	free_env_vars(onze_env);
+}
+
+/* Redirection */
+// Verzin test samen met Idan
+
+/* Pipes */
+
 
 /*
 gcc \

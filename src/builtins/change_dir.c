@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 17:37:48 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/16 13:59:57 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,18 @@ void	change_directory(t_command *command, t_env_var **environ)
 		home = find_env_var(*environ, "HOME");
 		if (home == NULL)
 		{
-			ft_putendl_fd("error home\n", 2);
+			ft_putendl_fd("cd: HOME not set", 2);
 			return ;
 		}
 		else if (chdir(home->value) == -1)
 		{
-			ft_putendl_fd("error value\n", 2);
+			perror("minishell: chdir");
 			return ;
 		}
 	}
 	else if (chdir(command->args[1]) == -1)
 	{
-		ft_putendl_fd("error\n", 2);
+		perror("minishell: chdir");
 		return ;
 	}
 	change_env_old_pwd(old_pwd, environ);
