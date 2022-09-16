@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 20:06:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 16:03:54 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	exec_builtin(t_env_var **head, t_command *cmd)
 	while (lookup_table[i].builtin_name)
 	{
 		if (!ft_strncmp(cmd->cmd, lookup_table[i].builtin_name,
-				ft_strlen(cmd->cmd)))
+				ft_strlen(lookup_table[i].builtin_name)))
 		{
 			lookup_table[i].function(cmd, head);
 			return (1);
