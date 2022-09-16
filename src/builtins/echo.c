@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 20:53:21 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 13:36:24 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static void	write_args(t_command *command)
 
 	new_line = 1;
 	i = 1;
+	if (!ft_strncmp(command->args[1], "-n", 3))
+	{
+		new_line = 0;
+		i++;
+	}
 	while (command->args[i])
 	{
-		if (!ft_strncmp(command->args[1], "-n", 3) && new_line)
-		{
-			new_line = 0;
-			i++;
-		}
 		write(1, command->args[i], ft_strlen(command->args[i]));
 		if (command->args[i + 1])
 			write(1, " ", 1);
@@ -41,21 +41,19 @@ static void	duplicate_stdout(t_file *files)
 
 	while (files)
 	{
-		if (files->type == REDIRECT_IN)
+		if (files->type == REDIRECT_OUT || files->type == REDIRECT_APP)
 		{
-			files = files->next;
-			continue ;
+			if (files->type == REDIRECT_OUT)
+				fd = open(files->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+			else if (files->type == REDIRECT_APP)
+				fd = open(files->file_name, O_WRONLY | O_CREAT | O_APPEND, 0664);
+			if (fd == -1)
+				ft_putendl_fd("Error: opening file", 2);
+			if (dup2(fd, STDOUT_FILENO) == -1)
+				ft_putendl_fd("Error: Could not duplicate fd", 2);
+			if (close(fd) == -1)
+				ft_putendl_fd("Error: could not close fd", 2);
 		}
-		else if (files->type == REDIRECT_OUT)
-			fd = open(files->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-		else if (files->type == REDIRECT_APP)
-			fd = open(files->file_name, O_WRONLY | O_CREAT | O_APPEND, 0664);
-		if (fd == -1)
-			ft_putendl_fd("Error: opening file", 2);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			ft_putendl_fd("Error: Could not duplicate fd", 2);
-		if (close(fd) == -1)
-			ft_putendl_fd("Error: could not close fd", 2);
 		files = files->next;
 	}
 }
