@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/15 20:58:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 13:56:06 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	heredoc_function(t_token *token)
 	int		pipe_fd[2];
 
 	delimiter = malloc(sizeof(char) * token->len + 1);
+	if (delimiter == NULL)
+		exit(EXIT_FAILURE);
 	ft_strlcpy(delimiter, token->str, token->len + 1);
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
