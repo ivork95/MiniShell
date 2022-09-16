@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/15 20:58:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 16:37:52 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "../../includes/parser.h"
 #include "../../includes/expander.h"
 #include "../../includes/builtins.h"
@@ -56,29 +59,29 @@ void	set_args(t_token **token, t_command *command)
 	}
 }
 
-int	heredoc_function(t_token *token)
+void	heredoc_function(t_token *token)
 {
 	char	*user_input;
 	char	*joined_str;
 	char	*delimiter;
-	int		pipe_fd[2];
+	int		fd;
 
 	delimiter = malloc(sizeof(char) * token->len + 1);
-	ft_strlcpy(delimiter, token->str, token->len + 1);
-	if (pipe(pipe_fd) == -1)
+	if (delimiter == NULL)
 		exit(EXIT_FAILURE);
+	ft_strlcpy(delimiter, token->str, token->len + 1);
+	fd = open("tmp", O_RDWR | O_CREAT, 0664);
 	while (1)
 	{
 		user_input = readline("heredoc>");
 		if (!ft_strncmp(user_input, delimiter, ft_strlen(delimiter) + 1))
 			break ;
 		joined_str = ft_strjoin(user_input, "\n");
-		write(pipe_fd[1], joined_str, ft_strlen(joined_str));
+		write(fd, joined_str, ft_strlen(joined_str));
 		free(user_input);
 		free(joined_str);
 	}
-	close(pipe_fd[1]);
-	return (pipe_fd[0]);
+	close(fd);
 }
 
 void	set_files(t_token **token, t_command *command)
@@ -90,7 +93,7 @@ void	set_files(t_token **token, t_command *command)
 	if (file == NULL)
 		exit(EXIT_FAILURE);
 	if (redirect_type((*token)->str) == HEREDOC)
-		file->heredoc_fd = heredoc_function((*token)->next);
+		heredoc_function((*token)->next);
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
 	file->file_name = malloc(sizeof(char) * (*token)->len + 1);

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 20:51:04 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 16:39:11 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ static void	handle_redirect_in(t_file *files)
 		//TODO fix multipe redirections with heredoc
 		if (files->type == HEREDOC)
 		{
-			if (dup2(files->heredoc_fd, STDIN_FILENO) == -1)
+			fd = open("tmp", O_RDONLY);
+			if (dup2(fd, STDIN_FILENO) == -1)
 				ft_putendl_fd("Error: Could not duplicate fd", 2);
-			if (close(files->heredoc_fd) == -1)
+			if (close(fd) == -1)
 				ft_putendl_fd("Error: could not close fd", 2);
+			unlink("tmp");
 		}
 		if (files->type == REDIRECT_IN)
 		{

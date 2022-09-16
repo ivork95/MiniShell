@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 13:27:42 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 21:01:38 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 16:38:03 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_file
 {
 	t_redirect		type;
 	char			*file_name;
-	int				heredoc_fd;
 	struct s_file	*next;
 }	t_file;
 
