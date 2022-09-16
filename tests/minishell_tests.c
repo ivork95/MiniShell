@@ -50,6 +50,29 @@ Test(minishell_tests, echo_hello_pipe_cat, .init=setup)
 	free_env_vars(onze_env);
 }
 
+Test(minishell_tests, bin_ls, .init=setup)
+{
+	char *user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("/bin/ls");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+
+	cr_assert_stdout_eq_str("a.out\ncd_tests.c\necho_tests.c\nexecve_tests.c\nexit_tests.c\nexpander_tests.c\nexport_tests.c\nminishell_tests.c\nparser_tests.c\ntest_cmds\ntokenizer_tests.c\nunset_tests.c\n");
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
 /*
 gcc \
 minishell_tests.c \
