@@ -6,18 +6,12 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/16 16:54:18 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/19 16:27:20 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <sys/wait.h>
-#include "../../includes/parser.h"
-#include "../../includes/expander.h"
+#include "../../includes/structs.h"
 #include "../../includes/builtins.h"
 #include "../../includes/executor.h"
 

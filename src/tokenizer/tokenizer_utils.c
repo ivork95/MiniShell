@@ -6,11 +6,12 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:03:53 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/08 13:32:02 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/19 16:10:24 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/tokenizer.h"
+#include <stdio.h>
+#include "../../includes/structs.h"
 
 bool	ft_isspace(int c)
 {
