@@ -6,15 +6,18 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/19 16:34:19 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/16 16:39:11 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include "../libft/libft.h"
-#include "../../includes/structs.h"
+#include "../../includes/parser.h"
+#include "../../includes/expander.h"
+#include "../../includes/builtins.h"
 #include "../../includes/executor.h"
 
 static void	handle_redirect_in(t_file *files)

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/19 16:07:14 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 15:49:23 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <string.h>
 # include <stdlib.h>
 
 /* env.c */

@@ -6,12 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:31:23 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/19 16:19:19 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/15 20:58:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
-#include <stdio.h>
 
 int	redirect_type(char *str)
 {

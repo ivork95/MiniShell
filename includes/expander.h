@@ -6,17 +6,20 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:02:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/19 16:23:07 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/02 18:00:34 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
+# include "parser.h"
 # include "builtins.h"
 # include "structs.h"
 # include "../src/libft/libft.h"
 # include <stdlib.h>
+# include <stdbool.h>
+# include <string.h>
 
 # define SINGLE_QUOTES 1
 # define DOUBLE_QUOTES 2

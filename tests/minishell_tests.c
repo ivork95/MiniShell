@@ -50,12 +50,12 @@ Test(minishell_tests, bin_ls, .init=setup)
 }
 
 /* Arguments & history */
-Test(minishell_tests, bin_ls_l_t, .init=setup)
+Test(minishell_tests, bin_ls_t_a, .init=setup)
 {
 	char *user_input;
 
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -l -t ../includes");
+	user_input = ft_strdup("/bin/ls -t -a ../includes");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -73,12 +73,12 @@ Test(minishell_tests, bin_ls_l_t, .init=setup)
 	free_env_vars(onze_env);
 }
 
-Test(minishell_tests, bin_ls_lt, .init=setup)
+Test(minishell_tests, bin_ls_ta, .init=setup)
 {
 	char *user_input;
 
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -lt ../includes");
+	user_input = ft_strdup("/bin/ls -ta ../includes");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{

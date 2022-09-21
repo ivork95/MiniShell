@@ -6,13 +6,14 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:09:33 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/19 16:11:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/08/26 14:00:59 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
+# include <stdio.h>
 # include "structs.h"
 
 enum {
