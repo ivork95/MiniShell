@@ -25,13 +25,13 @@ static void	setup(void)
 	redirect_all_std();
 }
 
-/* Simple Command & global variables */
-Test(minishell_tests, bin_ls, .init=setup)
+/* Arguments & history */
+Test(minishell_tests, bin_ls_t_a, .init=setup)
 {
 	char *user_input;
 
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls ../../includes/");
+	user_input = ft_strdup("/bin/ls -t -a  ../../includes/");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -42,7 +42,30 @@ Test(minishell_tests, bin_ls, .init=setup)
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
 
-	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nparser.h\nstructs.h\ntokenizer.h\n");
+	cr_assert_stdout_eq_str("..\ntokenizer.h\n.\nstructs.h\nparser.h\nexpander.h\nbuiltins.h\nexecutor.h\n");
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
+Test(minishell_tests, bin_ls_ta, .init=setup)
+{
+	char *user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("/bin/ls -ta ../../includes/");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+
+	cr_assert_stdout_eq_str("..\ntokenizer.h\n.\nstructs.h\nparser.h\nexpander.h\nbuiltins.h\nexecutor.h\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);

@@ -1,4 +1,6 @@
-test_objects		=	simple_command.o
+test_objects		=	simple_command.o \
+						arguments.o \
+						echo.o
 
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \
@@ -22,8 +24,8 @@ minishell_objects	=	../../obj/change_dir.o \
 integration_tests : $(test_objects)
 	gcc -o integration_tests $(test_objects) -lcriterion $(minishell_objects) -lreadline -L../../src/libft -l:libft.a
 
-simple_command.o: simple_command.c
-	gcc -c simple_command.c
+%.o : %.c
+	gcc -c $<
 
 clean : 
 	rm integration_tests $(test_objects)
