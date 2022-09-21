@@ -6,7 +6,9 @@ test_objects		=	obj/simple_command.o \
 						obj/single_quotes.o \
 						obj/relative_path.o \
 						obj/environment_path.o \
-						obj/env.o
+						obj/env.o \
+						obj/export.o \
+						obj/unset.o
 
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \

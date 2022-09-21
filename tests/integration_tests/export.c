@@ -9,6 +9,7 @@
 #include "../../includes/executor.h"
 #include <readline/history.h>
 #include <string.h>
+#include <stdlib.h>
 
 extern char			**environ;
 static t_command	*commands;
@@ -56,12 +57,12 @@ static char *two_d_to_str(void)
 }
 
 /* Env */
-Test(minishell_tests, env, .init=setup)
+Test(minishell_tests, export, .init=setup)
 {
 	char	*user_input;
 
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("env");
+	user_input = ft_strdup("export a=b");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -73,6 +74,7 @@ Test(minishell_tests, env, .init=setup)
 	executor(commands, &onze_env);
 	add_history(user_input);
 
+	setenv("a", "b", 1);
 	cr_assert_stdout_eq_str(two_d_to_str());
 
 	free(user_input);
