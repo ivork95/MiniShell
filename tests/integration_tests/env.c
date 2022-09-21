@@ -23,27 +23,25 @@ static void redirect_all_std(void)
 
 static void	setup(void)
 {
-	// ;
 	redirect_all_std();
 }
 
 char *two_d_to_str(void)
 {
-	unsigned int i = 0;
-	unsigned int j = 0;
-	size_t s = 0;
+	unsigned int	i = 0;
+	unsigned int	j = 0;
+	size_t			s = 0;
 
+	// Tel hoeveel characters gemalloced moeten worden
 	while (environ[i])
 	{
-		// printf("i = %u\n", i);
-		s = s + strlen(environ[i]) + 2;
+		s = s + strlen(environ[i]) + 1;
 		i++;
 	}
-	// printf("s = %lu\n", s);
 
-	char *a = malloc(s);
-	char *a_dup = a;
-	a[s] = '\0';
+	// Zet 2d array om in string
+	char			*a = malloc(s);
+	char			*a_dup = a;
 	i = 0;
 	while (environ[i])
 	{
@@ -53,13 +51,11 @@ char *two_d_to_str(void)
 		a_dup++;
 		i++;
 	}
-	a_dup = a_dup - 1;
 	a_dup[0] = '\0';
-	// printf("%s\n", a);
 	return (a);
 }
 
-/* Exit beetje iffy */
+/* Env */
 Test(minishell_tests, env, .init=setup)
 {
 	char	*user_input;
@@ -77,7 +73,7 @@ Test(minishell_tests, env, .init=setup)
 	executor(commands, &onze_env);
 	add_history(user_input);
 
-	// cr_assert_stdout_eq_str(two_d_to_str());
+	cr_assert_stdout_eq_str(two_d_to_str());
 
 	free(user_input);
 	free_tokens(tokens);
