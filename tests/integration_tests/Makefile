@@ -1,6 +1,12 @@
-test_objects		=	simple_command.o \
-						arguments.o \
-						echo.o
+test_objects		=	obj/simple_command.o \
+						obj/arguments.o \
+						obj/echo.o \
+						obj/exit.o \
+						obj/double_quotes.o \
+						obj/single_quotes.o \
+						obj/relative_path.o \
+						obj/environment_path.o \
+						obj/env.o
 
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \
@@ -24,8 +30,10 @@ minishell_objects	=	../../obj/change_dir.o \
 integration_tests : $(test_objects)
 	gcc -o integration_tests $(test_objects) -lcriterion $(minishell_objects) -lreadline -L../../src/libft -l:libft.a
 
-%.o : %.c
-	gcc -c $<
+obj/%.o : %.c
+	@mkdir -p $(dir $@)
+	gcc -c -o $@ $<
 
 clean : 
-	rm integration_tests $(test_objects)
+	rm integration_tests
+	rm -r obj
