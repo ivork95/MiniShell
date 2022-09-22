@@ -25,13 +25,14 @@ static void	setup(void)
 	redirect_all_std();
 }
 
-/* Exit beetje iffy */
-Test(exit, exit, .init=setup, .exit_code=0)
+/* Cd */
+Test(cd, cd, .init=setup)
 {
-	char	*user_input;
-
+	char *user_input;
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("exit");
+
+
+	user_input = ft_strdup("cd");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -41,20 +42,36 @@ Test(exit, exit, .init=setup, .exit_code=0)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-	add_history(user_input);
-
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	user_input = ft_strdup("/bin/ls");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+
+	cr_assert_stdout_eq_str("");
+
 	free_env_vars(onze_env);
 }
 
-Test(exit, exit_42, .init=setup, .exit_code=42)
+Test(cd, cd_parent, .init=setup)
 {
-	char	*user_input;
-
+	char *user_input;
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("exit 42");
+
+	user_input = ft_strdup("cd ..");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -64,20 +81,36 @@ Test(exit, exit_42, .init=setup, .exit_code=42)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-	add_history(user_input);
-
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	user_input = ft_strdup("/bin/ls");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+
+	cr_assert_stdout_eq_str("a.out\ncd_tests.c\necho_tests.c\nexecve_tests.c\nexit_tests.c\nexpander_tests.c\nexport_tests.c\nintegration_tests\nminishell_tests.c\noutfile\nparser_tests.c\ntest_cmds\ntokenizer_tests.c\nunset_tests.c\n");
+
 	free_env_vars(onze_env);
 }
 
-Test(exit, exit_hello, .init=setup, .exit_code=2)
+Test(cd, cd_current, .init=setup)
 {
-	char	*user_input;
-
+	char *user_input;
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("exit hello");
+
+	user_input = ft_strdup("cd .");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -87,20 +120,36 @@ Test(exit, exit_hello, .init=setup, .exit_code=2)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-	add_history(user_input);
-
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	user_input = ft_strdup("/bin/ls");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+
+	cr_assert_stdout_eq_str("Makefile\narguments.c\ncd.c\ndouble_quotes.c\necho.c\nenv.c\nenvironment_path.c\nexit.c\nexport.c\nintegration_tests\nobj\noutfile\nrelative_path.c\nsimple_command.c\nsingle_quotes.c\nunset.c\n");
+
 	free_env_vars(onze_env);
 }
 
-Test(exit, exit_42_19, .init=setup)
+Test(cd, cd_wrong, .init=setup)
 {
-	char	*user_input;
-
+	char *user_input;
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("exit 42 19");
+
+	user_input = ft_strdup("cd blabla");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -110,83 +159,11 @@ Test(exit, exit_42_19, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-	add_history(user_input);
-
-	cr_assert_stdout_eq_str("exit\nminishell: exit: too many arguments\n");
-
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
-	free_env_vars(onze_env);
-}
 
-Test(exit, exit_hello_world, .init=setup, .exit_code=2)
-{
-	char	*user_input;
+	cr_assert_stderr_eq_str("minishell: chdir: No such file or directory\n");
 
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("exit hello world");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
-	add_history(user_input);
-
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
-	free_env_vars(onze_env);
-}
-
-Test(exit, exit_hello_42, .init=setup, .exit_code=2)
-{
-	char	*user_input;
-
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("exit hello 42");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
-	add_history(user_input);
-
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
-	free_env_vars(onze_env);
-}
-
-Test(exit, exit_42_hello, .init=setup)
-{
-	char	*user_input;
-
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("exit 42 hello");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
-	add_history(user_input);
-
-	cr_assert_stdout_eq_str("exit\nminishell: exit: too many arguments\n");
-
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
 	free_env_vars(onze_env);
 }

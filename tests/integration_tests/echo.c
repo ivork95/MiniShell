@@ -26,7 +26,7 @@ static void	setup(void)
 }
 
 /* Echo */
-Test(minishell_tests, echo_hello_world, .init=setup)
+Test(echo, echo_hello_world, .init=setup)
 {
 	char *user_input;
 
@@ -49,7 +49,7 @@ Test(minishell_tests, echo_hello_world, .init=setup)
 	free_env_vars(onze_env);
 }
 
-Test(minishell_tests, echo_n_hello_world, .init=setup)
+Test(echo, echo_n_hello_world, .init=setup)
 {
 	char *user_input;
 
@@ -72,7 +72,7 @@ Test(minishell_tests, echo_n_hello_world, .init=setup)
 	free_env_vars(onze_env);
 }
 
-Test(minishell_tests, echo, .init=setup)
+Test(echo, echo, .init=setup)
 {
 	char *user_input;
 
@@ -95,7 +95,7 @@ Test(minishell_tests, echo, .init=setup)
 	free_env_vars(onze_env);
 }
 
-Test(minishell_tests, echo_n, .init=setup)
+Test(echo, echo_n, .init=setup)
 {
 	char *user_input;
 
@@ -118,7 +118,7 @@ Test(minishell_tests, echo_n, .init=setup)
 	free_env_vars(onze_env);
 }
 
-Test(minishell_tests, echo_$, .init=setup)
+Test(echo, echo_$, .init=setup)
 {
 	char *user_input;
 

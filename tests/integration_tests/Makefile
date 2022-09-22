@@ -8,7 +8,10 @@ test_objects		=	obj/simple_command.o \
 						obj/environment_path.o \
 						obj/env.o \
 						obj/export.o \
-						obj/unset.o
+						obj/unset.o \
+						obj/cd.o \
+						obj/pwd.o \
+						obj/return_value.o
 
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \

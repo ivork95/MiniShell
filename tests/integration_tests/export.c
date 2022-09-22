@@ -57,12 +57,12 @@ static char *two_d_to_str(void)
 }
 
 /* Env */
-Test(minishell_tests, export, .init=setup)
+Test(export, export_jon_aegon, .init=setup, .disabled=true)
 {
 	char	*user_input;
 
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("export a=b");
+	user_input = ft_strdup("export jon=aegon");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -74,7 +74,33 @@ Test(minishell_tests, export, .init=setup)
 	executor(commands, &onze_env);
 	add_history(user_input);
 
-	setenv("a", "b", 1);
+	setenv("jon", "aegon", 1);
+	cr_assert_stdout_eq_str(two_d_to_str());
+
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+	free_env_vars(onze_env);
+}
+
+Test(export, export_hostname, .init=setup, .disabled=true)
+{
+	char	*user_input;
+
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	user_input = ft_strdup("export HOSTNAME=EWAA");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+	add_history(user_input);
+
+	setenv("HOSTNAME", "EWAA", 1);
 	cr_assert_stdout_eq_str(two_d_to_str());
 
 	free(user_input);

@@ -25,13 +25,14 @@ static void	setup(void)
 	redirect_all_std();
 }
 
-/* Arguments & history */
-Test(arguments, bin_ls_t_s, .init=setup)
+/* Return value of a process */
+Test(return_value, return_value, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -t -s  ../../includes/");
+
+
+	user_input = ft_strdup("ls ./bestaatniet");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -41,20 +42,15 @@ Test(arguments, bin_ls_t_s, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("total 24\n4 structs.h\n4 builtins.h\n4 executor.h\n4 parser.h\n4 expander.h\n4 tokenizer.h\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
-	free_env_vars(onze_env);
-}
 
-Test(arguments, bin_ls_ts, .init=setup)
-{
-	char *user_input;
 
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -ts ../../includes/");
+	cr_assert_stderr_eq_str("ls: cannot access './bestaatniet': No such file or directory\n");
+
+
+	user_input = ft_strdup("echo $?");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -64,10 +60,13 @@ Test(arguments, bin_ls_ts, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("total 24\n4 structs.h\n4 builtins.h\n4 executor.h\n4 parser.h\n4 expander.h\n4 tokenizer.h\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("2\n");
+
+
 	free_env_vars(onze_env);
 }

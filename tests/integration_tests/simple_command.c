@@ -26,7 +26,7 @@ static void	setup(void)
 }
 
 /* Simple Command & global variables */
-Test(minishell_tests, bin_ls, .init=setup)
+Test(simple_command, bin_ls, .init=setup)
 {
 	char *user_input;
 

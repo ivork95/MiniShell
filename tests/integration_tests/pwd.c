@@ -25,13 +25,14 @@ static void	setup(void)
 	redirect_all_std();
 }
 
-/* Arguments & history */
-Test(arguments, bin_ls_t_s, .init=setup)
+/* pwd */
+Test(pwd, pwd, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -t -s  ../../includes/");
+
+
+	user_input = ft_strdup("pwd");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -41,33 +42,12 @@ Test(arguments, bin_ls_t_s, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("total 24\n4 structs.h\n4 builtins.h\n4 executor.h\n4 parser.h\n4 expander.h\n4 tokenizer.h\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
-	free_env_vars(onze_env);
-}
 
-Test(arguments, bin_ls_ts, .init=setup)
-{
-	char *user_input;
 
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -ts ../../includes/");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
+	cr_assert_stdout_eq_str("/pwd/tests/integration_tests\n");
 
-	cr_assert_stdout_eq_str("total 24\n4 structs.h\n4 builtins.h\n4 executor.h\n4 parser.h\n4 expander.h\n4 tokenizer.h\n");
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
 	free_env_vars(onze_env);
 }
