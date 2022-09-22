@@ -36,3 +36,4 @@ TODO:
 	-<<a echo hallo | cat
 	-  << a < Makefile < Dockerfile cat > outfile
 	-find newline when exeec $NOT-EXIST
+    -echo builtin -nnn flag

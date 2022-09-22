@@ -136,6 +136,40 @@ Test(expander, double_quotes_inside_double, .init = setup)
     cr_assert(zero(ptr, commands->next));
 }
 
+Test(expander, linked_expanstion, .init = setup)
+{
+    t_command *commands;
+    t_token *tokens;
+    char *input;
+
+    input = "echo test$HOME";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
+    expander(commands, head);
+
+    cr_assert(eq(str, "echo", commands->cmd));
+    cr_assert(eq(str, "echo", commands->args[0]));
+    cr_assert(eq(str, "test/root", commands->args[1]));
+    cr_assert(zero(ptr, commands->next));
+}
+
+Test(expander, linked_expanstion_rev, .init = setup)
+{
+    t_command *commands;
+    t_token *tokens;
+    char *input;
+
+    input = "echo $HOMEtest";
+    tokens = tokenizer(input);
+    commands = parser(tokens);
+    expander(commands, head);
+
+    cr_assert(eq(str, "echo", commands->cmd));
+    cr_assert(eq(str, "echo", commands->args[0]));
+    cr_assert(eq(str, "", commands->args[1]));
+    cr_assert(zero(ptr, commands->next));
+}
+
 /*
 gcc \
 expander_tests.c \

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 20:54:24 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/20 13:42:54 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void	expand_args(t_command *command, t_env_var *envp)
 		quote_type = check_quote_type(command->args[i]);
 		if (quote_type == SINGLE_QUOTES)
 		{
+            if (is_expandable(command->args[i]))
+                command->args[i] = expand_envp(command->args[i], envp);
 			command->args[i] = remove_quotes(command->args[i], '\'');
 		}
 		else if (quote_type == DOUBLE_QUOTES)
