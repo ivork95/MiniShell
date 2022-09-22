@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:36:45 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 17:52:58 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/20 13:44:57 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,27 @@ char	*get_env_value(char **envp, char *var, int var_len)
 	return (empty);
 }
 
-size_t	is_expandable(char *str, char *position_dollar_sign)
-{
-	bool	expandable;
 
-	if (!position_dollar_sign)
-		return (false);
-	expandable = true;
-	while (*str != *position_dollar_sign)
-	{
-		if (*str == '\'' && expandable == true)
-			expandable = false;
-		else if (*str == '\'')
-			expandable = true;
-		str++;
-	}
-	return (expandable);
+size_t    is_expandable(char *str)
+{
+    char    *pos_dollar_sing;
+    int     i;
+    int     in_quotes;
+
+    pos_dollar_sing = ft_strchr(str, '$');
+    in_quotes = 0;
+    i = 0;
+    while (str[i])
+    {
+        if (str + i == pos_dollar_sing && !in_quotes)
+            return (1);
+        if (str[i] == '\'' && !in_quotes)
+            in_quotes = 1;
+        else if (str[i] == '\'')
+            in_quotes = 0;
+        i++;
+    }
+    return (0);
 }
+
+

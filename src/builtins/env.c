@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/15 16:43:57 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/19 17:04:49 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_env_var	*find_env_var(t_env_var *head, char *key_to_check)
 {
 	while (head != NULL)
 	{
-		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(head->key))))
+		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(key_to_check))))
 			return (head);
 		head = head->next;
 	}
