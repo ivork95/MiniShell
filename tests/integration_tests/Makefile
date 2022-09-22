@@ -1,3 +1,4 @@
+name				=	integration_tests
 test_objects		=	obj/simple_command.o \
 						obj/arguments.o \
 						obj/echo.o \
@@ -12,7 +13,6 @@ test_objects		=	obj/simple_command.o \
 						obj/cd.o \
 						obj/pwd.o \
 						obj/return_value.o
-
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \
 						../../obj/env.o \
@@ -31,14 +31,23 @@ minishell_objects	=	../../obj/change_dir.o \
 						../../obj/tokenizer_utils.o \
 						../../obj/tokenizer.o \
 						../../obj/unset.o
+libft	=				../../src/libft
 
-integration_tests : $(test_objects)
-	gcc -o integration_tests $(test_objects) -lcriterion $(minishell_objects) -lreadline -L../../src/libft -l:libft.a
+all : $(name)
+
+$(name) : $(test_objects)
+	$(CC) -o $(name) $(test_objects) -lcriterion $(minishell_objects) -lreadline -L$(libft) -l:libft.a
 
 obj/%.o : %.c
 	@mkdir -p $(dir $@)
-	gcc -c -o $@ $<
+	$(CC) -c -o $@ $<
 
 clean : 
-	rm integration_tests
-	rm -r obj
+	rm -rf obj
+
+fclean : clean
+	rm -f $(name)
+
+re : fclean all
+
+.PHONY: all clean fclean re libft libmlx

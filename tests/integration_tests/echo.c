@@ -29,8 +29,9 @@ static void	setup(void)
 Test(echo, echo_hello_world, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("echo Hello, World!");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -41,19 +42,23 @@ Test(echo, echo_hello_world, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("Hello, World!\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("Hello, World!\n");
+
+
 	free_env_vars(onze_env);
 }
 
 Test(echo, echo_n_hello_world, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("echo -n Hello, World!");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -64,19 +69,23 @@ Test(echo, echo_n_hello_world, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("Hello, World!");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("Hello, World!");
+
+
 	free_env_vars(onze_env);
 }
 
 Test(echo, echo, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("echo");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -87,19 +96,23 @@ Test(echo, echo, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("\n");
+
+
 	free_env_vars(onze_env);
 }
 
 Test(echo, echo_n, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("echo -n");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -110,19 +123,23 @@ Test(echo, echo_n, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("");
+
+
 	free_env_vars(onze_env);
 }
 
 Test(echo, echo_$, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("echo $?");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -133,10 +150,13 @@ Test(echo, echo_$, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("0\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("0\n");
+
+
 	free_env_vars(onze_env);
 }

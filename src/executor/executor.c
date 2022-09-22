@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/22 13:36:21 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/22 16:15:22 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,38 +101,41 @@ void	create_processes(t_command *cmd, t_env_var **head)
 	}
 }
 
+void update_exit_code(int last_exit_status, t_env_var **head)
+{
+	char	*s;
+
+	s = (void *)0;
+	if (WIFEXITED(last_exit_status))
+	{
+		s = ft_strjoin("?=", ft_itoa(WEXITSTATUS(last_exit_status)));
+		add_env_var(head, s);
+		free(s);
+	}
+}
+
 void	executor(t_command *cmd, t_env_var **head)
 {
+	int		r;
+	int		last_exit_status;
+	pid_t	pid_to_check;
+
 	if (cmd->next == NULL)
 	{
 		if (exec_builtin(head, cmd))
 			return ;
 	}
 	create_processes(cmd, head);
-
-	/*
 	while (cmd->next != NULL)
-	{
 		cmd = cmd->next;
-	}
-	int r = 0;
-	int last_exit_status = 0;
-	pid_t pid_to_check = wait(&r);
+	r = 0;
+	last_exit_status = 0;
+	pid_to_check = wait(&r);
 	while (pid_to_check != -1)
 	{
-		printf("pid_to_check = %i\n", pid_to_check);
-		printf("cmd->cpid = %i\n", cmd->cpid);
 		if (pid_to_check == cmd->cpid)
-		{
-			printf("r = %i\n", r);
 			last_exit_status = r;
-		}
 		pid_to_check = wait(&r);
 	}
-	if (WIFEXITED(last_exit_status))
-		printf("last_exit_status = %i\n", WEXITSTATUS(last_exit_status));
-	*/
-
-	while (wait(NULL) != -1)
-		;
+	update_exit_code(last_exit_status, head);
 }
