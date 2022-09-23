@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/08 13:32:52 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/23 12:15:52 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*create_new_token(void)
 
 	new_token = malloc(sizeof(*new_token));
 	if (new_token == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	new_token->str = NULL;
 	new_token->quoted = false;
 	new_token->next = NULL;

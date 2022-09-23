@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/21 22:05:13 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/23 11:41:58 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ t_env_var	*assign_env_key_value(char *env_var, char *ptr)
 
 	head = malloc(sizeof(*head));
 	if (head == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	len_key = (ptr - env_var);
 	head->key = ft_substr(env_var, 0, len_key);
 	if (head->key == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	head->value = ft_substr(env_var, len_key + 1, ft_strlen(ptr));
 	if (head->value == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	return (head);
 }
 

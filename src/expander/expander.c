@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/20 13:42:54 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/23 12:14:38 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*remove_quotes(char *str, char delimiter)
 
 	new_str = malloc(sizeof(char) * (ft_strlen(str) - 2) + 1);
 	if (new_str == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	i = 0;
 	j = 0;
 	last_occurence = ft_strrchr(str, delimiter);
@@ -41,10 +41,13 @@ char	*remove_quotes(char *str, char delimiter)
 	return (new_str);
 }
 
+/*
+** Refactoren!!
+*/
 char	*expand_envp(char *str, t_env_var *envp)
 {
 	t_expand_data	data;
-	//needs refactor
+
 	null_data(&data);
 	data.pos_dollar_sign = ft_strchr(str, '$');
 	if (data.pos_dollar_sign)
@@ -79,9 +82,7 @@ void	expand_command(t_command *command, t_env_var *envp)
 
 	quote_type = check_quote_type(command->cmd);
 	if (quote_type == SINGLE_QUOTES)
-	{
 		command->cmd = remove_quotes(command->cmd, '\'');
-	}
 	if (quote_type == DOUBLE_QUOTES)
 	{
 		command->cmd = remove_quotes(command->cmd, '\"');
@@ -103,8 +104,8 @@ void	expand_args(t_command *command, t_env_var *envp)
 		quote_type = check_quote_type(command->args[i]);
 		if (quote_type == SINGLE_QUOTES)
 		{
-            if (is_expandable(command->args[i]))
-                command->args[i] = expand_envp(command->args[i], envp);
+			if (is_expandable(command->args[i]))
+				command->args[i] = expand_envp(command->args[i], envp);
 			command->args[i] = remove_quotes(command->args[i], '\'');
 		}
 		else if (quote_type == DOUBLE_QUOTES)

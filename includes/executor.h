@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 20:59:40 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 10:34:46 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/23 13:57:30 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "expander.h"
 # include "builtins.h"
 # include "parser.h"
+# include "minishell.h"
 
 /* Public libraries */
 # include <stdio.h>
@@ -33,10 +34,10 @@ void	exec_ll(t_env_var *ll_environ, t_command *command);
 int		exec_builtin(t_env_var **head, t_command *cmd);
 
 /* executor_utils.c */
-void	error_handeling(char *str);
 int		*create_pipe(void);
 void	close_pipe(int pipe_fd);
 char	*get_full_path(char *path, const char *cmd);
+void	create_processes_inner(int *read_end, int *pipe_fd);
 
 /* processes.c */
 void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2]);

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 10:42:43 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/23 11:51:43 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 {
 	cmd->cpid = fork();
 	if (cmd->cpid == -1)
-		error_handeling("fork");
+		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)
 	{
 		if (close(pipe_fd[0]) == -1)
-			error_handeling("close");
+			perror_and_exit("close", EXIT_FAILURE);
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-			error_handeling("dup2");
+			perror_and_exit("dup2", EXIT_FAILURE);
 		if (close(pipe_fd[1]) == -1)
-			error_handeling("close");
+			perror_and_exit("close", EXIT_FAILURE);
 		if (cmd->files != NULL)
 		{
 			handle_redirect_in(cmd->files);
@@ -97,18 +97,18 @@ void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2],
 {
 	cmd->cpid = fork();
 	if (cmd->cpid == -1)
-		error_handeling("fork");
+		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)
 	{
 		if (close(pipe_fd[0]) == -1)
-			error_handeling("close");
+			perror_and_exit("close", EXIT_FAILURE);
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1
 			|| dup2(read_end, STDIN_FILENO) == -1)
-			error_handeling("dup2");
+			perror_and_exit("dup2", EXIT_FAILURE);
 		if (close(pipe_fd[1]) == -1)
-			error_handeling("close");
+			perror_and_exit("close", EXIT_FAILURE);
 		if (close(read_end) == -1)
-			error_handeling("close");
+			perror_and_exit("close", EXIT_FAILURE);
 		if (cmd->files != NULL)
 		{
 			handle_redirect_in(cmd->files);
@@ -124,15 +124,15 @@ void	last_process(t_env_var **head, t_command *cmd, int read_end)
 {
 	cmd->cpid = fork();
 	if (cmd->cpid == -1)
-		error_handeling("fork");
+		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)
 	{
 		if (read_end != -1)
 		{
 			if (dup2(read_end, STDIN_FILENO) == -1)
-				error_handeling("dup2");
+				perror_and_exit("dup2", EXIT_FAILURE);
 			if (close(read_end) == -1)
-				error_handeling("close");
+				perror_and_exit("close", EXIT_FAILURE);
 		}
 		if (cmd->files != NULL)
 		{

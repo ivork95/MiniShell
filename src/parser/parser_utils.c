@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:31:23 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 20:58:59 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/23 14:33:06 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ size_t	count_words(t_token *head)
 	return (i);
 }
 
-void	init_command(t_command *command)
+static void	init_command(t_command *command)
 {
 	command->cmd = NULL;
 	command->args = NULL;
@@ -53,7 +53,7 @@ t_command	*create_new_command(void)
 
 	command = malloc(sizeof(*command));
 	if (command == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	init_command(command);
 	return (command);
 }
@@ -70,34 +70,5 @@ void	command_add_back(t_command **head, t_command *new)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
-	}
-}
-
-void	print_commands(t_command *cmds)
-{
-	size_t	i;
-	size_t	j;
-
-	j = 0;
-	while (cmds)
-	{
-		i = 0;
-		printf("--------------------\n");
-		printf("cmds[%lu]\n", j);
-		printf("command = %s\n", cmds->cmd);
-		while (cmds->args && cmds->args[i])
-		{
-			printf("args[%lu] = %s\n", i, cmds->args[i]);
-			i++;
-		}
-		while (cmds->files)
-		{
-			printf("file operattor = %d\nfile_name  = %s\n",
-				cmds->files->type, cmds->files->file_name);
-			cmds->files = cmds->files->next;
-		}
-		printf("--------------------\n");
-		cmds = cmds->next;
-		j++;
 	}
 }

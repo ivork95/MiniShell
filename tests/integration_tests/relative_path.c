@@ -42,7 +42,7 @@ Test(minishell_tests, relative_path, .init=setup)
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
 
-	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nparser.h\nstructs.h\ntokenizer.h\n");
+	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nminishell.h\nparser.h\nstructs.h\ntokenizer.h\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);

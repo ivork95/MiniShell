@@ -100,7 +100,7 @@ Test(cd, cd_parent, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
-	cr_assert_stdout_eq_str("a.out\ncd_tests.c\necho_tests.c\nexecve_tests.c\nexit_tests.c\nexpander_tests.c\nexport_tests.c\nintegration_tests\nminishell_tests.c\noutfile\nparser_tests.c\ntest_cmds\ntokenizer_tests.c\nunset_tests.c\n");
+	cr_assert_stdout_eq_str("cd_tests.c\necho_tests.c\nexecve_tests.c\nexit_tests.c\nexpander_tests.c\nexport_tests.c\nintegration_tests\nminishell_tests.c\nparser_tests.c\ntest_cmds\ntokenizer_tests.c\nunset_tests.c\n");
 
 	free_env_vars(onze_env);
 }
@@ -139,7 +139,7 @@ Test(cd, cd_current, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
-	cr_assert_stdout_eq_str("Makefile\narguments.c\ncd.c\ndouble_quotes.c\necho.c\nenv.c\nenvironment_path.c\nexit.c\nexport.c\nintegration_tests\nobj\noutfile\nrelative_path.c\nsimple_command.c\nsingle_quotes.c\nunset.c\n");
+	cr_assert_stdout_eq_str("Makefile\narguments.c\ncd.c\ndouble_quotes.c\necho.c\nenv.c\nenvironment_path.c\nexit.c\nexport.c\nintegration_tests\nobj\npwd.c\nrelative_path.c\nreturn_value.c\nsimple_command.c\nsingle_quotes.c\nunset.c\n");
 
 	free_env_vars(onze_env);
 }

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:32:27 by ivork         #+#    #+#                 */
-/*   Updated: 2022/08/26 12:32:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/23 14:29:11 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,17 @@ void	free_commands(t_command *head)
 	if (head->files)
 		free_files(head->files);
 	free(head);
+}
+
+void	free_splitted_array(char **splitted_array)
+{
+	int	i;
+
+	i = 0;
+	while (splitted_array[i] != NULL)
+	{
+		free(splitted_array[i]);
+		i++;
+	}
+	free(splitted_array);
 }

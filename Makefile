@@ -4,13 +4,16 @@ VPATH		:=	src:\
 				src/tokenizer:\
 				src/expander: \
 				src/builtins: \
-				src/executor:
+				src/executor: \
+				src/heredoc:
 HEADERS		:=	includes/parser.h \
 				includes/tokenizer.h \
 				includes/expander.h \
 				includes/structs.h \
 				includes/builtins.h \
-				includes/executor.h
+				includes/executor.h \
+				includes/minishell.h \
+				includes/heredoc.h
 MAIN		:=	obj/main.o
 OBJECTS		:=	obj/parser.o \
 				obj/parser_utils.o \
@@ -29,7 +32,9 @@ OBJECTS		:=	obj/parser.o \
 				obj/exit.o \
 				obj/executor.o \
 				obj/processes.o \
-				obj/executor_utils.o
+				obj/executor_utils.o \
+				obj/minishell_utils.o \
+				obj/heredoc.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/cd_tests.c \
 				tests/echo_tests.c \

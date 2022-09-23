@@ -6,16 +6,16 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 10:31:42 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/23 14:29:02 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 
-void	error_handeling(char *str)
+void	create_processes_inner(int *read_end, int *pipe_fd)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
+	*read_end = pipe_fd[0];
+	close_pipe(pipe_fd[1]);
 }
 
 int	*create_pipe(void)
@@ -24,42 +24,27 @@ int	*create_pipe(void)
 
 	pipe_fd = malloc(sizeof(int) * 2);
 	if (pipe(pipe_fd) == -1)
-		error_handeling("pipe");
+		perror_and_exit("pipe", EXIT_FAILURE);
 	return (pipe_fd);
 }
 
 void	close_pipe(int pipe_fd)
 {
 	if (close(pipe_fd) == -1)
-		error_handeling("close");
+		perror_and_exit("close", EXIT_FAILURE);
 }
 
-static void	free_splitted_array(char **splitted_array)
+char	*get_full_path_inner(char **paths, char *cmd_dup, const char *cmd)
 {
-	int	i;
-
-	i = 0;
-	while (splitted_array[i] != NULL)
-	{
-		free(splitted_array[i]);
-		i++;
-	}
-	free(splitted_array);
-}
-
-char	*get_full_path(char *path, const char *cmd)
-{
-	char	**paths;
-	char	*full_path;
 	int		i;
-	char	*cmd_dup;
+	char	*full_path;
 
 	i = 0;
-	paths = ft_split(path, ':');
-	cmd_dup = ft_strjoin("/", cmd);
 	while (paths[i] != NULL)
 	{
 		full_path = ft_strjoin(paths[i], cmd_dup);
+		if (full_path == NULL)
+			perror_and_exit("malloc", EXIT_FAILURE);
 		if (!access(full_path, X_OK))
 			break ;
 		free(full_path);
@@ -74,4 +59,18 @@ char	*get_full_path(char *path, const char *cmd)
 	}
 	free_splitted_array(paths);
 	return (full_path);
+}
+
+char	*get_full_path(char *path, const char *cmd)
+{
+	char	**paths;
+	char	*cmd_dup;
+
+	paths = ft_split(path, ':');
+	if (paths == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	cmd_dup = ft_strjoin("/", cmd);
+	if (cmd_dup == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	return (get_full_path_inner(paths, cmd_dup, cmd));
 }

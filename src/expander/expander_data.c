@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/02 17:51:48 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/02 18:01:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/23 12:05:26 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,15 @@ t_expand_data	set_data(t_expand_data data, char *str)
 {
 	data.len = get_len_place_holder(data.pos_dollar_sign + 1);
 	data.env_name = ft_substr(data.pos_dollar_sign, 1, data.len);
+	if (data.env_name == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
 	data.first_part_str = ft_substr(str, 0, data.pos_dollar_sign - str);
-	data.last_part_str = ft_substr(data.pos_dollar_sign, data.len + 1, \
-	ft_strlen(data.pos_dollar_sign));
+	if (data.first_part_str == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	data.last_part_str = ft_substr(data.pos_dollar_sign, data.len + 1,
+			ft_strlen(data.pos_dollar_sign));
+	if (data.last_part_str == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
 	return (data);
 }
 

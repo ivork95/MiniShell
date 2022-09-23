@@ -26,7 +26,7 @@ static void	setup(void)
 }
 
 /* Return value of a process */
-Test(return_value, return_value, .init=setup)
+Test(return_value, return_value_error, .init=setup)
 {
 	char *user_input;
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
@@ -66,6 +66,51 @@ Test(return_value, return_value, .init=setup)
 
 
 	cr_assert_stdout_eq_str("2\n");
+
+
+	free_env_vars(onze_env);
+}
+
+Test(return_value, return_value, .init=setup)
+{
+	char *user_input;
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
+	user_input = ft_strdup("ls ../../includes/");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+
+
+	// cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nheredoc.h\nminishell.h\nparser.h\nstructs.h\ntokenizer.h\n");
+
+
+	user_input = ft_strdup("echo $?");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nheredoc.h\nminishell.h\nparser.h\nstructs.h\ntokenizer.h\n0\n");
 
 
 	free_env_vars(onze_env);

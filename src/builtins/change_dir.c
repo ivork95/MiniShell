@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/16 13:59:57 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/23 12:08:55 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 	env_var = ft_strjoin("OLDPWD=", old_pwd);
 	free(old_pwd);
 	if (env_var == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	add_env_var(environ, env_var);
 	free(env_var);
 }
@@ -33,7 +33,7 @@ static void	change_env_pwd(t_env_var **environ)
 	env_var = ft_strjoin("PWD=", pwd);
 	free(pwd);
 	if (env_var == NULL)
-		exit(EXIT_FAILURE);
+		perror_and_exit("malloc", EXIT_FAILURE);
 	add_env_var(environ, env_var);
 	free(env_var);
 }

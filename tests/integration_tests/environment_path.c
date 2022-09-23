@@ -59,6 +59,6 @@ Test(minishell_tests, environment_path, .init=setup)
 
 		i++;
 	}	
-	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nparser.h\nstructs.h\ntokenizer.h\n");
+	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nminishell.h\nparser.h\nstructs.h\ntokenizer.h\n");
 	free_env_vars(onze_env);
 }

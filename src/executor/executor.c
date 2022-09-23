@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 10:31:38 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/23 13:48:39 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,7 @@ void	create_processes(t_command *cmd, t_env_var **head)
 		if (i > 0)
 			close_pipe(read_end);
 		if (cmd->next != NULL)
-		{
-			read_end = pipe_fd[0];
-			close_pipe(pipe_fd[1]);
-		}
+			create_processes_inner(&read_end, pipe_fd);
 		i++;
 		cmd = cmd->next;
 	}
@@ -100,6 +97,8 @@ void	update_exit_code(int last_exit_status, t_env_var **head)
 	if (WIFEXITED(last_exit_status))
 	{
 		s = ft_strjoin("?=", ft_itoa(WEXITSTATUS(last_exit_status)));
+		if (s == NULL)
+			perror_and_exit("malloc", EXIT_FAILURE);
 		add_env_var(head, s);
 		free(s);
 	}

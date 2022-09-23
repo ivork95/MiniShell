@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 15:49:23 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/23 13:57:17 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 /* Private libraries */
 # include "structs.h"
+# include "executor.h"
+# include "minishell.h"
 # include "../src/libft/libft.h"
 
 /* Public libraries */

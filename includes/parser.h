@@ -6,26 +6,36 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/15 21:00:49 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/23 14:49:42 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# include <stdio.h>
-# include <stdlib.h>
+/* Private libaries */
 # include "../src/libft/libft.h"
 # include "tokenizer.h"
 # include "structs.h"
+# include "executor.h"
+# include "heredoc.h"
 
+/* Public libaries */
+# include <stdio.h>
+# include <stdlib.h>
+
+/* free_breezy.c */
 void		free_files(t_file *head);
 void		free_commands(t_command *head);
+void		free_splitted_array(char **splitted_array);
+
+/* parser_utils.c */
 int			redirect_type(char *str);
 size_t		count_words(t_token *head);
 t_command	*create_new_command(void);
 void		command_add_back(t_command **head, t_command *new);
+
+/* parser.c */
 t_command	*parser(t_token *tokens);
-void		print_commands(t_command *cmds);
 
 #endif
