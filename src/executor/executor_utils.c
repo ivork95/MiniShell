@@ -6,18 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/15 20:14:04 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/23 10:31:42 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "../../includes/parser.h"
-#include "../../includes/expander.h"
-#include "../../includes/builtins.h"
+#include "../../includes/executor.h"
 
 void	error_handeling(char *str)
 {

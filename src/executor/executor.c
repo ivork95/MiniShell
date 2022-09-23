@@ -6,19 +6,10 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/22 16:15:22 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/23 10:31:38 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include "../../includes/parser.h"
-#include "../../includes/expander.h"
-#include "../../includes/builtins.h"
 #include "../../includes/executor.h"
 
 void	exec_ll(t_env_var *ll_environ, t_command *command)
@@ -101,7 +92,7 @@ void	create_processes(t_command *cmd, t_env_var **head)
 	}
 }
 
-void update_exit_code(int last_exit_status, t_env_var **head)
+void	update_exit_code(int last_exit_status, t_env_var **head)
 {
 	char	*s;
 
