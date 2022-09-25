@@ -22,7 +22,6 @@ OBJECTS		:=	obj/parser.o \
 				obj/tokenizer_utils.o \
 				obj/expander.o \
 				obj/expander_utils.o \
-				obj/expander_data.o \
 				obj/echo.o \
 				obj/pwd.o \
 				obj/env.o \
@@ -41,8 +40,9 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/expander_tests.c \
 				tests/export_tests.c \
 				tests/tokenizer_tests.c \
-				tests/unset_tests.c
-CFLAGS		?=	-Wall -Wextra -g # -Werror
+				tests/unset_tests.c \
+				tests/exit_tests.c
+CFLAGS		?=	-Wall -Wextra -g
 LDFLAGS		?=	-lreadline
 LIBFT		:=	src/libft
 
