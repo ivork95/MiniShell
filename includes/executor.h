@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 20:59:40 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 13:57:30 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/25 14:32:40 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		exec_builtin(t_env_var **head, t_command *cmd);
 int		*create_pipe(void);
 void	close_pipe(int pipe_fd);
 char	*get_full_path(char *path, const char *cmd);
-void	create_processes_inner(int *read_end, int *pipe_fd);
+void	copy_read_end(int *read_end, int *pipe_fd);
 
 /* processes.c */
 void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2]);
