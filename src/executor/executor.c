@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 13:48:39 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/25 14:32:23 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,9 @@ void	create_processes(t_command *cmd, t_env_var **head)
 		if (i > 0)
 			close_pipe(read_end);
 		if (cmd->next != NULL)
-			create_processes_inner(&read_end, pipe_fd);
+			copy_read_end(&read_end, pipe_fd);
 		i++;
+		free(pipe_fd);
 		cmd = cmd->next;
 	}
 }
