@@ -6,11 +6,27 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 10:13:40 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/25 16:04:13 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
+
+static int check_nl_flag(char *str)
+{
+    int i;
+
+    i = 1;
+    if (str[0] != '-')
+        return (0);
+    while (str[i])
+    {
+        if (str[i] != 'n')
+            return (0);
+        i++;
+    }
+    return (1);
+}
 
 static void	write_args(t_command *command)
 {
@@ -19,7 +35,7 @@ static void	write_args(t_command *command)
 
 	new_line = 1;
 	i = 1;
-	if (command->args[1] && !ft_strncmp(command->args[1], "-n", 3))
+	if (command->args[1] && check_nl_flag(command->args[1]))
 	{
 		new_line = 0;
 		i++;
