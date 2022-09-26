@@ -42,10 +42,8 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/export_tests.c \
 				tests/tokenizer_tests.c \
 				tests/unset_tests.c
-CFLAGS		?=	-Wall -Wextra -g
+CFLAGS		?=	-Wall -Wextra -Werror
 LDFLAGS		?=	-lreadline
-# CFLAGS		?=	-Wall -Wextra -g -fsanitize=address
-# LDFLAGS		?=	-lreadline -g -fsanitize=address
 LIBFT		:=	src/libft
 ITESTS		:=	tests/integration_tests
 
