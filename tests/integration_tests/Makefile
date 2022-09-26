@@ -1,4 +1,4 @@
-name				=	integration_tests
+name				=	../../integration_tests
 test_objects		=	obj/simple_command.o \
 						obj/arguments.o \
 						obj/echo.o \

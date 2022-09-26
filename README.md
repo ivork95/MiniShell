@@ -7,7 +7,6 @@ docker build -t  ubuntu-c-dev .
 
 Draai container op basis van image genaamd  ubuntu-c-dev met mounted eigen folder:
 ```bash
-docker run -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 ```
 --cap-add=SYS_PTRACE --security-opt seccomp=unconfined = nodig om lldb te kunnen runnen in container

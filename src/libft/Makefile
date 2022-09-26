@@ -6,7 +6,7 @@
 #    By: ivork <ivork@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/11/05 12:53:39 by ivork         #+#    #+#                  #
-#    Updated: 2022/09/02 13:44:54 by ivork         ########   odam.nl          #
+#    Updated: 2022/09/26 09:20:42 by kawish        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,6 @@ OBJS	=	$(SRCS:.c=.o)
 OBJS_B	=	$(SRCS_B:.c=.o)
 LIBC	=	ar -rcs
 RM		=	rm -f
-CC		=	gcc
 FLAGS	=	-Wall -Werror -Wextra -g
 INCS	=	.
 
@@ -90,7 +89,7 @@ bonus:
 clean:
 			${RM} $(OBJS) $(OBJS_B)
 
-fclean:     clean
+fclean:		clean
 			${RM} $(NAME)
 
 re:			fclean all

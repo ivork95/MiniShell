@@ -1,9 +1,10 @@
 FROM ubuntu:latest
 
+ENV CC=clang
+
 RUN apt-get update && \
     apt-get install vim \
                     libcriterion-dev \
-                    gcc \
                     make \
                     clang \
                     valgrind \

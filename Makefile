@@ -42,8 +42,10 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/export_tests.c \
 				tests/tokenizer_tests.c \
 				tests/unset_tests.c
-CFLAGS		?=	-Wall -Wextra -g # -Werror
+CFLAGS		?=	-Wall -Wextra -g
 LDFLAGS		?=	-lreadline
+# CFLAGS		?=	-Wall -Wextra -g -fsanitize=address
+# LDFLAGS		?=	-lreadline -g -fsanitize=address
 LIBFT		:=	src/libft
 ITESTS		:=	tests/integration_tests
 
@@ -55,7 +57,7 @@ libft:
 $(NAME) :$(MAIN) $(OBJECTS)
 	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS)
 
-itests:
+itests: all
 	make -C $(ITESTS)
 
 tests : all

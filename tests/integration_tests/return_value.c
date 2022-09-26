@@ -77,7 +77,7 @@ Test(return_value, return_value, .init=setup)
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
 
 
-	user_input = ft_strdup("ls ../../includes/");
+	user_input = ft_strdup("ls tests/example_folder/");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -90,9 +90,6 @@ Test(return_value, return_value, .init=setup)
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
-
-
-	// cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nheredoc.h\nminishell.h\nparser.h\nstructs.h\ntokenizer.h\n");
 
 
 	user_input = ft_strdup("echo $?");
@@ -110,7 +107,7 @@ Test(return_value, return_value, .init=setup)
 	free_commands(commands);
 
 
-	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nheredoc.h\nminishell.h\nparser.h\nstructs.h\ntokenizer.h\n0\n");
+	cr_assert_stdout_eq_str("0\nempty_directory\nrandom.c\n0\n");
 
 
 	free_env_vars(onze_env);
