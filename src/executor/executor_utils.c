@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/25 14:31:29 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/26 17:34:26 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	copy_read_end(int *read_end, int *pipe_fd)
 {
 	*read_end = pipe_fd[0];
 	close_pipe(pipe_fd[1]);
+	free(pipe_fd);
 }
 
 int	*create_pipe(void)

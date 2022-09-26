@@ -40,11 +40,11 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/expander_tests.c \
 				tests/export_tests.c \
 				tests/tokenizer_tests.c \
-				tests/unset_tests.c \
-				tests/exit_tests.c
-CFLAGS		?=	-Wall -Wextra -g
+				tests/unset_tests.c
+CFLAGS		?=	-Wall -Wextra -Werror
 LDFLAGS		?=	-lreadline
 LIBFT		:=	src/libft
+ITESTS		:=	tests/integration_tests
 
 all : libft $(NAME)
 
@@ -53,6 +53,9 @@ libft:
 
 $(NAME) :$(MAIN) $(OBJECTS)
 	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS)
+
+itests: all
+	make -C $(ITESTS)
 
 tests : all
 	$(CC) -o run_tests $(TEST_FILES) -lcriterion $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS) 
@@ -63,10 +66,12 @@ obj/%.o : %.c $(HEADERS)
 
 clean :
 	make clean -C $(LIBFT)
+	make clean -C $(ITESTS)
 	rm -rf obj
 
 fclean : clean
 	make fclean -C $(LIBFT)
+	make fclean -C $(ITESTS)
 	rm -f $(NAME)
 	rm -f run_tests
 

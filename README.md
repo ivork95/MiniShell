@@ -7,7 +7,6 @@ docker build -t  ubuntu-c-dev .
 
 Draai container op basis van image genaamd  ubuntu-c-dev met mounted eigen folder:
 ```bash
-docker run -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
 ```
 --cap-add=SYS_PTRACE --security-opt seccomp=unconfined = nodig om lldb te kunnen runnen in container
@@ -37,3 +36,5 @@ TODO:
 	-  << a < Makefile < Dockerfile cat > outfile
 	-find newline when exeec $NOT-EXIST
     -echo builtin -nnn flag
+
+echo ?$ geeft een leak van 100 bytes aan omdat de args[1] pointer naar "?$" door expander word overschreven met een pointer naar "0"

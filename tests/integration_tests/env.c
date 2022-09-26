@@ -9,6 +9,7 @@
 #include "../../includes/executor.h"
 #include <readline/history.h>
 #include <string.h>
+#include <stdlib.h>
 
 extern char			**environ;
 static t_command	*commands;
@@ -31,36 +32,47 @@ static char *two_d_to_str(void)
 	unsigned int	i = 0;
 	unsigned int	j = 0;
 	size_t			s = 0;
+	char			*a;
+	char			*a_dup;
 
-	// Tel hoeveel characters gemalloced moeten worden
 	while (environ[i])
 	{
-		s = s + strlen(environ[i]) + 1;
+		s = s + strlen(environ[i]);
 		i++;
 	}
-
-	// Zet 2d array om in string
-	char			*a = malloc(s);
-	char			*a_dup = a;
+	s = s + i + 1;
+	a = calloc(s, sizeof(*a));
+	if (a == NULL)
+	{
+		perror("calloc");
+		exit(1);
+	}
+	a_dup = a;
 	i = 0;
 	while (environ[i])
 	{
 		strncpy(a_dup, environ[i], strlen(environ[i]));
 		a_dup = a_dup + strlen(environ[i]);
-		a_dup[0] = '\n';
+		*a_dup = '\n';
 		a_dup++;
 		i++;
 	}
-	a_dup[0] = '\0';
 	return (a);
 }
 
 /* Env */
 Test(minishell_tests, env, .init=setup)
 {
+	char	*a = two_d_to_str();
+	if (a == NULL)
+	{
+		perror("calloc");
+		exit(1);
+	}
 	char	*user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("env");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -73,7 +85,10 @@ Test(minishell_tests, env, .init=setup)
 	executor(commands, &onze_env);
 	add_history(user_input);
 
-	cr_assert_stdout_eq_str(two_d_to_str());
+
+	cr_assert_stdout_eq_str(a);
+	free(a);
+
 
 	free(user_input);
 	free_tokens(tokens);

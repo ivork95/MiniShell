@@ -29,12 +29,14 @@ static void	setup(void)
 Test(minishell_tests, environment_path, .init=setup)
 {
 	unsigned int	i = 0;
-	char			*user_inputs[4];
+	char			*user_inputs[6];
 
-	user_inputs[0] = ft_strdup("unset PATH");
-	user_inputs[1] = ft_strdup("export PATH=/bla/bla:/usr/bin");
-	user_inputs[2] = ft_strdup("ls ../../includes");
-	user_inputs[3] = 0;
+	user_inputs[0] = ft_strdup("ls tests/example_folder");
+	user_inputs[1] = ft_strdup("unset PATH");
+	user_inputs[2] = ft_strdup("ls tests/example_folder");
+	user_inputs[3] = ft_strdup("export PATH=/bla/bla:/usr/bin");
+	user_inputs[4] = ft_strdup("ls tests/example_folder");
+	user_inputs[5] = 0;
 
 
 	char	*user_input;
@@ -59,6 +61,6 @@ Test(minishell_tests, environment_path, .init=setup)
 
 		i++;
 	}	
-	cr_assert_stdout_eq_str("builtins.h\nexecutor.h\nexpander.h\nminishell.h\nparser.h\nstructs.h\ntokenizer.h\n");
+	cr_assert_stdout_eq_str("0\nempty_directory\nrandom.c\nminishell: ls: No such file or directory\n0\nempty_directory\nrandom.c\n");
 	free_env_vars(onze_env);
 }

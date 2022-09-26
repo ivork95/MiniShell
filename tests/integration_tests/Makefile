@@ -1,4 +1,4 @@
-name				=	integration_tests
+name				=	../../integration_tests
 test_objects		=	obj/simple_command.o \
 						obj/arguments.o \
 						obj/echo.o \
@@ -12,7 +12,8 @@ test_objects		=	obj/simple_command.o \
 						obj/unset.o \
 						obj/cd.o \
 						obj/pwd.o \
-						obj/return_value.o
+						obj/return_value.o \
+						obj/pipes.o
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \
 						../../obj/env.o \
@@ -34,11 +35,12 @@ minishell_objects	=	../../obj/change_dir.o \
 						../../obj/minishell_utils.o \
 						../../obj/heredoc.o
 libft	=				../../src/libft
+LDFLAGS	?=				-lreadline
 
 all : $(name)
 
 $(name) : $(test_objects)
-	$(CC) -o $(name) $(test_objects) -lcriterion $(minishell_objects) -lreadline -L$(libft) -l:libft.a
+	$(CC) -o $(name) $(test_objects) -lcriterion $(minishell_objects) -L$(libft) -l:libft.a $(LDFLAGS)
 
 obj/%.o : %.c
 	@mkdir -p $(dir $@)

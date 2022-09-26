@@ -6,7 +6,7 @@
 #    By: ivork <ivork@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/11/05 12:53:39 by ivork         #+#    #+#                  #
-#    Updated: 2022/09/02 13:44:54 by ivork         ########   odam.nl          #
+#    Updated: 2022/09/26 12:51:33 by kawish        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,8 +70,7 @@ OBJS	=	$(SRCS:.c=.o)
 OBJS_B	=	$(SRCS_B:.c=.o)
 LIBC	=	ar -rcs
 RM		=	rm -f
-CC		=	gcc
-FLAGS	=	-Wall -Werror -Wextra -g
+CFLAGS	?=	-Wall -Werror -Wextra
 INCS	=	.
 
 RELEVANT_OBJS = $(OBJS) $(OBJS_B)
@@ -82,7 +81,7 @@ $(NAME):	$(RELEVANT_OBJS)
 			${LIBC} $(NAME) $(RELEVANT_OBJS)
 
 .c.o:
-			${CC} ${FLAGS} -c $< -o ${<:.c=.o} -I${INCS}
+			${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I${INCS}
 
 bonus:
 			$(MAKE) WITH_BONUS=1 all
@@ -90,7 +89,7 @@ bonus:
 clean:
 			${RM} $(OBJS) $(OBJS_B)
 
-fclean:     clean
+fclean:		clean
 			${RM} $(NAME)
 
 re:			fclean all

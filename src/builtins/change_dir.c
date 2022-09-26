@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 12:08:55 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/26 13:07:27 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 	char	*env_var;
 
 	env_var = ft_strjoin("OLDPWD=", old_pwd);
-	free(old_pwd);
 	if (env_var == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	add_env_var(environ, env_var);
@@ -43,13 +42,12 @@ void	change_directory(t_command *command, t_env_var **environ)
 	char		*old_pwd;
 	t_env_var	*home;
 
-	old_pwd = getcwd(NULL, 0);
 	if (command->args[1] == NULL)
 	{
 		home = find_env_var(*environ, "HOME");
 		if (home == NULL)
 		{
-			ft_putendl_fd("cd: HOME not set", 2);
+			ft_putendl_fd("minishell: cd: HOME not set", 2);
 			return ;
 		}
 		else if (chdir(home->value) == -1)
@@ -63,7 +61,9 @@ void	change_directory(t_command *command, t_env_var **environ)
 		perror("minishell: chdir");
 		return ;
 	}
+	old_pwd = getcwd(NULL, 0);
 	change_env_old_pwd(old_pwd, environ);
+	free(old_pwd);
 	change_env_pwd(environ);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/23 14:39:36 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/26 14:01:44 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static void	set_args(t_token **token, t_command *command)
 		i++;
 	while ((*token) && (*token)->type == WORD)
 	{
-		command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
+		// command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
+		command->args[i] = malloc(100);
 		if (command->args[i] == NULL)
 			perror_and_exit("malloc", EXIT_FAILURE);
 		ft_strlcpy(command->args[i], (*token)->str, (*token)->len + 1);

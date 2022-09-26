@@ -13,6 +13,7 @@ extern char			**environ;
 static t_command	*commands;
 static t_token		*tokens;
 static t_env_var	*onze_env;
+static char			*expected = "0\nempty_directory\nrandom.c\n";
 
 static void redirect_all_std(void)
 {
@@ -86,7 +87,7 @@ Test(cd, cd_parent, .init=setup)
 	free_commands(commands);
 
 
-	user_input = ft_strdup("/bin/ls");
+	user_input = ft_strdup("/bin/ls pwd/tests/example_folder");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -100,7 +101,7 @@ Test(cd, cd_parent, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
-	cr_assert_stdout_eq_str("cd_tests.c\necho_tests.c\nexecve_tests.c\nexit_tests.c\nexpander_tests.c\nexport_tests.c\nintegration_tests\nminishell_tests.c\nparser_tests.c\ntest_cmds\ntokenizer_tests.c\nunset_tests.c\n");
+	cr_assert_stdout_eq_str(expected);
 
 	free_env_vars(onze_env);
 }
@@ -125,7 +126,7 @@ Test(cd, cd_current, .init=setup)
 	free_commands(commands);
 
 
-	user_input = ft_strdup("/bin/ls");
+	user_input = ft_strdup("/bin/ls tests/example_folder");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -139,7 +140,7 @@ Test(cd, cd_current, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
-	cr_assert_stdout_eq_str("Makefile\narguments.c\ncd.c\ndouble_quotes.c\necho.c\nenv.c\nenvironment_path.c\nexit.c\nexport.c\nintegration_tests\nobj\npwd.c\nrelative_path.c\nreturn_value.c\nsimple_command.c\nsingle_quotes.c\nunset.c\n");
+	cr_assert_stdout_eq_str(expected);
 
 	free_env_vars(onze_env);
 }

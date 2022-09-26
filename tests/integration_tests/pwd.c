@@ -47,7 +47,7 @@ Test(pwd, pwd, .init=setup)
 	free_commands(commands);
 
 
-	cr_assert_stdout_eq_str("/pwd/tests/integration_tests\n");
+	cr_assert_stdout_eq_str("/pwd\n");
 
 	free_env_vars(onze_env);
 }

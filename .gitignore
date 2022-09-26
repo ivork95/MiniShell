@@ -1,6 +1,6 @@
 .DS_Store
 .vscode/
-tests/integration_tests/integration_tests
+./integration_tests
 
 # Prerequisites
 *.d
