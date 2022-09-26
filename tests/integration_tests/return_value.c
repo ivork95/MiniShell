@@ -107,7 +107,7 @@ Test(return_value, return_value, .init=setup)
 	free_commands(commands);
 
 
-	cr_assert_stdout_eq_str("0\nempty_directory\nrandom.c\n0\n");
+	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n0\n");
 
 
 	free_env_vars(onze_env);

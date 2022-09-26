@@ -26,11 +26,12 @@ static void	setup(void)
 }
 
 /* Single Quotes */
-Test(minishell_tests, echo_$_user, .init=setup)
+Test(single_quotes, echo_$_user, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("echo \'$USER\'");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -41,19 +42,23 @@ Test(minishell_tests, echo_$_user, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("$USER\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("$USER\n");
+
+
 	free_env_vars(onze_env);
 }
 
-Test(minishell_tests, echo_idan, .init=setup)
+Test(single_quotes, echo_idan, .init=setup)
 {
 	char *user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
 	user_input = ft_strdup("echo \'hallo \'$PATH\' \'");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -64,10 +69,40 @@ Test(minishell_tests, echo_idan, .init=setup)
 	commands = parser(tokens);
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
-
-	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("'hallo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' '\n");
+
+
+	free_env_vars(onze_env);
+}
+
+Test(single_quotes, echo_nested_quotes, .init=setup)
+{
+	char *user_input;
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
+	user_input = ft_strdup("echo 'hallo '$PATH' '");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	executor(commands, &onze_env);
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+
+
+	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \n");
+
+
 	free_env_vars(onze_env);
 }

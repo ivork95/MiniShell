@@ -44,7 +44,7 @@ $(name) : $(test_objects)
 
 obj/%.o : %.c
 	@mkdir -p $(dir $@)
-	$(CC) -c -o $@ $<
+	$(CC) -g -fsanitize=address -c -o $@ $<
 
 clean : 
 	rm -rf obj

@@ -13,7 +13,6 @@ extern char			**environ;
 static t_command	*commands;
 static t_token		*tokens;
 static t_env_var	*onze_env;
-static char			*expected = "0\nempty_directory\nrandom.c\n";
 
 static void redirect_all_std(void)
 {
@@ -101,7 +100,7 @@ Test(cd, cd_parent, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
-	cr_assert_stdout_eq_str(expected);
+	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n");
 
 	free_env_vars(onze_env);
 }
@@ -140,7 +139,7 @@ Test(cd, cd_current, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
-	cr_assert_stdout_eq_str(expected);
+	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n");
 
 	free_env_vars(onze_env);
 }

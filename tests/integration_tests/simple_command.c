@@ -42,7 +42,7 @@ Test(simple_command, bin_ls, .init=setup)
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
 
-	cr_assert_stdout_eq_str("0\nempty_directory\nrandom.c\n");
+	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
