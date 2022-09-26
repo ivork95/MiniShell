@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 14:29:02 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/26 16:10:16 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	create_processes_inner(int *read_end, int *pipe_fd)
 {
 	*read_end = pipe_fd[0];
 	close_pipe(pipe_fd[1]);
+	free(pipe_fd);
 }
 
 int	*create_pipe(void)
