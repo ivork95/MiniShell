@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/23 11:36:02 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/26 14:17:41 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 
 bool	str_is_numeric(char *s)
 {
-	if (ft_strlen(s) == ft_strlen(ft_itoa(ft_atoi(s))))
+	char	*ascii;
+
+	ascii = ft_itoa(ft_atoi(s));
+	if (ascii == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	if (ft_strlen(s) == ft_strlen(ascii))
+	{
+		free(ascii);
 		return (true);
+	}
+	free(ascii);
 	return (false);
 }
 
