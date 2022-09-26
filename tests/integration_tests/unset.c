@@ -60,7 +60,7 @@ static char *two_d_to_str(void)
 	return (a);
 }
 
-/* Env */
+/* Unset */
 Test(minishell_tests, unset, .init=setup)
 {
 	char	*user_input;
