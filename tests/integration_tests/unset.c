@@ -24,7 +24,6 @@ static void redirect_all_std(void)
 
 static void	setup(void)
 {
-	;
 	redirect_all_std();
 }
 
@@ -33,27 +32,31 @@ static char *two_d_to_str(void)
 	unsigned int	i = 0;
 	unsigned int	j = 0;
 	size_t			s = 0;
+	char			*a;
+	char			*a_dup;
 
-	// Tel hoeveel characters gemalloced moeten worden
 	while (environ[i])
 	{
-		s = s + strlen(environ[i]) + 1;
+		s = s + strlen(environ[i]);
 		i++;
 	}
-
-	// Zet 2d array om in string
-	char			*a = malloc(s);
-	char			*a_dup = a;
+	s = s + i + 1;
+	a = calloc(s, sizeof(*a));
+	if (a == NULL)
+	{
+		perror("calloc");
+		exit(1);
+	}
+	a_dup = a;
 	i = 0;
 	while (environ[i])
 	{
 		strncpy(a_dup, environ[i], strlen(environ[i]));
 		a_dup = a_dup + strlen(environ[i]);
-		a_dup[0] = '\n';
+		*a_dup = '\n';
 		a_dup++;
 		i++;
 	}
-	a_dup[0] = '\0';
 	return (a);
 }
 
@@ -61,8 +64,8 @@ static char *two_d_to_str(void)
 Test(minishell_tests, unset, .init=setup)
 {
 	char	*user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
 
 	user_input = ft_strdup("unset HOSTNAME");
 	tokens = tokenizer(user_input);
@@ -79,6 +82,7 @@ Test(minishell_tests, unset, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	user_input = ft_strdup("env");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -94,8 +98,17 @@ Test(minishell_tests, unset, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	unsetenv("HOSTNAME");
-	cr_assert_stdout_eq_str(two_d_to_str());
+	char	*a = two_d_to_str();
+	if (a == NULL)
+	{
+		perror("calloc");
+		exit(1);
+	}
+	cr_assert_stdout_eq_str(a);
+	free(a);
+
 
 	free_env_vars(onze_env);
 }
@@ -103,8 +116,8 @@ Test(minishell_tests, unset, .init=setup)
 Test(minishell_tests, unset_multiple, .init=setup)
 {
 	char	*user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
 
 	user_input = ft_strdup("unset HOSTNAME PWD");
 	tokens = tokenizer(user_input);
@@ -121,6 +134,7 @@ Test(minishell_tests, unset_multiple, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	user_input = ft_strdup("env");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -136,9 +150,17 @@ Test(minishell_tests, unset_multiple, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	unsetenv("HOSTNAME");
 	unsetenv("PWD");
-	cr_assert_stdout_eq_str(two_d_to_str());
+	char	*a = two_d_to_str();
+	if (a == NULL)
+	{
+		perror("calloc");
+		exit(1);
+	}
+	cr_assert_stdout_eq_str(a);
+	free(a);
 
 	free_env_vars(onze_env);
 }
@@ -146,8 +168,8 @@ Test(minishell_tests, unset_multiple, .init=setup)
 Test(minishell_tests, unset_empty, .init=setup)
 {
 	char	*user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
 
 	user_input = ft_strdup("unset");
 	tokens = tokenizer(user_input);
@@ -164,6 +186,7 @@ Test(minishell_tests, unset_empty, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	user_input = ft_strdup("env");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -179,8 +202,17 @@ Test(minishell_tests, unset_empty, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	unsetenv("");
-	cr_assert_stdout_eq_str(two_d_to_str());
+	char	*a = two_d_to_str();
+	if (a == NULL)
+	{
+		perror("calloc");
+		exit(1);
+	}
+	cr_assert_stdout_eq_str(a);
+	free(a);
+
 
 	free_env_vars(onze_env);
 }
@@ -188,8 +220,8 @@ Test(minishell_tests, unset_empty, .init=setup)
 Test(minishell_tests, unset_nonexist, .init=setup)
 {
 	char	*user_input;
-
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
 
 	user_input = ft_strdup("unset bestaatniet");
 	tokens = tokenizer(user_input);
@@ -206,6 +238,7 @@ Test(minishell_tests, unset_nonexist, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	user_input = ft_strdup("env");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
@@ -221,8 +254,17 @@ Test(minishell_tests, unset_nonexist, .init=setup)
 	free_tokens(tokens);
 	free_commands(commands);
 
+
 	unsetenv("bestaatniet");
-	cr_assert_stdout_eq_str(two_d_to_str());
+	char	*a = two_d_to_str();
+	if (a == NULL)
+	{
+		perror("calloc");
+		exit(1);
+	}
+	cr_assert_stdout_eq_str(a);
+	free(a);
+
 
 	free_env_vars(onze_env);
 }

@@ -76,6 +76,6 @@ fclean : clean
 	rm -f $(NAME)
 	rm -f run_tests
 
-re : fclean all itests
+re : fclean all
 
 .PHONY: all clean fclean re libft libmlx
