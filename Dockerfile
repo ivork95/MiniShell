@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-ENV CC=clang
+ENV CC=clang CFLAGS="-Wall -Wextra -g -fsanitize=address" LDFLAGS="-lreadline -g -fsanitize=address"
 
 RUN apt-get update && \
     apt-get install vim \
