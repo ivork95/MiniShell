@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/26 13:21:55 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/26 14:18:43 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ void	update_exit_code(int last_exit_status, t_env_var **head)
 	if (WIFEXITED(last_exit_status))
 	{
 		ascii = ft_itoa(WEXITSTATUS(last_exit_status));
+		if (ascii == NULL)
+			perror_and_exit("malloc", EXIT_FAILURE);
 		s = ft_strjoin("?=", ascii);
 		free(ascii);
 		if (s == NULL)
