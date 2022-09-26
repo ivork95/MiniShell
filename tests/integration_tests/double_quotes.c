@@ -42,7 +42,7 @@ Test(minishell_tests, echo_double_quotes, .init=setup)
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
 
-	cr_assert_stdout_eq_str("cat lol.c | cat > lol.c\n");
+	cr_assert_stdout_eq_str("cat lol.c | cat > lol.c\n"); // cat lol.c | cat > lol.c
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);

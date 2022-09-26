@@ -15,7 +15,7 @@ static t_token		*tokens;
 static t_env_var	*onze_env;
 
 /* Pipes */
-Test(pipes, pipes, .exit_code=1)
+Test(pipes, pipes)
 {
 	char *user_input;
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);

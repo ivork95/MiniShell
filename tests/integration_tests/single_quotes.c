@@ -26,7 +26,7 @@ static void	setup(void)
 }
 
 /* Single Quotes */
-Test(minishell_tests, echo_$_user, .init=setup)
+Test(single_quotes, echo_$_user, .init=setup)
 {
 	char *user_input;
 
@@ -49,7 +49,7 @@ Test(minishell_tests, echo_$_user, .init=setup)
 	free_env_vars(onze_env);
 }
 
-Test(minishell_tests, echo_idan, .init=setup)
+Test(single_quotes, echo_idan, .init=setup)
 {
 	char *user_input;
 
@@ -65,7 +65,7 @@ Test(minishell_tests, echo_idan, .init=setup)
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
 
-	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n");
+	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);

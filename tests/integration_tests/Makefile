@@ -20,7 +20,6 @@ minishell_objects	=	../../obj/change_dir.o \
 						../../obj/executor_utils.o \
 						../../obj/executor.o \
 						../../obj/exit.o \
-						../../obj/expander_data.o \
 						../../obj/expander_utils.o \
 						../../obj/expander.o \
 						../../obj/export.o \
