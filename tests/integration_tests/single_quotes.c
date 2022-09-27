@@ -1,17 +1,9 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 #include <criterion/redirect.h>
-#include "../../includes/structs.h"
-#include "../../includes/builtins.h"
-#include "../../includes/tokenizer.h"
-#include "../../includes/parser.h"
-#include "../../includes/expander.h"
-#include "../../includes/executor.h"
-#include <readline/history.h>
+#include "minicore.h"
 
 extern char			**environ;
-static t_command	*commands;
-static t_token		*tokens;
 static t_env_var	*onze_env;
 
 static void redirect_all_std(void)
@@ -23,86 +15,42 @@ static void redirect_all_std(void)
 static void	setup(void)
 {
 	redirect_all_std();
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
 }
 
 /* Single Quotes */
 Test(single_quotes, echo_$_user, .init=setup)
 {
-	char *user_input;
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	char *inputs[] = {
+		"echo \'$USER\'",
+		0
+	};
 
-
-	user_input = ft_strdup("echo \'$USER\'");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
-
+	minicore(inputs, onze_env);
 
 	cr_assert_stdout_eq_str("$USER\n");
-
-
-	free_env_vars(onze_env);
 }
 
 Test(single_quotes, echo_idan, .init=setup)
 {
-	char *user_input;
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	char *inputs[] = {
+		"echo \'hallo \'$PATH\' \'",
+		0
+	};
 
-
-	user_input = ft_strdup("echo \'hallo \'$PATH\' \'");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
-
+	minicore(inputs, onze_env);
 
 	cr_assert_stdout_eq_str("'hallo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' '\n");
-
-
-	free_env_vars(onze_env);
 }
 
-Test(single_quotes, echo_nested_quotes, .init=setup)
+Test(single_quotes, echo_idan_zonder_backslash, .init=setup)
 {
-	char *user_input;
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	char *inputs[] = {
+		"echo 'hallo '$PATH' '",
+		0
+	};
 
-
-	user_input = ft_strdup("echo 'hallo '$PATH' '");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
-
+	minicore(inputs, onze_env);
 
 	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \n");
-
-
-	free_env_vars(onze_env);
 }

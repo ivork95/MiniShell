@@ -1,17 +1,9 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 #include <criterion/redirect.h>
-#include "../../includes/structs.h"
-#include "../../includes/builtins.h"
-#include "../../includes/tokenizer.h"
-#include "../../includes/parser.h"
-#include "../../includes/expander.h"
-#include "../../includes/executor.h"
-#include <readline/history.h>
+#include "minicore.h"
 
 extern char			**environ;
-static t_command	*commands;
-static t_token		*tokens;
 static t_env_var	*onze_env;
 
 static void redirect_all_std(void)
@@ -23,63 +15,66 @@ static void redirect_all_std(void)
 static void	setup(void)
 {
 	redirect_all_std();
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
 }
 
 /* Simple Command & global variables */
 Test(simple_command, bin_ls, .init=setup)
 {
-	char *user_input;
+	char *inputs[] = {
+		"/bin/ls tests/example_folder/",
+		0
+	};
 
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls tests/example_folder/");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
+	minicore(inputs, onze_env);
 
 	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n");
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
-	free_env_vars(onze_env);
 }
 
-Test(simple_command, empty, .init=setup)
+Test(simple_command, double_quotes_only, .init=setup)
 {
-	char *user_input;
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+	char *inputs[] = {
+		"\"\"",
+		0
+	};
 
+	minicore(inputs, onze_env);
 
-	user_input = ft_strdup("\"\"");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-		exit(0);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	if (commands->cmd[0] == 0)
-	{
-		free(user_input);
-		free_tokens(tokens);
-		free_commands(commands);
+	cr_assert_stdout_eq_str("minishell: \"\": command not found");
+}
 
+Test(simple_command, empty_string, .init=setup)
+{
+	char *inputs[] = {
+		"",
+		0
+	};
 
-		cr_assert_stdout_eq_str("");
-		exit(0);
-	}
-	executor(commands, &onze_env);
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
+	minicore(inputs, onze_env);
 
+	cr_assert_stdout_eq_str("");
+}
 
-	free_env_vars(onze_env);
+Test(simple_command, space, .init=setup)
+{
+	char *inputs[] = {
+		" ",
+		0
+	};
+
+	minicore(inputs, onze_env);
+
+	cr_assert_stdout_eq_str("");
+}
+
+Test(simple_command, spaces, .init=setup)
+{
+	char *inputs[] = {
+		"                 ",
+		0
+	};
+
+	minicore(inputs, onze_env);
+
+	cr_assert_stdout_eq_str("");
 }

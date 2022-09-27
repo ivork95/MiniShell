@@ -1,17 +1,9 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 #include <criterion/redirect.h>
-#include "../../includes/structs.h"
-#include "../../includes/builtins.h"
-#include "../../includes/tokenizer.h"
-#include "../../includes/parser.h"
-#include "../../includes/expander.h"
-#include "../../includes/executor.h"
-#include <readline/history.h>
+#include "minicore.h"
 
 extern char			**environ;
-static t_command	*commands;
-static t_token		*tokens;
 static t_env_var	*onze_env;
 
 static void redirect_all_std(void)
@@ -23,28 +15,18 @@ static void redirect_all_std(void)
 static void	setup(void)
 {
 	redirect_all_std();
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
 }
 
 /* Double Quotes */
 Test(minishell_tests, echo_double_quotes, .init=setup)
 {
-	char *user_input;
+	char *inputs[] = {
+		"echo \"cat lol.c | cat > lol.c\"",
+		0
+	};
 
-	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("echo \"cat lol.c | cat > lol.c\"");
-	tokens = tokenizer(user_input);
-	if (tokens == NULL)
-	{
-		free(user_input);
-		free_tokens(tokens);
-	}
-	commands = parser(tokens);
-	expander(commands, onze_env);
-	executor(commands, &onze_env);
+	minicore(inputs, onze_env);
 
 	cr_assert_stdout_eq_str("cat lol.c | cat > lol.c\n");
-	free(user_input);
-	free_tokens(tokens);
-	free_commands(commands);
-	free_env_vars(onze_env);
 }

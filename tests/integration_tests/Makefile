@@ -1,4 +1,5 @@
 name				=	../../integration_tests
+header				=	minicore.h
 test_objects		=	obj/simple_command.o \
 						obj/arguments.o \
 						obj/echo.o \
@@ -13,7 +14,8 @@ test_objects		=	obj/simple_command.o \
 						obj/cd.o \
 						obj/pwd.o \
 						obj/return_value.o \
-						obj/pipes.o
+						obj/pipes.o \
+						obj/minicore.o
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \
 						../../obj/env.o \
@@ -42,7 +44,7 @@ all : $(name)
 $(name) : $(test_objects)
 	$(CC) -o $(name) $(test_objects) -lcriterion $(minishell_objects) -L$(libft) -l:libft.a $(LDFLAGS)
 
-obj/%.o : %.c
+obj/%.o : %.c $(header)
 	@mkdir -p $(dir $@)
 	$(CC) -g -fsanitize=address -c -o $@ $<
 
