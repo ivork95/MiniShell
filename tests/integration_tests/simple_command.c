@@ -48,3 +48,38 @@ Test(simple_command, bin_ls, .init=setup)
 	free_commands(commands);
 	free_env_vars(onze_env);
 }
+
+Test(simple_command, empty, .init=setup)
+{
+	char *user_input;
+	onze_env = environ_to_linked_list_recursive(onze_env, environ);
+
+
+	user_input = ft_strdup("\"\"");
+	tokens = tokenizer(user_input);
+	if (tokens == NULL)
+	{
+		free(user_input);
+		free_tokens(tokens);
+		exit(0);
+	}
+	commands = parser(tokens);
+	expander(commands, onze_env);
+	if (commands->cmd[0] == 0)
+	{
+		free(user_input);
+		free_tokens(tokens);
+		free_commands(commands);
+
+
+		cr_assert_stdout_eq_str("");
+		exit(0);
+	}
+	executor(commands, &onze_env);
+	free(user_input);
+	free_tokens(tokens);
+	free_commands(commands);
+
+
+	free_env_vars(onze_env);
+}

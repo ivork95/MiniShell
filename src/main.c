@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/22 13:53:28 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/27 11:13:27 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	minishell(t_env_var	*environ)
 		{
 			free(user_input);
 			free_tokens(tokens);
+			free_commands(cmds);
 			continue ;
 		}
 		executor(cmds, &environ);
