@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expander2.c                                        :+:    :+:            */
+/*   expander.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/25 03:16:55 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/27 04:53:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*copy_string_without_quotes(char *str, char *first, char *next)
 	return (new_str);
 }
 
-int	remove_quotes(char **str, int start)
+static void	remove_quotes(char **str, int start)
 {
 	int		i;
 	char	*next_occurance;
@@ -56,13 +56,14 @@ int	remove_quotes(char **str, int start)
 			free(*str);
 			*str = new_str;
 			remove_quotes(str, i);
+			return ;
 		}
 		i++;
 	}
-	return (0);
+	return ;
 }
 
-char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
+static char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
 {
 	t_expand_data	data;
 
@@ -80,10 +81,11 @@ char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
 	else
 		data.new_str = ft_strdup(data.env_str);
 	free_expand_data(&data);
+	free(str);
 	return (data.new_str);
 }
 
-void	expand_args(char **arg, t_env_var *envp)
+static void	expand_args(char **arg, t_env_var *envp)
 {
 	size_t	i;
 	size_t	mode;
@@ -122,6 +124,8 @@ void	expander(t_command *commands, t_env_var *envp)
 	{
 		expand_args(&commands->args[i], envp);
 		remove_quotes(&commands->args[i], start);
+		if (i == 0)
+			commands->cmd = commands->args[i];
 		i++;
 	}
 	commands->cmd = commands->args[0];
