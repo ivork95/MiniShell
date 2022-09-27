@@ -5,31 +5,27 @@
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/09 02:05:30 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 12:14:38 by kgajadie      ########   odam.nl         */
+/*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
+/*   Updated: 2022/09/27 04:53:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
 
-char	*remove_quotes(char *str, char delimiter)
+char	*copy_string_without_quotes(char *str, char *first, char *next)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 	char	*new_str;
-	char	*last_occurence;
-	char	*first_occurence;
 
-	new_str = malloc(sizeof(char) * (ft_strlen(str) - 2) + 1);
+	new_str = malloc(sizeof(char) * (ft_strlen(str) - 2 + 1));
 	if (new_str == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	i = 0;
 	j = 0;
-	last_occurence = ft_strrchr(str, delimiter);
-	first_occurence = ft_strchr(str, delimiter);
 	while (str[i])
 	{
-		if (str + i != last_occurence && str + i != first_occurence)
+		if (str + i != next && str + i != first)
 		{
 			new_str[j] = str[i];
 			j++;
@@ -37,90 +33,100 @@ char	*remove_quotes(char *str, char delimiter)
 		i++;
 	}
 	new_str[j] = '\0';
-	free(str);
 	return (new_str);
 }
 
-/*
-** Refactoren!!
-*/
-char	*expand_envp(char *str, t_env_var *envp)
+static void	remove_quotes(char **str, int start)
+{
+	int		i;
+	char	*next_occurance;
+	char	*first_occurance;
+	char	*new_str;
+
+	i = 0 + start;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == '\'' || (*str)[i] == '\"')
+		{
+			first_occurance = (*str) + i;
+			next_occurance = ft_strchr(*str + i + 1, (*str)[i]);
+			new_str = copy_string_without_quotes(
+					*str, first_occurance, next_occurance);
+			i = next_occurance - *str - 1;
+			free(*str);
+			*str = new_str;
+			remove_quotes(str, i);
+			return ;
+		}
+		i++;
+	}
+	return ;
+}
+
+static char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
 {
 	t_expand_data	data;
 
 	null_data(&data);
-	data.pos_dollar_sign = ft_strchr(str, '$');
-	if (data.pos_dollar_sign)
+	data = set_data(data, str, pos_dollar_sign, envp);
+	if (data.last_part_str[0] && data.first_part_str[0])
 	{
-		if (ft_strlen(data.pos_dollar_sign) == 1)
-			return (str);
-		data = set_data(data, str);
-		if (find_env_var(envp, data.env_name))
-			data.env_str = find_env_var(envp, data.env_name)->value;
-		else
-			data.env_str = ft_strdup("\0");
-		if (data.last_part_str[0] && data.first_part_str[0])
-		{
-			data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
-			data.new_str = ft_strjoin(data.joined_str, data.last_part_str);
-		}
-		else if (data.first_part_str[0])
-			data.new_str = ft_strjoin(data.first_part_str, data.env_str);
-		else if (data.last_part_str[0])
-			data.new_str = ft_strjoin(data.env_str, data.last_part_str);
-		else
-			data.new_str = ft_strdup(data.env_str);
-		free_expand_data(&data);
-		return (data.new_str);
+		data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
+		data.new_str = ft_strjoin(data.joined_str, data.last_part_str);
 	}
-	return (str);
-}
-
-void	expand_command(t_command *command, t_env_var *envp)
-{
-	size_t	quote_type;
-
-	quote_type = check_quote_type(command->cmd);
-	if (quote_type == SINGLE_QUOTES)
-		command->cmd = remove_quotes(command->cmd, '\'');
-	if (quote_type == DOUBLE_QUOTES)
-	{
-		command->cmd = remove_quotes(command->cmd, '\"');
-		command->cmd = expand_envp(command->cmd, envp);
-	}
+	else if (data.first_part_str[0])
+		data.new_str = ft_strjoin(data.first_part_str, data.env_str);
+	else if (data.last_part_str[0])
+		data.new_str = ft_strjoin(data.env_str, data.last_part_str);
 	else
-		command->cmd = expand_envp(command->cmd, envp);
-	command->args[0] = command->cmd;
+		data.new_str = ft_strdup(data.env_str);
+	free_expand_data(&data);
+	free(str);
+	return (data.new_str);
 }
 
-void	expand_args(t_command *command, t_env_var *envp)
+static void	expand_args(char **arg, t_env_var *envp)
 {
 	size_t	i;
-	size_t	quote_type;
+	size_t	mode;
 
-	i = 1;
-	while (command->args[i])
+	i = 0;
+	mode = 0;
+	while ((*arg)[i])
 	{
-		quote_type = check_quote_type(command->args[i]);
-		if (quote_type == SINGLE_QUOTES)
+		if ((*arg)[i] == '\"' && mode == 0)
+			mode = 2;
+		else if ((*arg)[i] == '\"' && mode == 2)
+			mode = 0;
+		else if ((*arg)[i] == '\'' && mode == 0)
+			mode = 1;
+		else if ((*arg)[i] == '\'' && mode == 1)
+			mode = 0;
+		if ((*arg)[i] == '$' && mode != 1)
 		{
-			if (is_expandable(command->args[i]))
-				command->args[i] = expand_envp(command->args[i], envp);
-			command->args[i] = remove_quotes(command->args[i], '\'');
+			if (ft_strlen(*arg + i) == 1)
+				break ;
+			*arg = expand_envp(*arg, *arg + i, envp);
+			expand_args(arg, envp);
 		}
-		else if (quote_type == DOUBLE_QUOTES)
-		{
-			command->args[i] = expand_envp(command->args[i], envp);
-			command->args[i] = remove_quotes(command->args[i], '\"');
-		}
-		else
-			command->args[i] = expand_envp(command->args[i], envp);
 		i++;
 	}
 }
 
 void	expander(t_command *commands, t_env_var *envp)
 {
-	expand_command(commands, envp);
-	expand_args(commands, envp);
+	int	i;
+	int	start;
+
+	i = 0;
+	start = 0;
+	while (commands->args[i])
+	{
+		expand_args(&commands->args[i], envp);
+		remove_quotes(&commands->args[i], start);
+		if (i == 0)
+			commands->cmd = commands->args[i];
+		i++;
+	}
+	commands->cmd = commands->args[0];
 }

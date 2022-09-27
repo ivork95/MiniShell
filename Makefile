@@ -22,7 +22,6 @@ OBJECTS		:=	obj/parser.o \
 				obj/tokenizer_utils.o \
 				obj/expander.o \
 				obj/expander_utils.o \
-				obj/expander_data.o \
 				obj/echo.o \
 				obj/pwd.o \
 				obj/env.o \

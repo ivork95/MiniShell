@@ -448,7 +448,7 @@ Test(minishell_tests, echo_idan, .init=setup)
 	expander(commands, onze_env);
 	executor(commands, &onze_env);
 
-	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n");
+	cr_assert_stdout_eq_str("hallo /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \n");
 	free(user_input);
 	free_tokens(tokens);
 	free_commands(commands);
@@ -543,6 +543,7 @@ Test(minishell_tests, environment_path, .init=setup)
 gcc \
 minishell_tests.c \
 -lcriterion \
+../src/minishell_utils.c \
 ../src/builtins/echo.c \
 ../src/builtins/pwd.c \
 ../src/builtins/change_dir.c \
@@ -554,8 +555,8 @@ minishell_tests.c \
 ../src/tokenizer/tokenizer_utils.c \
 ../src/parser/parser.c \
 ../src/parser/parser_utils.c \
+../src/heredoc/heredoc.c \
 ../src/expander/expander.c \
-../src/expander/expander_data.c \
 ../src/expander/expander_utils.c \
 ../src/executor/executor.c \
 ../src/executor/executor_utils.c \

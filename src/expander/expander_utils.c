@@ -6,58 +6,61 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:36:45 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 12:03:41 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/27 04:54:28 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
-
-size_t	check_quote_type(char *str)
-{
-	while (*str)
-	{
-		if (*str == '\'')
-			return (SINGLE_QUOTES);
-		else if (*str == '\"')
-			return (DOUBLE_QUOTES);
-		str++;
-	}
-	return (0);
-}
 
 size_t	get_len_place_holder(char *str)
 {
 	size_t	i;
 
 	i = 0;
+    //TODO check the official end of env var string
 	while (str[i])
 	{
-		if ((str[i] >= 9 && str[i] <= 13) || \
-		(str[i] == 32) || str[i] == '\'' || str[i] == '\"')
+		if (!ft_isdigit(str[i]) && !ft_isalnum(str[i]) && str[i] != '?' )
 			break ;
 		i++;
 	}
 	return (i);
 }
 
-size_t	is_expandable(char *str)
+void	null_data(t_expand_data *data)
 {
-	char	*pos_dollar_sing;
-	int		i;
-	int		in_quotes;
+	data->env_name = NULL;
+	data->env_str = NULL;
+	data->first_part_str = NULL;
+	data->joined_str = NULL;
+	data->last_part_str = NULL;
+}
 
-	pos_dollar_sing = ft_strchr(str, '$');
-	in_quotes = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str + i == pos_dollar_sing && !in_quotes)
-			return (1);
-		if (str[i] == '\'' && !in_quotes)
-			in_quotes = 1;
-		else if (str[i] == '\'')
-			in_quotes = 0;
-		i++;
-	}
-	return (0);
+t_expand_data	set_data(t_expand_data data, char *str, char *pos_dollar_sign,
+			t_env_var *envp)
+{
+	data.len = get_len_place_holder(pos_dollar_sign + 1);
+	data.env_name = ft_substr(pos_dollar_sign, 1, data.len);
+	if (data.env_name == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	data.first_part_str = ft_substr(str, 0, pos_dollar_sign - str);
+	if (data.first_part_str == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	data.last_part_str = ft_substr(pos_dollar_sign, data.len + 1,
+			ft_strlen(pos_dollar_sign));
+	if (data.last_part_str == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	if (find_env_var(envp, data.env_name))
+		data.env_str = find_env_var(envp, data.env_name)->value;
+	else
+		data.env_str = "\0";
+	return (data);
+}
+
+void	free_expand_data(t_expand_data *data)
+{
+	free(data->env_name);
+	free(data->first_part_str);
+	free(data->joined_str);
+	free(data->last_part_str);
 }

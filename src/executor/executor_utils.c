@@ -6,13 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/26 16:10:16 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/26 17:34:26 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 
-void	create_processes_inner(int *read_end, int *pipe_fd)
+void	copy_read_end(int *read_end, int *pipe_fd)
 {
 	*read_end = pipe_fd[0];
 	close_pipe(pipe_fd[1]);
