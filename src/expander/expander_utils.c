@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:36:45 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/25 03:51:54 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/27 04:54:28 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t	get_len_place_holder(char *str)
     //TODO check the official end of env var string
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]) && !ft_isalnum(str[i]))
+		if (!ft_isdigit(str[i]) && !ft_isalnum(str[i]) && str[i] != '?' )
 			break ;
 		i++;
 	}
@@ -54,7 +54,6 @@ t_expand_data	set_data(t_expand_data data, char *str, char *pos_dollar_sign,
 		data.env_str = find_env_var(envp, data.env_name)->value;
 	else
 		data.env_str = "\0";
-    //is this okay? ^^^
 	return (data);
 }
 
