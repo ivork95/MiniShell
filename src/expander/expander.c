@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/27 04:53:43 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/27 15:41:24 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static void	expand_args(char **arg, t_env_var *envp)
 				break ;
 			*arg = expand_envp(*arg, *arg + i, envp);
 			expand_args(arg, envp);
+			return ;
 		}
 		i++;
 	}

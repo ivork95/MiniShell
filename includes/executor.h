@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 20:59:40 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/25 14:32:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/27 15:43:26 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <sys/wait.h>
 
 /* executor.c */
+void	update_exit_code(int last_exit_status, t_env_var **head);
 void	executor(t_command *cmd, t_env_var **head);
 void	exec_ll(t_env_var *ll_environ, t_command *command);
 int		exec_builtin(t_env_var **head, t_command *cmd);
