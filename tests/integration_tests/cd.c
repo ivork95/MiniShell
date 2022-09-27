@@ -13,6 +13,7 @@ extern char			**environ;
 static t_command	*commands;
 static t_token		*tokens;
 static t_env_var	*onze_env;
+static char			*expected = "..\n.\nempty_directory\nrandom.c\nfile\n0\n";
 
 static void redirect_all_std(void)
 {

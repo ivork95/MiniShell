@@ -13,7 +13,17 @@ extern char			**environ;
 static t_command	*commands;
 static t_token		*tokens;
 static t_env_var	*onze_env;
-static char			*expected = "total 8\n-rw-r--r-- 1 root root 34 Sep 26 07:43 random.c\ndrwxr-xr-x 2 root root 64 Sep 26 07:42 empty_directory\n-rw-r--r-- 1 root root 19 Sep 26 07:42 0\n";
+static char			*expected = "..\n.\nempty_directory\nrandom.c\nfile\n0\n";
+
+/*
+ls -i -S -r
+
+-a = do not ignore entries starting with .
+-i = print the index number of each file
+-r = reverse order while sorting
+-s = print the allocated size of each file, in blocks
+-S = sort by file size, largest first
+*/
 
 static void redirect_all_std(void)
 {
@@ -27,12 +37,12 @@ static void	setup(void)
 }
 
 /* Arguments & history */
-Test(arguments, bin_ls_l_t, .init=setup)
+Test(arguments, bin_ls_a_S, .init=setup)
 {
 	char *user_input;
 
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -l -t tests/example_folder/");
+	user_input = ft_strdup("/bin/ls -a -S tests/example_folder/");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
@@ -55,7 +65,7 @@ Test(arguments, bin_ls_lt, .init=setup)
 	char *user_input;
 
 	onze_env = environ_to_linked_list_recursive(onze_env, environ);
-	user_input = ft_strdup("/bin/ls -lt tests/example_folder/");
+	user_input = ft_strdup("/bin/ls -aS tests/example_folder/");
 	tokens = tokenizer(user_input);
 	if (tokens == NULL)
 	{
