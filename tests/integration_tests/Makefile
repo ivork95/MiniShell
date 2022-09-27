@@ -15,7 +15,8 @@ test_objects		=	obj/simple_command.o \
 						obj/pwd.o \
 						obj/return_value.o \
 						obj/pipes.o \
-						obj/minicore.o
+						obj/minicore.o \
+						obj/test_expander.o
 minishell_objects	=	../../obj/change_dir.o \
 						../../obj/echo.o \
 						../../obj/env.o \
