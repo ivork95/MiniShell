@@ -78,3 +78,42 @@ Test(simple_command, spaces, .init=setup)
 
 	cr_assert_stdout_eq_str("");
 }
+
+// Test(simple_command, quote_not_closed, .init=setup)
+// {
+// 	char *inputs[] = {
+// 		"echo ' hallo",
+// 		0
+// 	};
+
+// 	printf("input str = %s\n", inputs[0]);
+// 	minicore(inputs, onze_env);
+
+// 	cr_assert_stdout_eq_str("");
+// }
+
+// Test(simple_command, quote_not_closed_2, .init=setup)
+// {
+// 	char *inputs[] = {
+// 		"echo \"hallo' \"",
+// 		0
+// 	};
+
+// 	printf("input str = %s\n", inputs[0]);
+// 	minicore(inputs, onze_env);
+
+// 	cr_assert_stdout_eq_str("");
+// }
+
+// Test(simple_command, quote_not_closed_3, .init=setup)
+// {
+// 	char *inputs[] = {
+// 		"echo \"hallo' \" teest 'this' string'",
+// 		0
+// 	};
+
+// 	printf("input str = %s\n", inputs[0]);
+// 	minicore(inputs, onze_env);
+
+// 	cr_assert_stdout_eq_str("");
+// }
