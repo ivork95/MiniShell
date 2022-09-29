@@ -31,18 +31,6 @@ Test(single_quotes, echo_$_user, .init=setup)
 	cr_assert_stdout_eq_str("$USER\n");
 }
 
-Test(single_quotes, echo_idan, .init=setup)
-{
-	char *inputs[] = {
-		"echo \'hallo \'$PATH\' \'",
-		0
-	};
-
-	minicore(inputs, onze_env);
-
-	cr_assert_stdout_eq_str("'hallo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' '\n");
-}
-
 Test(single_quotes, echo_idan_zonder_backslash, .init=setup)
 {
 	char *inputs[] = {

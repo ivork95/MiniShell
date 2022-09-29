@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 08:16:38 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 11:29:32 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ void	update_exit_code(int last_exit_status, t_env_var **head)
 	s = (void *)0;
 	if (WIFEXITED(last_exit_status))
 	{
+		printf("CASE A\n");
+
 		ascii = ft_itoa(WEXITSTATUS(last_exit_status));
 		if (ascii == NULL)
 			perror_and_exit("malloc", EXIT_FAILURE);
@@ -110,6 +112,10 @@ void	update_exit_code(int last_exit_status, t_env_var **head)
 			perror_and_exit("malloc", EXIT_FAILURE);
 		add_env_var(head, s);
 		free(s);
+	}
+	if (WIFSIGNALED(last_exit_status))
+	{
+		printf("CASE B\n");
 	}
 }
 

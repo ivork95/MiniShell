@@ -36,5 +36,12 @@ TODO:
 	-  << a < Makefile < Dockerfile cat > outfile
 	-find newline when exeec $NOT-EXIST
     -echo builtin -nnn flag
+	- echo ?$ geeft een leak van 100 bytes aan omdat de args[1] pointer naar "?$" door expander word overschreven met een pointer naar "0"
+	- check if cuotes closed
+	- unlink filename when signaled
+	-
+> << a cat
+> ctrl-c
+> exit
 
-echo ?$ geeft een leak van 100 bytes aan omdat de args[1] pointer naar "?$" door expander word overschreven met een pointer naar "0"
+> heredoc zonder command

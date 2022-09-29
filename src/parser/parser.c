@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/29 08:18:39 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 11:44:15 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	file_add_back(t_command **command, t_file *file)
 	tmp->next = file;
 }
 
-static int	set_files(t_token **token, t_command *command, t_env_var *envp)
+static int	set_files(t_token **token, t_command *command, t_env_var **envp)
 {
 	t_file	*file;
 
@@ -92,12 +92,19 @@ static int	set_files(t_token **token, t_command *command, t_env_var *envp)
 	if (file->type == HEREDOC)
 	{
 		file->file_name = create_file_name();
+		file->next = NULL;
 		if (heredoc_function(*token, file->file_name, envp) == -1)
+		{
+			free(file->file_name);
+			free(file);
 			return (-1);
+		}
 	}
 	else
+	{
 		file->file_name = get_file_name(*token);
-	file->next = NULL;
+		file->next = NULL;
+	}
 	if (!(command)->files)
 		(command)->files = file;
 	else
@@ -106,7 +113,7 @@ static int	set_files(t_token **token, t_command *command, t_env_var *envp)
 	return (0);
 }
 
-static int	fill_command(t_token **token, t_command *command, t_env_var *envp)
+static int	fill_command(t_token **token, t_command *command, t_env_var **envp)
 {
 	if ((*token)->type == WORD && command->cmd == NULL)
 		set_command(token, command);
@@ -120,7 +127,7 @@ static int	fill_command(t_token **token, t_command *command, t_env_var *envp)
 	return (0);
 }
 
-t_command	*parser(t_token *token, t_env_var *envp)
+t_command	*parser(t_token *token, t_env_var **envp)
 {
 	t_command	*head;
 	t_command	*command;
