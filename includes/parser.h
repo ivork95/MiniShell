@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/23 14:49:42 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/29 01:13:18 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ t_command	*create_new_command(void);
 void		command_add_back(t_command **head, t_command *new);
 
 /* parser.c */
-t_command	*parser(t_token *tokens);
+t_command	*parser(t_token *tokens, t_env_var *envp);
 
 #endif

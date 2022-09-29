@@ -34,6 +34,7 @@ minishell_objects	=	../../obj/change_dir.o \
 						../../obj/tokenizer_utils.o \
 						../../obj/tokenizer.o \
 						../../obj/unset.o \
+						../../obj/signals.o \
 						../../obj/minishell_utils.o \
 						../../obj/heredoc.o
 libft	=				../../src/libft

@@ -52,7 +52,7 @@ void minicore(char **inputs, t_env_var *onze_env)
 
 			continue;
 		}
-		cmds = parser(tokens);
+		cmds = parser(tokens, onze_env);
 		expander(cmds, onze_env);
 		if (cmds->cmd[0] == 0)
 		{

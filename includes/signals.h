@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   heredoc.h                                          :+:    :+:            */
+/*   signals.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/29 08:03:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 08:21:16 by ivork         ########   odam.nl         */
+/*   Created: 2022/09/28 22:02:05 by ivork         #+#    #+#                 */
+/*   Updated: 2022/09/29 08:20:42 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEREDOC_H
-# define HEREDOC_H
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
-/* Public libraries */
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <signal.h>
 
-/* Private libraries */
-# include "structs.h"
-# include "minishell.h"
-# include "../src/libft/libft.h"
+void	init_signals(struct sigaction *sa, void (*handler)(int));
+void	sigint_prompt_handler(int num);
+void	sigint_heredoc_handler(int num);
+void	sigint_executor_handler(int num);
 
-int		heredoc_function(t_token *token, char *file, t_env_var *envp);
-char	*create_file_name(void);
-
-#endif /* heredoc.h */
+#endif

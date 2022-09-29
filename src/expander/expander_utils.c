@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:36:45 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/27 04:54:28 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 08:16:28 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	get_len_place_holder(char *str)
 	size_t	i;
 
 	i = 0;
-    //TODO check the official end of env var string
+	//TODO check the official end of env var string
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]) && !ft_isalnum(str[i]) && str[i] != '?' )

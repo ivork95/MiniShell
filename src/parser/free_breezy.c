@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:32:27 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/26 13:59:28 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/28 22:38:54 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	free_args(char **args)
 	unsigned int	i;
 
 	i = 1;
+	if (!args)
+		return ;
 	while (args[i] != NULL)
 	{
 		free(args[i]);

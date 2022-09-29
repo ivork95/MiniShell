@@ -6,11 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/26 17:37:06 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/29 08:16:38 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
+#include "../../includes/signals.h"
+#include <signal.h>
 
 void	exec_ll(t_env_var *ll_environ, t_command *command)
 {
@@ -64,12 +66,14 @@ int	exec_builtin(t_env_var **head, t_command *cmd)
 
 void	create_processes(t_command *cmd, t_env_var **head)
 {
-	int		*pipe_fd;
-	int		read_end;
-	size_t	i;
+	int					*pipe_fd;
+	int					read_end;
+	size_t				i;
+	struct sigaction	sa;
 
 	i = 0;
 	read_end = -1;
+	init_signals(&sa, sigint_executor_handler);
 	while (cmd != NULL)
 	{
 		if (cmd->next != NULL)

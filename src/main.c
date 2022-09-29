@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/27 11:13:27 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/29 08:19:09 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include "../includes/parser.h"
 #include "../includes/expander.h"
 #include "../includes/builtins.h"
 #include "../includes/executor.h"
+#include "../includes/signals.h"
+
+int	g_exit_status;
 
 void	print_env(t_env_var *head)
 {
@@ -33,13 +37,21 @@ void	print_env(t_env_var *head)
 
 void	minishell(t_env_var	*environ)
 {
-	t_command	*cmds;
-	t_token		*tokens;
-	char		*user_input;
+	t_command			*cmds;
+	t_token				*tokens;
+	char				*user_input;
+	struct sigaction	sa;
 
 	while (1)
 	{
-		user_input = readline(">");
+		init_signals(&sa, &sigint_prompt_handler);
+		user_input = readline("minishel>");
+		if (!user_input)
+		{
+			printf("exit\n");
+			exit(EXIT_FAILURE);
+		}
+		add_history(user_input);
 		tokens = tokenizer(user_input);
 		if (tokens == NULL)
 		{
@@ -47,7 +59,13 @@ void	minishell(t_env_var	*environ)
 			free_tokens(tokens);
 			continue ;
 		}
-		cmds = parser(tokens);
+		cmds = parser(tokens, environ);
+		if (cmds == NULL)
+		{
+			free(user_input);
+			free_tokens(tokens);
+			continue ;
+		}
 		expander(cmds, environ);
 		if (cmds->cmd[0] == 0)
 		{
@@ -57,7 +75,6 @@ void	minishell(t_env_var	*environ)
 			continue ;
 		}
 		executor(cmds, &environ);
-		add_history(user_input);
 		free(user_input);
 		free_tokens(tokens);
 		free_commands(cmds);

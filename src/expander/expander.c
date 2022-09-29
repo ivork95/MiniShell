@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/27 15:41:24 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/29 02:30:21 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	remove_quotes(char **str, int start)
 	return ;
 }
 
-static char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
+char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
 {
 	t_expand_data	data;
 

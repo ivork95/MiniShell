@@ -6,11 +6,12 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/25 14:37:34 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 08:16:51 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
+#include <signal.h>
 
 static void	handle_redirect_in(t_file *files)
 {
@@ -20,18 +21,20 @@ static void	handle_redirect_in(t_file *files)
 	{
 		if (files->type == HEREDOC)
 		{
-			fd = open("tmp", O_RDONLY);
+			fd = open(files->file_name, O_RDONLY);
+			if (fd == -1)
+				perror_and_exit("open", EXIT_FAILURE);
 			if (dup2(fd, STDIN_FILENO) == -1)
 				perror("dup2");
 			if (close(fd) == -1)
 				perror("close");
-			unlink("tmp");
+			unlink(files->file_name);
 		}
 		if (files->type == REDIRECT_IN)
 		{
 			fd = open(files->file_name, O_RDONLY);
 			if (fd == -1)
-				perror("open");
+				perror_and_exit("open", EXIT_FAILURE);
 			if (dup2(fd, STDIN_FILENO) == -1)
 				perror("dup2");
 			if (close(fd) == -1)
@@ -73,6 +76,7 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (close(pipe_fd[0]) == -1)
 			perror_and_exit("close", EXIT_FAILURE);
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
@@ -97,6 +101,7 @@ void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2],
 		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (close(pipe_fd[0]) == -1)
 			perror_and_exit("close", EXIT_FAILURE);
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1
@@ -124,6 +129,7 @@ void	last_process(t_env_var **head, t_command *cmd, int read_end)
 		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (read_end != -1)
 		{
 			if (dup2(read_end, STDIN_FILENO) == -1)

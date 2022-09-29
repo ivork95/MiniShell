@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/26 14:01:44 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/29 08:18:39 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ static void	set_command(t_token **token, t_command *command)
 
 static void	set_args(t_token **token, t_command *command)
 {
-	size_t		i;
+	size_t	i;
 
 	i = 0;
 	while (command->args[i])
 		i++;
 	while ((*token) && (*token)->type == WORD)
 	{
-		// command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
-		command->args[i] = malloc(100);
+		command->args[i] = malloc(sizeof(char) * (*token)->len + 1);
 		if (command->args[i] == NULL)
 			perror_and_exit("malloc", EXIT_FAILURE);
 		ft_strlcpy(command->args[i], (*token)->str, (*token)->len + 1);
@@ -60,46 +59,68 @@ static void	set_args(t_token **token, t_command *command)
 	}
 }
 
-static void	set_files(t_token **token, t_command *command)
+char	*get_file_name(t_token *token)
+{
+	char	*file_name;
+
+	file_name = malloc(sizeof(char) * token->len + 1);
+	if (file_name == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	ft_strlcpy(file_name, token->str, token->len + 1);
+	return (file_name);
+}
+
+static void	file_add_back(t_command **command, t_file *file)
+{
+	t_file	*tmp;
+
+	tmp = (*command)->files;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = file;
+}
+
+static int	set_files(t_token **token, t_command *command, t_env_var *envp)
 {
 	t_file	*file;
-	t_file	*tmp;
 
 	file = malloc(sizeof(t_file));
 	if (file == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
-	if (redirect_type((*token)->str) == HEREDOC)
-		heredoc_function((*token)->next);
 	file->type = redirect_type((*token)->str);
 	*token = (*token)->next;
-	file->file_name = malloc(sizeof(char) * (*token)->len + 1);
-	if (file->file_name == NULL)
-		perror_and_exit("malloc", EXIT_FAILURE);
-	ft_strlcpy(file->file_name, (*token)->str, (*token)->len + 1);
+	if (file->type == HEREDOC)
+	{
+		file->file_name = create_file_name();
+		if (heredoc_function(*token, file->file_name, envp) == -1)
+			return (-1);
+	}
+	else
+		file->file_name = get_file_name(*token);
 	file->next = NULL;
 	if (!(command)->files)
 		(command)->files = file;
 	else
-	{
-		tmp = (command)->files;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = file;
-	}
+		file_add_back(&command, file);
 	*token = (*token)->next;
+	return (0);
 }
 
-static void	fill_command(t_token **token, t_command *command)
+static int	fill_command(t_token **token, t_command *command, t_env_var *envp)
 {
 	if ((*token)->type == WORD && command->cmd == NULL)
 		set_command(token, command);
 	else if ((*token)->type == REDIRECT_OP)
-		set_files(token, command);
+	{
+		if (set_files(token, command, envp) == -1)
+			return (-1);
+	}
 	else
 		set_args(token, command);
+	return (0);
 }
 
-t_command	*parser(t_token *token)
+t_command	*parser(t_token *token, t_env_var *envp)
 {
 	t_command	*head;
 	t_command	*command;
@@ -109,7 +130,14 @@ t_command	*parser(t_token *token)
 	{
 		command = create_new_command();
 		while (token && token->type != PIPE)
-			fill_command(&token, command);
+		{
+			if (fill_command(&token, command, envp) == -1)
+			{
+				printf("fill command failure\n");
+				free_commands(command);
+				return (NULL);
+			}
+		}
 		command_add_back(&head, command);
 		if (token != NULL)
 			token = token->next;
