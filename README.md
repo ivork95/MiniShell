@@ -39,9 +39,10 @@ TODO:
 	- echo ?$ geeft een leak van 100 bytes aan omdat de args[1] pointer naar "?$" door expander word overschreven met een pointer naar "0"
 	- check if cuotes closed
 	- unlink filename when signaled
-	-
+	- builtin exit code
 > << a cat
 > ctrl-c
 > exit
 
 > heredoc zonder command
+-""
