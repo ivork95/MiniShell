@@ -112,3 +112,15 @@ Test(simple_command, quote_not_closed_3, .init=setup)
 
 	cr_assert_stdout_eq_str("Dooie input van je: Success\n");
 }
+
+Test(simple_command, heredoc_1, .init=setup)
+{
+	char *inputs[] = {
+		"<<",
+		0
+	};
+
+	minicore(inputs, onze_env);
+
+	cr_assert_stdout_eq_str("minishell: syntax error near unexpected token `newline'\n");
+}

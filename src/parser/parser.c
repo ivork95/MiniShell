@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/29 17:13:56 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 17:46:03 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	set_files(t_token **token, t_command *command, t_env_var **envp)
 	{
 		file->file_name = create_file_name();
 		file->next = NULL;
-		if (heredoc_function(*token, file->file_name, envp) == -1)
+		if (*token == NULL || heredoc_function(*token, file->file_name, envp) == -1)
 		{
 			unlink(file->file_name);
 			free(file->file_name);

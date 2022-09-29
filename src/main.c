@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 13:51:10 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/29 17:52:43 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	minishell(t_env_var	*environ)
 			continue ;
 		}
 		cmds = parser(tokens, &environ);
-		if (cmds == NULL)
+		if (cmds == NULL || cmds->cmd == NULL)
 		{
 			free(user_input);
 			free_tokens(tokens);
