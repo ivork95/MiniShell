@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 08:03:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 11:45:30 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 15:17:02 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 /* Private libraries */
 # include "structs.h"
 # include "minishell.h"
+# include "executor.h"
 # include "../src/libft/libft.h"
 
 int		heredoc_function(t_token *token, char *file, t_env_var **envp);

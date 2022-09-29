@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 20:59:40 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 08:20:23 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 15:16:49 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 # include <sys/wait.h>
 
 /* executor.c */
+void	set_exit_status(int last_exit_status);
 void	update_exit_code(int last_exit_status, t_env_var **head);
 void	executor(t_command *cmd, t_env_var **head);
 void	exec_ll(t_env_var *ll_environ, t_command *command);
 int		exec_builtin(t_env_var **head, t_command *cmd);
-void	update_exit_code(int last_exit_status, t_env_var **head);
 
 /* executor_utils.c */
 int		*create_pipe(void);

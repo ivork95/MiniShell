@@ -6,11 +6,12 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 08:16:51 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 15:28:32 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
+#include "../../includes/signals.h"
 #include <signal.h>
 
 static void	handle_redirect_in(t_file *files)
