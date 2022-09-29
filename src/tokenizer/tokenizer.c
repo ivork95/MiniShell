@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/23 12:15:52 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/29 15:18:21 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ t_token	*tokenize_word(char *str)
 			quote = 0;
 		len++;
 	}
+	// if (quote == 1)
+	// 	perror_and_exit("quotes not closed", EXIT_FAILURE);
 	new_token->type = WORD;
 	new_token->str = str;
 	new_token->len = len;
