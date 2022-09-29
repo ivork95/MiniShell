@@ -1,5 +1,7 @@
 #include "minicore.h"
 
+int g_exit_status;
+
 char	*two_d_to_str(char **environ)
 {
 	unsigned int	i = 0;
@@ -39,6 +41,7 @@ void minicore(char **inputs, t_env_var *onze_env)
 	t_token		*tokens;
 	char		*user_input;
 
+	g_exit_status = 0;
 	while (*inputs)
 	{
 		user_input = ft_strdup(*inputs);
@@ -52,7 +55,7 @@ void minicore(char **inputs, t_env_var *onze_env)
 
 			continue;
 		}
-		cmds = parser(tokens, onze_env);
+		cmds = parser(tokens, &onze_env);
 		expander(cmds, onze_env);
 		if (cmds->cmd[0] == 0)
 		{

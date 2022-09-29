@@ -6,13 +6,15 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 11:29:32 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 15:22:25 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 #include "../../includes/signals.h"
 #include <signal.h>
+
+extern int g_exit_status;
 
 void	exec_ll(t_env_var *ll_environ, t_command *command)
 {
@@ -99,11 +101,9 @@ void	update_exit_code(int last_exit_status, t_env_var **head)
 	char	*ascii;
 
 	s = (void *)0;
-	if (WIFEXITED(last_exit_status))
+	if (WIFEXITED(g_exit_status))
 	{
-		printf("CASE A\n");
-
-		ascii = ft_itoa(WEXITSTATUS(last_exit_status));
+		ascii = ft_itoa(WEXITSTATUS(g_exit_status));
 		if (ascii == NULL)
 			perror_and_exit("malloc", EXIT_FAILURE);
 		s = ft_strjoin("?=", ascii);
@@ -113,10 +113,27 @@ void	update_exit_code(int last_exit_status, t_env_var **head)
 		add_env_var(head, s);
 		free(s);
 	}
-	if (WIFSIGNALED(last_exit_status))
+	if (WIFSIGNALED(g_exit_status))
 	{
-		printf("CASE B\n");
+		;
 	}
+}
+
+void	set_exit_status(int last_exit_status)
+{
+	if (WIFEXITED(last_exit_status))
+		g_exit_status = WEXITSTATUS(last_exit_status);
+}
+
+void	put_exit_status()
+{
+	char	*ascii;
+
+	ascii = ft_itoa(g_exit_status);
+	if (ascii == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	ft_putendl_fd(ascii, 2);
+	free(ascii);
 }
 
 void	executor(t_command *cmd, t_env_var **head)
@@ -142,5 +159,5 @@ void	executor(t_command *cmd, t_env_var **head)
 			last_exit_status = r;
 		pid_to_check = wait(&r);
 	}
-	update_exit_code(last_exit_status, head);
+	set_exit_status(last_exit_status);
 }

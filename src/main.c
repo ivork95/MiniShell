@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 11:49:03 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/29 13:51:10 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include "../includes/builtins.h"
 #include "../includes/executor.h"
 #include "../includes/signals.h"
+
+int g_exit_status;
 
 void	print_env(t_env_var *head)
 {
@@ -84,6 +86,7 @@ int	main(int argc, char **const argv, char **envp)
 {
 	t_env_var	*environ;
 
+	g_exit_status = 0;
 	(void)argc;
 	(void)argv;
 	environ = NULL;
