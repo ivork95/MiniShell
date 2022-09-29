@@ -79,41 +79,36 @@ Test(simple_command, spaces, .init=setup)
 	cr_assert_stdout_eq_str("");
 }
 
-// Test(simple_command, quote_not_closed, .init=setup)
-// {
-// 	char *inputs[] = {
-// 		"echo ' hallo",
-// 		0
-// 	};
+Test(simple_command, quote_not_closed, .init=setup, .exit_code=1)
+{
+	char *inputs[] = {
+		"echo ' hallo", // echo ' hallo
+		0
+	};
 
-// 	printf("input str = %s\n", inputs[0]);
-// 	minicore(inputs, onze_env);
+	minicore(inputs, onze_env);
+}
 
-// 	cr_assert_stdout_eq_str("");
-// }
+Test(simple_command, quote_not_closed_2, .init=setup)
+{
+	char *inputs[] = {
+		"echo \"hallo' \"", // echo "hallo' "
+		0
+	};
 
-// Test(simple_command, quote_not_closed_2, .init=setup)
-// {
-// 	char *inputs[] = {
-// 		"echo \"hallo' \"",
-// 		0
-// 	};
+	minicore(inputs, onze_env);
 
-// 	printf("input str = %s\n", inputs[0]);
-// 	minicore(inputs, onze_env);
+	cr_assert_stdout_eq_str("hallo'\n");
+}
 
-// 	cr_assert_stdout_eq_str("");
-// }
+Test(simple_command, quote_not_closed_3, .init=setup)
+{
+	char *inputs[] = {
+		"echo \"hallo' \" teest 'this' string'", // echo "hallo' " teest 'this' string'
+		0
+	};
 
-// Test(simple_command, quote_not_closed_3, .init=setup)
-// {
-// 	char *inputs[] = {
-// 		"echo \"hallo' \" teest 'this' string'",
-// 		0
-// 	};
+	minicore(inputs, onze_env);
 
-// 	printf("input str = %s\n", inputs[0]);
-// 	minicore(inputs, onze_env);
-
-// 	cr_assert_stdout_eq_str("");
-// }
+	cr_assert_stdout_eq_str("Dooie input van je: Success\n");
+}
