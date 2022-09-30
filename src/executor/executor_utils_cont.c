@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 10:54:07 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 11:00:42 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,5 @@ void	set_exit_status(int last_exit_status)
 
 void	put_exit_status(void)
 {
-	char	*ascii;
-
-	ascii = ft_itoa(g_exit_status);
-	if (ascii == NULL)
-		perror_and_exit("malloc", EXIT_FAILURE);
-	ft_putendl_fd(ascii, 2);
-	free(ascii);
+	ft_putnbr_fd(g_exit_status, 1);
 }
