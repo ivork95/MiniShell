@@ -6,13 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 15:28:32 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 11:13:49 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
-#include "../../includes/signals.h"
-#include <signal.h>
 
 static void	handle_redirect_in(t_file *files)
 {
@@ -23,23 +21,13 @@ static void	handle_redirect_in(t_file *files)
 		if (files->type == HEREDOC)
 		{
 			fd = open(files->file_name, O_RDONLY);
-			if (fd == -1)
-				perror_and_exit("open", EXIT_FAILURE);
-			if (dup2(fd, STDIN_FILENO) == -1)
-				perror("dup2");
-			if (close(fd) == -1)
-				perror("close");
+			open_dup_close_guards(fd);
 			unlink(files->file_name);
 		}
 		if (files->type == REDIRECT_IN)
 		{
 			fd = open(files->file_name, O_RDONLY);
-			if (fd == -1)
-				perror_and_exit("open", EXIT_FAILURE);
-			if (dup2(fd, STDIN_FILENO) == -1)
-				perror("dup2");
-			if (close(fd) == -1)
-				perror("close");
+			open_dup_close_guards(fd);
 		}
 		files = files->next;
 	}
@@ -61,11 +49,11 @@ static void	handle_redirect_out(t_file *files)
 		else if (files->type == REDIRECT_APP)
 			fd = open(files->file_name, O_WRONLY | O_CREAT | O_APPEND, 0664);
 		if (fd == -1)
-			perror("open");
+			perror_and_exit("open", EXIT_FAILURE);
 		if (dup2(fd, STDOUT_FILENO) == -1)
-			perror("dup2");
+			perror_and_exit("dup2", EXIT_FAILURE);
 		if (close(fd) == -1)
-			perror("close");
+			perror_and_exit("close", EXIT_FAILURE);
 		files = files->next;
 	}
 }
