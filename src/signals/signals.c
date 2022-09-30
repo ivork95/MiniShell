@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 21:52:57 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 15:08:43 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 16:32:24 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-extern int g_exit_status;
+extern int	g_exit_status;
 
+/*
+** TODO check if SIGQUIT needs to be ignored
+*/
 void	init_signals(struct sigaction *sa, void (*handler)(int))
 {
-	//TODO check if SIGQUIT needs to be ignored
 	sa->sa_handler = handler;
 	sa->sa_flags = 0;
 	sigaction(SIGINT, sa, NULL);

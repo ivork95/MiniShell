@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 11:23:13 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 16:26:01 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit_status;
 
-char	*copy_string_without_quotes(char *str, char *first, char *next)
+static char	*copy_string_without_quotes(char *str, char *first, char *next)
 {
 	int		i;
 	int		j;
@@ -65,29 +65,7 @@ static void	remove_quotes(char **str, int start)
 	return ;
 }
 
-char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
-{
-	t_expand_data	data;
-
-	null_data(&data);
-	data = set_data(data, str, pos_dollar_sign, envp);
-	if (data.last_part_str[0] && data.first_part_str[0])
-	{
-		data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
-		data.new_str = ft_strjoin(data.joined_str, data.last_part_str);
-	}
-	else if (data.first_part_str[0])
-		data.new_str = ft_strjoin(data.first_part_str, data.env_str);
-	else if (data.last_part_str[0])
-		data.new_str = ft_strjoin(data.env_str, data.last_part_str);
-	else
-		data.new_str = ft_strdup(data.env_str);
-	free_expand_data(&data);
-	free(str);
-	return (data.new_str);
-}
-
-t_expand_data	set_exit_code(t_expand_data data, char *str,
+static t_expand_data	set_exit_code(t_expand_data data, char *str,
 			char *pos_dollar_sign, t_env_var *envp)
 {
 	data.len = 1;
@@ -125,40 +103,6 @@ char	*expand_exit_code(char *str, char *pos_dollar_sign, t_env_var *envp)
 	free_expand_data(&data);
 	free(str);
 	return (data.new_str);
-}
-
-static void	expand_args(char **arg, t_env_var *envp)
-{
-	size_t	i;
-	size_t	mode;
-
-	i = 0;
-	mode = 0;
-	while ((*arg)[i])
-	{
-		if ((*arg)[i] == '\"' && mode == 0)
-			mode = 2;
-		else if ((*arg)[i] == '\"' && mode == 2)
-			mode = 0;
-		else if ((*arg)[i] == '\'' && mode == 0)
-			mode = 1;
-		else if ((*arg)[i] == '\'' && mode == 1)
-			mode = 0;
-		if ((*arg)[i] == '$' && mode != 1)
-		{
-			if (ft_strlen(*arg + i) == 1)
-				break ;
-			if (ft_strncmp(*arg + i, "$?", 2) == 0)
-			{
-				*arg = expand_exit_code(*arg, *arg + i, envp);
-				continue ;
-			}
-			*arg = expand_envp(*arg, *arg + i, envp);
-			expand_args(arg, envp);
-			return ;
-		}
-		i++;
-	}
 }
 
 void	expander(t_command *commands, t_env_var *envp)

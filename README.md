@@ -46,3 +46,7 @@ TODO:
 
 > heredoc zonder command
 -""
+
+te lang
+void	expand_args(char **arg, t_env_var *envp)
+int	heredoc_function(t_token *token, char *file_name, t_env_var **envp)

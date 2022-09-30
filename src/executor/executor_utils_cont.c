@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 14:12:14 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 14:21:23 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	open_dup_close_guards(int fd)
 		perror_and_exit("close", EXIT_FAILURE);
 }
 
-char *env_var_to_str(t_env_var *node)
+char	*env_var_to_str(t_env_var *node)
 {
 	char	*env_var_str;
 	char	*tmp;
@@ -45,7 +45,7 @@ char *env_var_to_str(t_env_var *node)
 	return (env_var_str);
 }
 
-char **calloc_two_d_env(t_env_var *environ)
+char	**calloc_two_d_env(t_env_var *environ)
 {
 	unsigned int	n;
 	char			**two_d_env;
@@ -62,7 +62,7 @@ char **calloc_two_d_env(t_env_var *environ)
 	return (two_d_env);
 }
 
-char **llenv_to_two_d_env(t_env_var *environ)
+char	**llenv_to_two_d_env(t_env_var *environ)
 {
 	unsigned int	n;
 	char			**two_d_env;
