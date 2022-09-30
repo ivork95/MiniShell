@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 19:38:12 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 21:02:47 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	set_exit_status(int last_exit_status)
 {
 	if (WIFSIGNALED(last_exit_status))
 	{
+		write(1, "\n", 1);
 		if (WTERMSIG(last_exit_status) == 2)
 			g_exit_status = 1;
 		else if (WTERMSIG(last_exit_status) == 3)
