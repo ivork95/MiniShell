@@ -25,8 +25,6 @@ minishell_objects	=	../../obj/change_dir.o \
 						../../obj/executor.o \
 						../../obj/exit.o \
 						../../obj/expander_utils.o \
-						../../obj/expand_envp.o \
-						../../obj/expand_args.o \
 						../../obj/expander.o \
 						../../obj/export.o \
 						../../obj/free_breezy.o \

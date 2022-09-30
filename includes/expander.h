@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:02:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 16:28:15 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 19:29:20 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@
 # define SINGLE_QUOTES 1
 # define DOUBLE_QUOTES 2
 
-/* expand_args.c */
-void			expand_args(char **arg, t_env_var *envp);
-
 /* expand_envp.c */
 char			*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp);
 
@@ -42,8 +39,7 @@ t_expand_data	set_data(t_expand_data data, char *str, char *pos_dollar_sign,
 void			free_expand_data(t_expand_data *data);
 
 /* expander.c */
-char			*expand_exit_code(char *str, char *pos_dollar_sign,
-					t_env_var *envp);
+char			*expand_exit_code(char *str, char *pos_dollar_sign);
 void			expander(t_command *commands, t_env_var *envp);
 
 #endif
