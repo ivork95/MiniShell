@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 11:13:49 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 14:41:47 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 	if (cmd->cpid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (close(pipe_fd[0]) == -1)
 			perror_and_exit("close", EXIT_FAILURE);
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
@@ -86,11 +87,13 @@ void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2],
 						int read_end)
 {
 	cmd->cpid = fork();
+	signal(SIGINT, SIG_DFL);
 	if (cmd->cpid == -1)
 		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (close(pipe_fd[0]) == -1)
 			perror_and_exit("close", EXIT_FAILURE);
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1
@@ -119,6 +122,7 @@ void	last_process(t_env_var **head, t_command *cmd, int read_end)
 	if (cmd->cpid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (read_end != -1)
 		{
 			if (dup2(read_end, STDIN_FILENO) == -1)

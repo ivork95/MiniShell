@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 10:53:57 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 17:14:26 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,10 @@ void	create_processes(t_command *cmd, t_env_var **head)
 	int					*pipe_fd;
 	int					read_end;
 	size_t				i;
-	struct sigaction	sa;
 
 	i = 0;
 	read_end = -1;
-	init_signals(&sa, sigint_executor_handler);
+	signal(SIGINT, SIG_IGN);
 	while (cmd != NULL)
 	{
 		if (cmd->next != NULL)
