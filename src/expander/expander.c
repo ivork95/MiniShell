@@ -6,15 +6,15 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 18:54:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 19:21:18 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
 
-extern int g_exit_status;
+extern int	g_exit_status;
 
-char	*copy_string_without_quotes(char *str, char *first, char *next)
+static char	*copy_string_without_quotes(char *str, char *first, char *next)
 {
 	int		i;
 	int		j;

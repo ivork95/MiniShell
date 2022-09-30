@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 14:39:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/29 14:55:01 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 10:44:18 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	heredoc_function(t_token *token, char *file_name, t_env_var **envp)
 	signal(SIGINT, SIG_IGN);
 	if (waitpid(pid, &status, 0) == -1)
 		perror_and_exit("waitpid", EXIT_FAILURE);
-	// update_exit_code(status, envp);
 	set_exit_status(status);
 	if (WIFEXITED(status) && WEXITSTATUS(status) != EXIT_SUCCESS)
 		return (-1);

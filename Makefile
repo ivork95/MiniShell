@@ -17,27 +17,29 @@ HEADERS		:=	includes/parser.h \
 				includes/heredoc.h \
 				includes/signals.h
 MAIN		:=	obj/main.o
-OBJECTS		:=	obj/parser.o \
-				obj/parser_utils.o \
-				obj/free_breezy.o \
-				obj/tokenizer.o \
-				obj/tokenizer_utils.o \
-				obj/expander.o \
-				obj/expander_utils.o \
+OBJECTS		:=	obj/change_dir.o \
 				obj/echo.o \
-				obj/pwd.o \
 				obj/env.o \
-				obj/change_dir.o \
-				obj/export.o \
-				obj/unset.o \
-				obj/exit.o \
-				obj/executor.o \
 				obj/executor_utils.o \
 				obj/executor_utils_cont.o \
+				obj/executor.o \
+				obj/exit.o \
+				obj/expander_utils.o \
+				obj/expand_envp.o \
+				obj/expand_args.o \
+				obj/expander.o \
+				obj/export.o \
+				obj/free_breezy.o \
+				obj/parser_utils.o \
+				obj/parser.o \
 				obj/processes.o \
+				obj/pwd.o \
+				obj/tokenizer_utils.o \
+				obj/tokenizer.o \
+				obj/unset.o \
+				obj/signals.o \
 				obj/minishell_utils.o \
-				obj/heredoc.o \
-				obj/signals.o
+				obj/heredoc.o
 TEST_FILES	:=	tests/parser_tests.c \
 				tests/cd_tests.c \
 				tests/echo_tests.c \

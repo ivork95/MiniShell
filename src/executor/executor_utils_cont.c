@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 19:05:19 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 19:19:48 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ void	set_exit_status(int last_exit_status)
 		g_exit_status = WEXITSTATUS(last_exit_status);	
 }
 
-void	put_exit_status(void)
-{
-	ft_putnbr_fd(g_exit_status, 1);
-}
-
 void	open_dup_close_guards(int fd)
 {
 	if (fd == -1)
@@ -40,4 +35,52 @@ void	open_dup_close_guards(int fd)
 		perror_and_exit("dup2", EXIT_FAILURE);
 	if (close(fd) == -1)
 		perror_and_exit("close", EXIT_FAILURE);
+}
+
+char	*env_var_to_str(t_env_var *node)
+{
+	char	*env_var_str;
+	char	*tmp;
+
+	tmp = ft_strjoin(node->key, "=");
+	if (tmp == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	env_var_str = ft_strjoin(tmp, node->value);
+	if (env_var_str == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	free(tmp);
+	return (env_var_str);
+}
+
+char	**calloc_two_d_env(t_env_var *environ)
+{
+	unsigned int	n;
+	char			**two_d_env;
+
+	n = 0;
+	while (environ)
+	{
+		n++;
+		environ = environ->next;
+	}
+	two_d_env = ft_calloc(n + 1, sizeof(*two_d_env));
+	if (two_d_env == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	return (two_d_env);
+}
+
+char	**llenv_to_two_d_env(t_env_var *environ)
+{
+	unsigned int	n;
+	char			**two_d_env;
+
+	n = 0;
+	two_d_env = calloc_two_d_env(environ);
+	while (environ)
+	{
+		two_d_env[n] = env_var_to_str(environ);
+		n++;
+		environ = environ->next;
+	}
+	return (two_d_env);
 }
