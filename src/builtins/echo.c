@@ -6,26 +6,26 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 17:54:31 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 10:43:36 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 
-static int check_nl_flag(char *str)
+static int	check_nl_flag(char *str)
 {
-    int i;
+	int	i;
 
-    i = 1;
-    if (str[0] != '-')
-        return (0);
-    while (str[i])
-    {
-        if (str[i] != 'n')
-            return (0);
-        i++;
-    }
-    return (1);
+	i = 1;
+	if (str[0] != '-')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 static void	write_args(t_command *command)
