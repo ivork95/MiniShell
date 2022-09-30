@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 14:52:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 18:54:36 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
 
 	null_data(&data);
 	data = set_data(data, str, pos_dollar_sign, envp);
+	if (data.len == 0)
+	{
+		free_expand_data(&data);
+		return(str);
+	}
 	if (data.last_part_str[0] && data.first_part_str[0])
 	{
 		data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
@@ -87,8 +92,7 @@ char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
 	return (data.new_str);
 }
 
-t_expand_data	set_exit_code(t_expand_data data, char *str, char *pos_dollar_sign,
-			t_env_var *envp)
+t_expand_data	set_exit_code(t_expand_data data, char *str, char *pos_dollar_sign)
 {
 	data.len = 1;
 	data.env_str = ft_itoa(g_exit_status);
@@ -103,16 +107,13 @@ t_expand_data	set_exit_code(t_expand_data data, char *str, char *pos_dollar_sign
 		perror_and_exit("malloc", EXIT_FAILURE);
 	return (data);
 }
-//exit code is $?test
-//firstpart='exit code is '
-//lastpart='test'
-//expand_value='0'
-char	*expand_exit_code(char *str, char *pos_dollar_sign, t_env_var *envp)
+
+char	*expand_exit_code(char *str, char *pos_dollar_sign)
 {
 	t_expand_data	data;
 
 	null_data(&data);
-	data = set_exit_code(data, str, pos_dollar_sign, envp);
+	data = set_exit_code(data, str, pos_dollar_sign);
 	if (data.last_part_str[0] && data.first_part_str[0])
 	{
 		data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
@@ -130,12 +131,12 @@ char	*expand_exit_code(char *str, char *pos_dollar_sign, t_env_var *envp)
 	return (data.new_str);
 }
 
-static void	expand_args(char **arg, t_env_var *envp)
+static void	expand_args(char **arg, t_env_var *envp, int start)
 {
 	size_t	i;
 	size_t	mode;
 
-	i = 0;
+	i = 0 + start;
 	mode = 0;
 	while ((*arg)[i])
 	{
@@ -153,11 +154,17 @@ static void	expand_args(char **arg, t_env_var *envp)
 				break ;
 			if (ft_strncmp(*arg + i, "$?", 2) == 0)
 			{
-				*arg = expand_exit_code(*arg, *arg + i, envp);
+				*arg = expand_exit_code(*arg, *arg + i);
 				continue;
 			}
+			char *dup = ft_strdup(*arg);
 			*arg = expand_envp(*arg, *arg + i, envp);
-			expand_args(arg, envp);
+			if (ft_strncmp(dup, *arg, ft_strlen(dup) + 1))
+				i = 0;
+			else
+				i += 1;
+			free(dup);
+			expand_args(arg, envp, i);
 			return ;
 		}
 		i++;
@@ -173,7 +180,7 @@ void	expander(t_command *commands, t_env_var *envp)
 	start = 0;
 	while (commands->args[i])
 	{
-		expand_args(&commands->args[i], envp);
+		expand_args(&commands->args[i], envp, 0);
 		remove_quotes(&commands->args[i], start);
 		if (i == 0)
 			commands->cmd = commands->args[i];
