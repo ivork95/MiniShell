@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expander_utils.c                                   :+:    :+:            */
+/*   expander_data.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/08/26 12:36:45 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 11:25:10 by kgajadie      ########   odam.nl         */
+/*   Created: 2022/09/30 19:57:04 by ivork         #+#    #+#                 */
+/*   Updated: 2022/09/30 20:13:33 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 /*
 ** TODO check the official end of env var string
 */
-size_t	get_len_place_holder(char *str)
+static size_t	get_len_place_holder(char *str)
 {
 	size_t	i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]) && !ft_isalnum(str[i]) && str[i] != '?' )
+		if (!ft_isdigit(str[i]) && !ft_isalnum(str[i]) && str[i] != '?')
 			break ;
 		i++;
 	}

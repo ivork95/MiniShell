@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 14:19:05 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 20:56:14 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include "../includes/executor.h"
 #include "../includes/signals.h"
 
-int g_exit_status;
+int	g_exit_status;
 
 void	print_env(t_env_var *head)
 {

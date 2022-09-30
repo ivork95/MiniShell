@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 19:19:48 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 19:38:12 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	set_exit_status(int last_exit_status)
 			g_exit_status = 131;
 	}
 	if (WIFEXITED(last_exit_status))
-		g_exit_status = WEXITSTATUS(last_exit_status);	
+		g_exit_status = WEXITSTATUS(last_exit_status);
 }
 
 void	open_dup_close_guards(int fd)

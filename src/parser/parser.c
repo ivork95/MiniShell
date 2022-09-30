@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 15:32:00 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 20:50:01 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,39 @@ static void	set_args(t_token **token, t_command *command)
 	}
 }
 
-char	*get_file_name(t_token *token)
-{
-	char	*file_name;
+// char	*get_file_name(t_token *token)
+// {
+// 	char	*file_name;
 
-	file_name = malloc(sizeof(char) * token->len + 1);
-	if (file_name == NULL)
-		perror_and_exit("malloc", EXIT_FAILURE);
-	ft_strlcpy(file_name, token->str, token->len + 1);
-	return (file_name);
-}
+// 	file_name = malloc(sizeof(char) * token->len + 1);
+// 	if (file_name == NULL)
+// 		perror_and_exit("malloc", EXIT_FAILURE);
+// 	ft_strlcpy(file_name, token->str, token->len + 1);
+// 	return (file_name);
+// }
 
-static void	file_add_back(t_command **command, t_file *file)
-{
-	t_file	*tmp;
+// static void	file_add_back(t_command **command, t_file *file)
+// {
+// 	t_file	*tmp;
 
-	tmp = (*command)->files;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = file;
-}
+// 	tmp = (*command)->files;
+// 	while (tmp->next)
+// 		tmp = tmp->next;
+// 	tmp->next = file;
+// }
+
+// static int	heredoc_setup(t_token *token, t_file *file, t_env_var **envp)
+// {
+// 	file->file_name = create_file_name();
+// 	if (token == NULL || heredoc_function(token, file->file_name, envp) == -1)
+// 	{
+// 		unlink(file->file_name);
+// 		free(file->file_name);
+// 		free(file);
+// 		return (-1);
+// 	}
+// 	return (0);
+// }
 
 static int	set_files(t_token **token, t_command *command, t_env_var **envp)
 {
@@ -88,24 +101,15 @@ static int	set_files(t_token **token, t_command *command, t_env_var **envp)
 	if (file == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	file->type = redirect_type((*token)->str);
+	file->next = NULL;
 	*token = (*token)->next;
 	if (file->type == HEREDOC)
 	{
-		file->file_name = create_file_name();
-		file->next = NULL;
-		if (*token == NULL || heredoc_function(*token, file->file_name, envp) == -1)
-		{
-			unlink(file->file_name);
-			free(file->file_name);
-			free(file);
+		if (heredoc_setup(*token, file, envp) == -1)
 			return (-1);
-		}
 	}
 	else
-	{
 		file->file_name = get_file_name(*token);
-		file->next = NULL;
-	}
 	if (!(command)->files)
 		(command)->files = file;
 	else

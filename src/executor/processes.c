@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 14:41:47 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 19:39:29 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2],
 						int read_end)
 {
 	cmd->cpid = fork();
-	signal(SIGINT, SIG_DFL);
 	if (cmd->cpid == -1)
 		perror_and_exit("fork", EXIT_FAILURE);
 	if (cmd->cpid == 0)

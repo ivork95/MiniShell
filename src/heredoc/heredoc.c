@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 14:39:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 10:44:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 20:36:56 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,17 @@ static void	get_user_intput(char *file_name, char *delimiter, t_env_var *envp)
 	close(fd);
 }
 
+static char	*copy_delimiter(t_token *token)
+{
+	char	*delimiter;
+
+	delimiter = malloc(sizeof(char) * token->len + 1);
+	if (delimiter == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	ft_strlcpy(delimiter, token->str, token->len + 1);
+	return (delimiter);
+}
+
 int	heredoc_function(t_token *token, char *file_name, t_env_var **envp)
 {
 	char				*delimiter;
@@ -80,10 +91,7 @@ int	heredoc_function(t_token *token, char *file_name, t_env_var **envp)
 	if (pid == 0)
 	{
 		init_signals(&sa, sigint_heredoc_handler);
-		delimiter = malloc(sizeof(char) * token->len + 1);
-		if (delimiter == NULL)
-			perror_and_exit("malloc", EXIT_FAILURE);
-		ft_strlcpy(delimiter, token->str, token->len + 1);
+		delimiter = copy_delimiter(token);
 		get_user_intput(file_name, delimiter, *envp);
 		free(delimiter);
 		exit(EXIT_SUCCESS);

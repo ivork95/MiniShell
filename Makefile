@@ -24,11 +24,14 @@ OBJECTS		:=	obj/change_dir.o \
 				obj/executor_utils_cont.o \
 				obj/executor.o \
 				obj/exit.o \
-				obj/expander_utils.o \
+				obj/exit_code_expander.o \
+				obj/expander_data.o \
+				obj/quote_handler.o \
 				obj/expander.o \
 				obj/export.o \
 				obj/free_breezy.o \
 				obj/parser_utils.o \
+				obj/parser_utils_cont.o \
 				obj/parser.o \
 				obj/processes.o \
 				obj/pwd.o \

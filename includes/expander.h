@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:02:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 19:29:20 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 20:58:28 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,21 @@
 # define SINGLE_QUOTES 1
 # define DOUBLE_QUOTES 2
 
-/* expand_envp.c */
-char			*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp);
+/* exit_code_expander.c */
+char			*expand_exit_code(char *str, char *pos_dollar_sign);
 
-/* expand_utils.c */
-size_t			get_len_place_holder(char *str);
-void			null_data(t_expand_data *data);
+/* expander_data.c */
 t_expand_data	set_data(t_expand_data data, char *str, char *pos_dollar_sign,
 					t_env_var *envp);
+void			null_data(t_expand_data *data);
 void			free_expand_data(t_expand_data *data);
 
+/* quote_handler.c */
+void			remove_quotes(char **str, int start);
+
 /* expander.c */
-char			*expand_exit_code(char *str, char *pos_dollar_sign);
 void			expander(t_command *commands, t_env_var *envp);
+void			expand_args(char **arg, int start, t_env_var *envp);
+char			*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp);
 
 #endif
