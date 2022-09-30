@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/26 13:07:27 by kawish        ########   odam.nl         */
+/*   Updated: 2022/09/30 10:42:09 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,18 @@ static void	change_env_pwd(t_env_var **environ)
 	free(env_var);
 }
 
-void	change_directory(t_command *command, t_env_var **environ)
+static void	change_directory_inner(t_env_var **environ)
 {
 	char		*old_pwd;
+
+	old_pwd = getcwd(NULL, 0);
+	change_env_old_pwd(old_pwd, environ);
+	free(old_pwd);
+	change_env_pwd(environ);
+}
+
+void	change_directory(t_command *command, t_env_var **environ)
+{
 	t_env_var	*home;
 
 	if (command->args[1] == NULL)
@@ -61,10 +70,7 @@ void	change_directory(t_command *command, t_env_var **environ)
 		perror("minishell: chdir");
 		return ;
 	}
-	old_pwd = getcwd(NULL, 0);
-	change_env_old_pwd(old_pwd, environ);
-	free(old_pwd);
-	change_env_pwd(environ);
+	change_directory_inner(environ);
 }
 
 void	cd_builtin(t_command *cmd, t_env_var **environ)
