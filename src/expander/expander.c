@@ -6,13 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 14:52:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 11:23:13 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
 
-extern int g_exit_status;
+extern int	g_exit_status;
 
 char	*copy_string_without_quotes(char *str, char *first, char *next)
 {
@@ -87,8 +87,8 @@ char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
 	return (data.new_str);
 }
 
-t_expand_data	set_exit_code(t_expand_data data, char *str, char *pos_dollar_sign,
-			t_env_var *envp)
+t_expand_data	set_exit_code(t_expand_data data, char *str,
+			char *pos_dollar_sign, t_env_var *envp)
 {
 	data.len = 1;
 	data.env_str = ft_itoa(g_exit_status);
@@ -103,10 +103,7 @@ t_expand_data	set_exit_code(t_expand_data data, char *str, char *pos_dollar_sign
 		perror_and_exit("malloc", EXIT_FAILURE);
 	return (data);
 }
-//exit code is $?test
-//firstpart='exit code is '
-//lastpart='test'
-//expand_value='0'
+
 char	*expand_exit_code(char *str, char *pos_dollar_sign, t_env_var *envp)
 {
 	t_expand_data	data;
@@ -154,7 +151,7 @@ static void	expand_args(char **arg, t_env_var *envp)
 			if (ft_strncmp(*arg + i, "$?", 2) == 0)
 			{
 				*arg = expand_exit_code(*arg, *arg + i, envp);
-				continue;
+				continue ;
 			}
 			*arg = expand_envp(*arg, *arg + i, envp);
 			expand_args(arg, envp);

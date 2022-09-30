@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 20:59:40 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 11:13:42 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 14:17:34 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ void	copy_read_end(int *read_end, int *pipe_fd);
 
 /* executor_utils_cont.c */
 void open_dup_close_guards(int fd);
+char	**llenv_to_two_d_env(t_env_var *environ);
 
 /* processes.c */
 void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2]);
 void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2],
 			int read_end);
 void	last_process(t_env_var **head, t_command *cmd, int read_end);
+
 
 #endif

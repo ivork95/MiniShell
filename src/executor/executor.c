@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 10:53:57 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 14:10:49 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 		full_path = command->args[0];
 	else
 		full_path = get_full_path(path, command->args[0]);
-	execve(full_path, command->args, NULL);
-	perror("execve");
-	exit(EXIT_FAILURE);
+	execve(full_path, command->args, llenv_to_two_d_env(ll_environ));
+	perror_and_exit("execve", EXIT_FAILURE);
 }
 
 int	exec_builtin(t_env_var **head, t_command *cmd)
