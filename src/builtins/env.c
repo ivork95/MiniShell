@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/22 16:04:24 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 18:33:25 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_env_var	*find_env_var(t_env_var *head, char *key_to_check)
 {
 	while (head != NULL)
 	{
-		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(key_to_check))))
+		if (!(ft_strncmp(head->key, key_to_check, ft_strlen(key_to_check) + 1)))
 			return (head);
 		head = head->next;
 	}
@@ -84,6 +84,5 @@ t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ)
 					environ + 1);
 		}
 	}
-	add_env_var(&head, "?=0");
 	return (head);
 }
