@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/29 17:46:03 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/09/30 15:32:00 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ t_command	*parser(t_token *token, t_env_var **envp)
 		{
 			if (fill_command(&token, command, envp) == -1)
 			{
-				printf("fill command failure\n");
 				free_commands(command);
 				return (NULL);
 			}
