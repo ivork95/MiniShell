@@ -6,15 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 17:14:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/09/30 10:53:57 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
-#include "../../includes/signals.h"
-#include <signal.h>
 
-extern int g_exit_status;
+extern int	g_exit_status;
 
 void	exec_ll(t_env_var *ll_environ, t_command *command)
 {
@@ -94,47 +92,6 @@ void	create_processes(t_command *cmd, t_env_var **head)
 		i++;
 		cmd = cmd->next;
 	}
-}
-
-void	update_exit_code(int last_exit_status, t_env_var **head)
-{
-	char	*s;
-	char	*ascii;
-
-	s = (void *)0;
-	if (WIFEXITED(g_exit_status))
-	{
-		ascii = ft_itoa(WEXITSTATUS(g_exit_status));
-		if (ascii == NULL)
-			perror_and_exit("malloc", EXIT_FAILURE);
-		s = ft_strjoin("?=", ascii);
-		free(ascii);
-		if (s == NULL)
-			perror_and_exit("malloc", EXIT_FAILURE);
-		add_env_var(head, s);
-		free(s);
-	}
-	if (WIFSIGNALED(g_exit_status))
-	{
-		;
-	}
-}
-
-void	set_exit_status(int last_exit_status)
-{
-	if (WIFEXITED(last_exit_status))
-		g_exit_status = WEXITSTATUS(last_exit_status);
-}
-
-void	put_exit_status()
-{
-	char	*ascii;
-
-	ascii = ft_itoa(g_exit_status);
-	if (ascii == NULL)
-		perror_and_exit("malloc", EXIT_FAILURE);
-	ft_putendl_fd(ascii, 2);
-	free(ascii);
 }
 
 void	executor(t_command *cmd, t_env_var **head)

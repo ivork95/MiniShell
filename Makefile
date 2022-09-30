@@ -6,7 +6,7 @@ VPATH		:=	src:\
 				src/builtins: \
 				src/executor: \
 				src/heredoc: \
-				src/signals: \
+				src/signals:
 HEADERS		:=	includes/parser.h \
 				includes/tokenizer.h \
 				includes/expander.h \
@@ -32,8 +32,9 @@ OBJECTS		:=	obj/parser.o \
 				obj/unset.o \
 				obj/exit.o \
 				obj/executor.o \
-				obj/processes.o \
 				obj/executor_utils.o \
+				obj/executor_utils_cont.o \
+				obj/processes.o \
 				obj/minishell_utils.o \
 				obj/heredoc.o \
 				obj/signals.o
