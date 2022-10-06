@@ -112,7 +112,7 @@ Test(simple_command, outer_quote_not_closed_2, .init=setup, .exit_code=1)
 	minicore(inputs, onze_env);
 }
 
-Test(simple_command, heredoc_without_delim, .init=setup)
+Test(simple_command, heredoc_without_delim_cmd, .init=setup)
 {
 	char *inputs[] = {
 		"<<",
@@ -121,5 +121,5 @@ Test(simple_command, heredoc_without_delim, .init=setup)
 
 	minicore(inputs, onze_env);
 
-	cr_assert_stdout_eq_str("minishell: syntax error near unexpected token `newline'\n");
+	cr_assert_stdout_eq_str("");
 }
