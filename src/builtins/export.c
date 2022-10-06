@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/06 13:32:08 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:24:07 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_env_var	*assign_env_key_value(char *env_var, char *ptr)
 	return (head);
 }
 
-/* Wat er moet gebeuren bij return ;?*/
 void	add_env_var(t_env_var **head, char *env_var)
 {
 	char		*ptr;

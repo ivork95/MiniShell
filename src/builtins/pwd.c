@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 13:15:28 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:25:20 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ extern int	g_exit_status;
 /*
 check for argument amounts ->> print error when to many arguments
 */
-void	pwd_builtin(__attribute__ ((unused)) t_command *cmd,
-	__attribute__ ((unused)) t_env_var **environ)
+void	pwd_builtin(t_command *cmd, t_env_var **environ)
 {
 	char	*working_dir;
 

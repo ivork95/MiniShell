@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 13:21:21 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:18:48 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	change_directory_inner(t_env_var **environ)
 	change_env_pwd(environ);
 }
 
-void	change_directory(t_command *command, t_env_var **environ)
+static void	change_directory(t_command *command, t_env_var **environ)
 {
 	t_env_var	*home;
 

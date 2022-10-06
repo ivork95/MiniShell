@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/06 13:41:51 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:22:48 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit_status;
 
-bool	str_is_numeric(char *s)
+static bool	str_is_numeric(char *s)
 {
 	char	*ascii;
 
@@ -30,7 +30,7 @@ bool	str_is_numeric(char *s)
 	return (false);
 }
 
-void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
+static void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 {
 	if (!str_is_numeric(cmd_args[1]))
 	{
@@ -59,11 +59,11 @@ void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 	}
 }
 
-void	exit_builtin(t_command *cmd,
-	__attribute__ ((unused)) t_env_var **vars)
+void	exit_builtin(t_command *cmd, t_env_var **vars)
 {
 	unsigned int	argc;
 
+	(void)vars;
 	argc = 1;
 	while (cmd->args[argc] != NULL)
 		argc++;

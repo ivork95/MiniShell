@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/06 13:26:14 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:20:11 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	env(t_command *command, t_env_var **head)
 {
 	t_env_var	*vars;
 
+	(void)command;
 	vars = *head;
 	while (vars != NULL)
 	{
