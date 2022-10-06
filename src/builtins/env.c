@@ -6,11 +6,13 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/30 19:19:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 13:26:14 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
+
+extern int	g_exit_status;
 
 t_env_var	*find_env_var(t_env_var *head, char *key_to_check)
 {
@@ -49,6 +51,7 @@ void	env(t_command *command, t_env_var **head)
 		ft_putendl_fd(vars->value, 1);
 		vars = vars->next;
 	}
+	g_exit_status = 0;
 }
 
 void	put_env_vars_declare(t_env_var *head)

@@ -6,11 +6,13 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/23 11:41:58 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 13:32:08 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
+
+extern int	g_exit_status;
 
 static void	add_front(t_env_var **lst, t_env_var *new)
 {

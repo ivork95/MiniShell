@@ -6,11 +6,13 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/26 14:17:41 by kawish        ########   odam.nl         */
+/*   Updated: 2022/10/06 13:41:51 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
+
+extern int	g_exit_status;
 
 bool	str_is_numeric(char *s)
 {
@@ -45,13 +47,14 @@ void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 		{
 			if (cpid != 0)
 				ft_putendl_fd("exit", STDOUT_FILENO);
-			exit(ft_atoi(cmd_args[1]));
+			exit(ft_atoi(cmd_args[1]) % 256);
 		}
 		else
 		{
 			if (cpid != 0)
 				ft_putendl_fd("exit", STDOUT_FILENO);
 			ft_putendl_fd("minishell: exit: too many arguments", STDOUT_FILENO);
+			g_exit_status = 2;
 		}
 	}
 }

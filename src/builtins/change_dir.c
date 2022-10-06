@@ -6,11 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 10:42:09 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 13:21:21 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
+
+extern int	g_exit_status;
 
 static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 {
@@ -86,4 +88,5 @@ void	cd_builtin(t_command *cmd, t_env_var **environ)
 		return ;
 	}
 	change_directory(cmd, environ);
+	g_exit_status = 0;
 }

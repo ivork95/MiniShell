@@ -6,11 +6,13 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:24:29 by kawish        #+#    #+#                 */
-/*   Updated: 2022/09/02 11:20:44 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 13:49:26 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
+
+extern int	g_exit_status;
 
 void	delete_env_var(t_env_var **head, t_env_var *prev, t_env_var *envp)
 {
@@ -57,4 +59,5 @@ void	unset_builtin(t_command *command, t_env_var **environ)
 		search_and_destroy(environ, command->args[i]);
 		i++;
 	}
+	g_exit_status = 0;
 }
