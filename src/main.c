@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 20:56:14 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 11:07:24 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	minishell(t_env_var	*environ)
 	while (1)
 	{
 		init_signals(&sa, &sigint_prompt_handler);
-		user_input = readline("minishel>");
+		user_input = readline("minishell>");
 		if (!user_input)
 		{
 			printf("exit\n");
@@ -64,6 +64,7 @@ void	minishell(t_env_var	*environ)
 		{
 			free(user_input);
 			free_tokens(tokens);
+			free_commands(cmds);
 			continue ;
 		}
 		expander(cmds, environ);
