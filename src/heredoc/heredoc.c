@@ -6,17 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 14:39:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 20:36:56 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 15:11:27 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/heredoc.h"
-#include "../../includes/signals.h"
-#include "../../includes/expander.h"
-
-#include <sys/wait.h>
-#include <signal.h>
-#include <limits.h>
 
 char	*create_file_name(void)
 {

@@ -6,21 +6,14 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 21:52:57 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 19:21:42 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 15:19:24 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "../../includes/signals.h"
 
 extern int	g_exit_status;
 
-/*
-** TODO check if SIGQUIT needs to be ignored
-*/
 void	init_signals(struct sigaction *sa, void (*handler)(int))
 {
 	sa->sa_handler = handler;
@@ -46,12 +39,3 @@ void	sigint_heredoc_handler(int num)
 	rl_on_new_line();
 	exit(130);
 }
-
-// void	sigint_executor_handler(int num)
-// {
-// 	(void)num;
-// 	printf("caught signal\n");
-// 	write(1, "\n", 1);
-// 	rl_on_new_line();
-// 	rl_replace_line("", 0);
-// }

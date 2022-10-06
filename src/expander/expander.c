@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 20:25:21 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 15:08:59 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	set_mode(char c, int mode)
 	return (mode);
 }
 
-static void	expand_args2(char **arg, int i, t_env_var *envp)
+static void	expand_args_inner(char **arg, int i, t_env_var *envp)
 {
 	char	*dup;
 
@@ -85,7 +85,7 @@ void	expand_args(char **arg, int start, t_env_var *envp)
 				*arg = expand_exit_code(*arg, *arg + i);
 				continue ;
 			}
-			expand_args2(arg, i, envp);
+			expand_args_inner(arg, i, envp);
 			return ;
 		}
 		i++;

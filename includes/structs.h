@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 13:27:42 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/16 16:38:03 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 15:22:46 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_token
 	char			*str;
 	size_t			len;
 	size_t			type;
-	bool			quoted;
 	struct s_token	*next;
 }	t_token;
 

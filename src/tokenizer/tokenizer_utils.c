@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/21 11:03:53 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/08 13:32:02 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:22:48 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	print_tokens(t_token *head)
 	while (head != NULL)
 	{
 		printf("node[%lu] = {\n\tstr = $%.*s$\n\tlen = %lu\n\t \
-			type = %lu\n\tquoted = %i\n}\n",
-			i, (int)head->len, head->str, head->len, head->type, head->quoted);
+			type = %lu\n}\n",
+			i, (int)head->len, head->str, head->len, head->type);
 		head = head->next;
 		i++;
 	}

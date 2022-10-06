@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 13:13:34 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:04:30 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	exec_builtin(t_env_var **head, t_command *cmd)
 	return (0);
 }
 
-void	create_processes(t_command *cmd, t_env_var **head)
+static void	create_processes(t_command *cmd, t_env_var **head)
 {
 	int					*pipe_fd;
 	int					read_end;

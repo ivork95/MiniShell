@@ -6,13 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 20:50:02 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 20:52:35 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 15:14:08 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
-#include "../../includes/expander.h"
-#include "../../includes/builtins.h"
 
 char	*get_file_name(t_token *token)
 {

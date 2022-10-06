@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 16:45:06 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:22:48 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ t_token	*create_new_token(void)
 	if (new_token == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	new_token->str = NULL;
-	new_token->quoted = false;
 	new_token->next = NULL;
-	new_token->quoted = false;
 	new_token->len = 0;
 	new_token->type = 0;
 	return (new_token);
@@ -51,7 +49,6 @@ t_token	*tokenize_special_opp(char *str)
 	return (token);
 }
 
-/* " "he'        llo" */
 t_token	*tokenize_word(char *str)
 {
 	t_token		*new_token;
@@ -65,10 +62,7 @@ t_token	*tokenize_word(char *str)
 			&& !ft_isspace(str[len]) && !isspecialchar(str[len])))
 	{
 		if ((str[len] == '\'' || str[len] == '\"') && quote == 0)
-		{
 			quote = str[len];
-			new_token->quoted = true;
-		}
 		else if (str[len] == quote)
 			quote = 0;
 		len++;

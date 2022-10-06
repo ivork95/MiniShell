@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/26 17:34:26 by kawish        ########   odam.nl         */
+/*   Updated: 2022/10/06 15:04:32 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	close_pipe(int pipe_fd)
 		perror_and_exit("close", EXIT_FAILURE);
 }
 
-char	*get_full_path_inner(char **paths, char *cmd_dup, const char *cmd)
+static char	*get_full_path_inner(char **paths, char *cmd_dup, const char *cmd)
 {
 	int		i;
 	char	*full_path;

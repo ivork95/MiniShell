@@ -6,21 +6,11 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 20:50:01 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 15:16:22 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include "../../includes/parser.h"
-#include "../../includes/expander.h"
-#include "../../includes/builtins.h"
 
 static void	set_command(t_token **token, t_command *command)
 {

@@ -6,37 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 12:32:27 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/29 11:00:41 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 15:14:02 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
-
-// void	free_files(t_file *head)
-// {
-// 	if (head->next)
-// 		free_files(head->next);
-// 	free(head->file_name);
-// 	free(head);
-// }
-
-// void	free_commands(t_command *head)
-// {
-// 	size_t	i;
-
-// 	if (head->next)
-// 		free_commands(head->next);
-// 	i = 0;
-// 	while (head->args[i] != NULL)
-// 	{
-// 		free(head->args[i]);
-// 		i++;
-// 	}
-// 	free(head->args);
-// 	if (head->files)
-// 		free_files(head->files);
-// 	free(head);
-// }
 
 void	free_files(t_file *head)
 {
