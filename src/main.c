@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 14:14:58 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:54:40 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,39 +25,39 @@ void	print_env(t_env_var *head)
 	}
 }
 
-void	get_user_input(char *user_input)
+void	get_user_input(char **user_input)
 {
 	struct sigaction	sa;
 
 	init_signals(&sa, &sigint_prompt_handler);
-	user_input = readline("minishell>");
-	if (!user_input)
+	*user_input = readline("minishell>");
+	if (!(*user_input))
 	{
 		printf("exit\n");
 		exit(EXIT_FAILURE);
 	}
-	add_history(user_input);
+	add_history(*user_input);
 }
 
-int	parser_and_expander(t_command *cmds, t_token *tokens,
+int	parser_and_expander(t_command **cmds, t_token *tokens,
 				t_env_var **environ, char *user_input)
 {
-	cmds = parser(tokens, environ);
-	if (cmds == NULL || cmds->cmd == NULL)
+	*cmds = parser(tokens, environ);
+	if (*cmds == NULL || (*cmds)->cmd == NULL)
 	{
-		if (cmds)
-			unlink(cmds->files->file_name);
+		if (*cmds)
+			unlink((*cmds)->files->file_name);
 		free(user_input);
 		free_tokens(tokens);
-		free_commands(cmds);
+		free_commands(*cmds);
 		return (1);
 	}
-	expander(cmds, *environ);
-	if (cmds->cmd[0] == 0)
+	expander(*cmds, *environ);
+	if ((*cmds)->cmd[0] == 0)
 	{
 		free(user_input);
 		free_tokens(tokens);
-		free_commands(cmds);
+		free_commands(*cmds);
 		return (1);
 	}
 	return (0);
@@ -73,7 +73,7 @@ void	minishell(t_env_var	*environ)
 	{
 		cmds = NULL;
 		user_input = NULL;
-		get_user_input(user_input);
+		get_user_input(&user_input);
 		tokens = tokenizer(user_input);
 		if (tokens == NULL)
 		{
@@ -81,7 +81,7 @@ void	minishell(t_env_var	*environ)
 			free_tokens(tokens);
 			continue ;
 		}
-		parser_and_expander(cmds, tokens, &environ, user_input);
+		parser_and_expander(&cmds, tokens, &environ, user_input);
 		executor(cmds, &environ);
 		free(user_input);
 		free_tokens(tokens);

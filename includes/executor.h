@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 20:59:40 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 14:20:35 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:59:22 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 # include <signal.h>
 
 /* executor.c */
-void	set_exit_status(int last_exit_status);
 void	executor(t_command *cmd, t_env_var **head);
 void	exec_ll(t_env_var *ll_environ, t_command *command);
 int		exec_builtin(t_env_var **head, t_command *cmd);
@@ -43,6 +42,7 @@ char	*get_full_path(char *path, const char *cmd);
 void	copy_read_end(int *read_end, int *pipe_fd);
 
 /* executor_utils_cont.c */
+void	set_exit_status(int last_exit_status);
 void	open_dup_close_guards(int fd);
 char	**llenv_to_two_d_env(t_env_var *environ);
 
