@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 19:19:56 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/06 11:07:12 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 	t_env_var	*path_node;
 	char		*path;
 	char		*full_path;
+	char		**two_d_env;
 
 	path_node = find_env_var(ll_environ, "PATH");
 	if (path_node == NULL)
@@ -31,7 +32,8 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 		full_path = command->args[0];
 	else
 		full_path = get_full_path(path, command->args[0]);
-	execve(full_path, command->args, llenv_to_two_d_env(ll_environ));
+	two_d_env = llenv_to_two_d_env(ll_environ);
+	execve(full_path, command->args, two_d_env);
 	perror_and_exit("execve", EXIT_FAILURE);
 }
 
