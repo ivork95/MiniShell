@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 21:52:57 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 15:19:24 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/11 15:44:58 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_signals(struct sigaction *sa, void (*handler)(int))
 {
 	sa->sa_handler = handler;
 	sa->sa_flags = 0;
+	sigemptyset(&sa->sa_mask);
 	sigaction(SIGINT, sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
