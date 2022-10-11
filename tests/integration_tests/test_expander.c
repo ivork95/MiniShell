@@ -126,3 +126,15 @@ Test(expander, multiple_quotes_inside, .init = setup)
 
 	cr_assert_stdout_eq_str("hello 'test' 'this' 'string' bye\n");
 }
+
+Test(expander, ikweetniet, .init = setup)
+{
+	char *inputs[] = {
+		"echo $TEST$PWD",
+		0
+	};
+
+	minicore(inputs, onze_env);
+
+	cr_assert_stdout_eq_str("/pwd\n");
+}

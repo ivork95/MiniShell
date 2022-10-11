@@ -58,3 +58,15 @@ Test(export, export_hostname, .init=setup, .disabled=true)
 	cr_assert_stdout_eq_str(a);
 	free(a);
 }
+
+Test(export, export_oswin, .init=setup)
+{
+	char *inputs[] = {
+		"export VAR='$BAR'",
+		"export BAR='$VAR'",
+		"echo $VAR",
+		0
+	};
+
+	minicore(inputs, onze_env);
+}

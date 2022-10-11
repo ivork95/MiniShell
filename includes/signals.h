@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 22:02:05 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 15:19:25 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:21:04 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <signal.h>
 
 /*private libraries*/
+# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>

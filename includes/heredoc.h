@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 08:03:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 15:11:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:22:05 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define HEREDOC_H
 
 /* Public libraries */
+# include <stdio.h>
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
