@@ -121,5 +121,5 @@ Test(simple_command, heredoc_without_delim_cmd, .init=setup)
 
 	minicore(inputs, onze_env);
 
-	cr_assert_stdout_eq_str("");
+	cr_assert_stdout_eq_str("Syntax error\n");
 }

@@ -49,7 +49,7 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
 				tests/unset_tests.c
 CFLAGS		?=	-Wall -Wextra -Werror
-LDFLAGS		?=	-lreadline
+LDFLAGS		?=	-lreadline -g
 LIBFT		:=	src/libft
 ITESTS		:=	tests/integration_tests
 
