@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/11 14:21:38 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/11 14:36:55 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,22 @@ static int	set_mode(char c, int mode)
 	return (mode);
 }
 
-int check_if_exists(char *str, t_env_var *envp)
+bool	check_if_exists(char *str, t_env_var *envp)
 {
-	char *s;
-	char *r;
-	size_t len;
+	char	*s;
 
 	s = ft_strchr(str + 1, '$');
 	if (!s)
-		len = strlen(str);
+		s = ft_substr(str, 1, strlen(str));
 	else
-		len = s - str;
-	s = malloc(sizeof(char) * len + 1);
-	ft_strlcpy(s, str, len + 1);
-	if (!find_env_var(envp, s + 1))
-		return (0);
-	return (1);
+		s = ft_substr(str, 1, s - str);
+	if (!find_env_var(envp, s))
+	{
+		free(s);
+		return (false);
+	}
+	free(s);
+	return (true);
 }
 
 static void	expand_args_inner(char **arg, int i, t_env_var *envp)
@@ -76,8 +76,6 @@ static void	expand_args_inner(char **arg, int i, t_env_var *envp)
 
 	dup = ft_strdup(*arg);
 	*arg = expand_envp(*arg, *arg + i, envp);
-	// if (ft_strncmp(dup, *arg, ft_strlen(dup) + 1))
-	// 	i = 0;
 	if ((*arg)[i] == '\0' || !check_if_exists(dup + i, envp))
 		i = 0;
 	else
