@@ -6,38 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/11 14:36:55 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/11 14:40:16 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
-
-char	*expand_envp(char *str, char *pos_dollar_sign, t_env_var *envp)
-{
-	t_expand_data	data;
-
-	null_data(&data);
-	data = set_data(data, str, pos_dollar_sign, envp);
-	if (data.len == 0)
-	{
-		free_expand_data(&data);
-		return (str);
-	}
-	if (data.last_part_str[0] && data.first_part_str[0])
-	{
-		data.joined_str = ft_strjoin(data.first_part_str, data.env_str);
-		data.new_str = ft_strjoin(data.joined_str, data.last_part_str);
-	}
-	else if (data.first_part_str[0])
-		data.new_str = ft_strjoin(data.first_part_str, data.env_str);
-	else if (data.last_part_str[0])
-		data.new_str = ft_strjoin(data.env_str, data.last_part_str);
-	else
-		data.new_str = ft_strdup(data.env_str);
-	free_expand_data(&data);
-	free(str);
-	return (data.new_str);
-}
 
 static int	set_mode(char c, int mode)
 {
@@ -52,7 +25,7 @@ static int	set_mode(char c, int mode)
 	return (mode);
 }
 
-bool	check_if_exists(char *str, t_env_var *envp)
+static bool	check_if_exists(char *str, t_env_var *envp)
 {
 	char	*s;
 
