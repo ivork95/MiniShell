@@ -25,7 +25,6 @@ Test(exit, exit, .init=setup, .exit_code=0)
 		"exit",
 		0
 	};
-
 	minicore(inputs, onze_env);
 }
 
@@ -35,7 +34,33 @@ Test(exit, exit_42, .init=setup, .exit_code=42)
 		"exit 42",
 		0
 	};
+	minicore(inputs, onze_env);
+}
 
+Test(exit, exit_overflow, .init=setup, .exit_code=2)
+{
+	char *inputs[] = {
+		"exit 999999999999999999999999999999999999999999999999",
+		0
+	};
+	minicore(inputs, onze_env);
+}
+
+Test(exit, exit_300, .init=setup, .exit_code=44)
+{
+	char *inputs[] = {
+		"exit 300",
+		0
+	};
+	minicore(inputs, onze_env);
+}
+
+Test(exit, exit_minus_300, .init=setup, .exit_code=212)
+{
+	char *inputs[] = {
+		"exit -300",
+		0
+	};
 	minicore(inputs, onze_env);
 }
 
@@ -45,7 +70,6 @@ Test(exit, exit_hello, .init=setup, .exit_code=2)
 		"exit hello",
 		0
 	};
-
 	minicore(inputs, onze_env);
 }
 
@@ -53,12 +77,11 @@ Test(exit, exit_42_19, .init=setup)
 {
 	char *inputs[] = {
 		"exit 42 19",
+		"echo $?",
 		0
 	};
-
 	minicore(inputs, onze_env);
-
-	cr_assert_stdout_eq_str("exit\nminishell: exit: too many arguments\n");
+	cr_assert_stdout_eq_str("exit\nminishell: exit: too many arguments\n1\n");
 }
 
 Test(exit, exit_hello_world, .init=setup, .exit_code=2)
@@ -67,7 +90,6 @@ Test(exit, exit_hello_world, .init=setup, .exit_code=2)
 		"exit hello world",
 		0
 	};
-
 	minicore(inputs, onze_env);
 }
 
@@ -77,19 +99,37 @@ Test(exit, exit_hello_42, .init=setup, .exit_code=2)
 		"exit hello 42",
 		0
 	};
-
 	minicore(inputs, onze_env);
 }
 
 Test(exit, exit_42_hello, .init=setup)
 {
-
 	char *inputs[] = {
 		"exit 42 hello",
+		"echo $?",
 		0
 	};
-
 	minicore(inputs, onze_env);
+	cr_assert_stdout_eq_str("exit\nminishell: exit: too many arguments\n1\n");
+}
 
-	cr_assert_stdout_eq_str("exit\nminishell: exit: too many arguments\n");
+Test(exit, exit_42_pipe_exit_a, .init=setup)
+{
+	char *inputs[] = {
+		"exit 42 | exit a",
+		"echo $?",
+		0
+	};
+	minicore(inputs, onze_env);
+	cr_assert_stdout_eq_str("minishell: exit: a: numeric argument required\n2\n");
+}
+
+Test(exit, exit_a, .init=setup, .exit_code=2)
+{
+	char *inputs[] = {
+		"exit a",
+		0
+	};
+	minicore(inputs, onze_env);
+	cr_assert_stdout_eq_str("2\n");
 }
