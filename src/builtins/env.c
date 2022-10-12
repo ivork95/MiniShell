@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/06 14:20:11 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 02:37:43 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ void	env(t_command *command, t_env_var **head)
 	vars = *head;
 	while (vars != NULL)
 	{
-		ft_putstr_fd(vars->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putendl_fd(vars->value, 1);
+		if (vars->value)
+		{
+			ft_putstr_fd(vars->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putendl_fd(vars->value, 1);
+		}
 		vars = vars->next;
 	}
 	g_exit_status = 0;
@@ -61,9 +64,13 @@ void	put_env_vars_declare(t_env_var *head)
 	{
 		ft_putstr_fd("declare -x ", 1);
 		ft_putstr_fd(head->key, 1);
-		ft_putstr_fd("=\"", 1);
-		ft_putstr_fd(head->value, 1);
-		ft_putendl_fd("\"", 1);
+		if (head->value)
+		{
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd(head->value, 1);
+			ft_putstr_fd("\"", 1);
+		}
+		ft_putendl_fd("", 1);
 		head = head->next;
 	}
 }
