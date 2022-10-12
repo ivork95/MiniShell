@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 13:22:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:27:13 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,12 @@ static char	*get_full_path_inner(char **paths, char *cmd_dup, const char *cmd)
 		i++;
 	}
 	free(cmd_dup);
-	if (paths[i] == NULL)
+	if (paths[i] == NULL || cmd[0] == '\0')
 	{
 		free_splitted_array(paths);
-		printf("minishell: %s: command not found\n", cmd);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd((char*)cmd, STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
 		exit(127);
 	}
 	free_splitted_array(paths);

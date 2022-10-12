@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/06 14:59:20 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:26:44 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	set_exit_status(int last_exit_status)
 		}
 		else if (WTERMSIG(last_exit_status) == 3)
 		{
-			ft_putendl_fd("Quit", 1);
+			ft_putendl_fd("Quit", STDERR_FILENO);
 			g_exit_status = 131;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/12 14:28:52 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:25:00 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ void	add_env_var(t_env_var **head, char *env_var)
 
 	if (!ft_isalnum(*env_var))
 	{
-		printf("minishell: export: %s: not a valid identifier\n", env_var);
+		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+		ft_putstr_fd(env_var, STDERR_FILENO);
+		ft_putendl_fd(": not a valid identifier\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	ptr = ft_strchr(env_var, '=');

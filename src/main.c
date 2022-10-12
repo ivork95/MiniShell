@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 16:16:53 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:28:37 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	print_env(t_env_var *head)
 {
 	while (head != NULL)
 	{
-		ft_putstr_fd(head->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putendl_fd(head->value, 1);
+		ft_putstr_fd(head->key, STDOUT_FILENO);
+		ft_putchar_fd('=', STDOUT_FILENO);
+		ft_putendl_fd(head->value, STDOUT_FILENO);
 		head = head->next;
 	}
 }
@@ -33,7 +33,7 @@ static void	get_user_input(char **user_input)
 	*user_input = readline("minishell>");
 	if (!(*user_input))
 	{
-		printf("exit\n");
+		ft_putendl_fd("exit", 2);
 		exit(0);
 	}
 	add_history(*user_input);

@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/12 11:48:33 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:23:31 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static bool	str_is_numeric(char *s)
 {
 	char			*ascii;
 	unsigned int	i;
-	
+
 	i = 0;
 	if (*s == '-')
 		s++;
@@ -45,10 +45,10 @@ static void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 	if (!str_is_numeric(cmd_args[1]))
 	{
 		if (cpid != 0)
-			ft_putendl_fd("exit", STDOUT_FILENO);
-		ft_putstr_fd("minishell: exit: ", STDOUT_FILENO);
-		ft_putstr_fd(cmd_args[1], STDOUT_FILENO);
-		ft_putendl_fd(": numeric argument required", STDOUT_FILENO);
+			ft_putendl_fd("exit", STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+		ft_putstr_fd(cmd_args[1], STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit(2);
 	}
 	else
@@ -56,14 +56,14 @@ static void	handle_exit_multiple_args(char **cmd_args, pid_t cpid)
 		if (cmd_args[2] == NULL)
 		{
 			if (cpid != 0)
-				ft_putendl_fd("exit", STDOUT_FILENO);
+				ft_putendl_fd("exit", STDERR_FILENO);
 			exit(ft_atoi(cmd_args[1]) % 256);
 		}
 		else
 		{
 			if (cpid != 0)
-				ft_putendl_fd("exit", STDOUT_FILENO);
-			ft_putendl_fd("minishell: exit: too many arguments", STDOUT_FILENO);
+				ft_putendl_fd("exit", STDERR_FILENO);
+			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
 			g_exit_status = 1;
 		}
 	}
@@ -80,7 +80,7 @@ void	exit_builtin(t_command *cmd, t_env_var **vars)
 	if (argc == 1)
 	{
 		if (cmd->cpid != 0)
-			ft_putendl_fd("exit", STDOUT_FILENO);
+			ft_putendl_fd("exit", STDERR_FILENO);
 		exit(EXIT_SUCCESS);
 	}
 	else if (argc > 1)

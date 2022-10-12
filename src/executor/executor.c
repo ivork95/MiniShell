@@ -6,11 +6,12 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 15:04:30 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:44:22 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
+#include <errno.h>
 
 extern int	g_exit_status;
 
@@ -24,8 +25,10 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 	path_node = find_env_var(ll_environ, "PATH");
 	if (path_node == NULL)
 	{
-		printf("minishell: %s: No such file or directory\n", command->args[0]);
-		exit(EXIT_FAILURE);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(command->args[0], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		exit(127);
 	}
 	path = path_node->value;
 	if (access(command->args[0], X_OK) == 0)
@@ -34,7 +37,7 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 		full_path = get_full_path(path, command->args[0]);
 	two_d_env = llenv_to_two_d_env(ll_environ);
 	execve(full_path, command->args, two_d_env);
-	perror_and_exit("execve", EXIT_FAILURE);
+	perror_and_exit("execve", 127);
 }
 
 int	exec_builtin(t_env_var **head, t_command *cmd)

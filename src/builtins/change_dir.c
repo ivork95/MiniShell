@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 14:18:48 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 20:47:05 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,28 @@ static void	change_directory(t_command *command, t_env_var **environ)
 		if (home == NULL)
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", 2);
+			g_exit_status = 1;
 			return ;
 		}
 		else if (chdir(home->value) == -1)
 		{
-			perror("minishell: chdir");
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(home->value, 2);
+			ft_putendl_fd(": No such file or directory", 2);
+			g_exit_status = 1;
 			return ;
 		}
 	}
 	else if (chdir(command->args[1]) == -1)
 	{
-		perror("minishell: chdir");
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(command->args[1], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		g_exit_status = 1;
 		return ;
 	}
 	change_directory_inner(environ);
+	g_exit_status = 0;
 }
 
 void	cd_builtin(t_command *cmd, t_env_var **environ)
@@ -88,5 +96,4 @@ void	cd_builtin(t_command *cmd, t_env_var **environ)
 		return ;
 	}
 	change_directory(cmd, environ);
-	g_exit_status = 0;
 }

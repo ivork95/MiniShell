@@ -67,5 +67,5 @@ Test(cd, cd_wrong, .init=setup)
 
 	minicore(test_inputs, &onze_env);
 
-	cr_assert_stderr_eq_str("minishell: chdir: No such file or directory\n");
+	cr_assert_stderr_eq_str("minishell: cd: blabla: No such file or directory\n");
 }

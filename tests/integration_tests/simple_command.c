@@ -38,7 +38,7 @@ Test(simple_command, double_quotes_only, .init=setup)
 	};
 	minicore(test_inputs, &onze_env);
 
-	cr_assert_stdout_eq_str("minishell: \"\": command not found");
+	cr_assert_stderr_eq_str("minishell: \"\": command not found\n");
 }
 
 Test(simple_command, empty_string, .init=setup)
@@ -113,5 +113,6 @@ Test(simple_command, heredoc_without_delim_cmd, .init=setup)
 	};
 	minicore(test_inputs, &onze_env);
 
-	cr_assert_stdout_eq_str("minishell: syntax error\n2\n");
+	cr_assert_stderr_eq_str("minishell: syntax error\n");
+	cr_assert_stdout_eq_str("2\n");
 }

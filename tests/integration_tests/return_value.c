@@ -56,5 +56,6 @@ Test(return_value, return_value_een, .init=setup)
 
 	minicore(test_inputs, &onze_env);
 
-	cr_assert_stdout_eq_str("minishell: bestaatniet: command not found\n127\n");
+	cr_assert_stderr_eq_str("minishell: bestaatniet: command not found\n");
+	cr_assert_stdout_eq_str("127\n");
 }
