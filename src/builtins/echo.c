@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 13:12:58 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 01:47:57 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	write_args(t_command *command)
 
 	new_line = 1;
 	i = 1;
-	if (command->args[1] && check_nl_flag(command->args[1]))
+	while (command->args[i] && check_nl_flag(command->args[i]))
 	{
 		new_line = 0;
 		i++;
