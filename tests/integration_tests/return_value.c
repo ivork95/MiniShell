@@ -45,3 +45,16 @@ Test(return_value, return_value, .init=setup)
 
 	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n0\n");
 }
+
+Test(return_value, return_value_een, .init=setup)
+{
+	char *inputs[] = {
+		"bestaatniet",
+		"echo $?",
+		0
+	};
+
+	minicore(inputs, onze_env);
+
+	cr_assert_stdout_eq_str("minishell: bestaatniet: command not found\n127\n");
+}
