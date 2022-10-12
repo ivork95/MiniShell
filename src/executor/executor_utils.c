@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 15:04:32 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 13:22:18 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*get_full_path_inner(char **paths, char *cmd_dup, const char *cmd)
 	{
 		free_splitted_array(paths);
 		printf("minishell: %s: command not found\n", cmd);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	free_splitted_array(paths);
 	return (full_path);
