@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/11 14:40:16 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 02:03:55 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static bool	check_if_exists(char *str, t_env_var *envp)
 {
 	char	*s;
 
+	if (!ft_isdigit(str[1]) && !ft_isalnum(str[1]) && str[1] != '?')
+		return (true);
 	s = ft_strchr(str + 1, '$');
 	if (!s)
 		s = ft_substr(str, 1, strlen(str));
