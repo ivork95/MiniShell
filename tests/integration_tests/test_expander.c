@@ -21,120 +21,100 @@ static void	setup(void)
 
 Test(expander, double_envp, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo $HOME$HOME",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("/root/root\n");
 }
 
 Test(expander, envp_with_dollar, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo $HOME$",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("/root$\n");
 }
 
 Test(expander, sandwichde_quotes, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"e'ch'o \"hell\"o world",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("hello world\n");
 }
 
 Test(expander, single_quotes_inside_double, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"e'ch'o \"hello '$HOME'\"",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("hello '/root'\n");
 }
 
 Test(expander, double_quotes_inside_double, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo \"hello \"$HOME\"\"",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("hello /root\n");
 }
 
 Test(expander, linked_expanstion, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo test$HOME",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("test/root\n");
 }
 
 Test(expander, linked_expanstion_rev, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo $HOMEtest",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("\n");
 }
 
 Test(expander, double_quotes_remove, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo \"hello\"$HOME\"bye\"",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("hello/rootbye\n");
 }
 
 Test(expander, multiple_quotes_inside, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo \"hello 'test' 'this' 'string' bye\"",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("hello 'test' 'this' 'string' bye\n");
 }
 
 Test(expander, ikweetniet, .init = setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo $TEST$PWD",
 		0
 	};
-
-	minicore(inputs, onze_env);
-
+	minicore(test_inputs, onze_env);
 	cr_assert_stdout_eq_str("/pwd\n");
 }
