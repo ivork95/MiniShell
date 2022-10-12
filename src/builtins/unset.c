@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:24:29 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/06 13:49:26 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 03:09:54 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	search_and_destroy(t_env_var **head, char *key)
 	envp = *head;
 	while (envp)
 	{
-		if (!ft_strncmp(key, envp->key, ft_strlen(key)))
+		if (!ft_strncmp(key, envp->key, ft_strlen(key) + 1))
 		{
 			delete_env_var(head, prev, envp);
 			return ;
