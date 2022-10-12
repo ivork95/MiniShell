@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/11 17:28:46 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 02:10:27 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ void	minishell(t_env_var	*environ)
 		user_input = NULL;
 		get_user_input(&user_input);
 		tokens = tokenizer(user_input);
-		// if (!syntax_protector(tokens))
-		if (tokens == NULL)
+		if (!syntax_protector(tokens))
 		{
 			free(user_input);
 			free_tokens(tokens);
