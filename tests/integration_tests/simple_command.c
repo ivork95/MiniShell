@@ -116,10 +116,11 @@ Test(simple_command, heredoc_without_delim_cmd, .init=setup)
 {
 	char *inputs[] = {
 		"<<",
+		"echo $?",
 		0
 	};
 
 	minicore(inputs, onze_env);
 
-	cr_assert_stdout_eq_str("Syntax error\n");
+	cr_assert_stdout_eq_str("Syntax error\n2\n");
 }
