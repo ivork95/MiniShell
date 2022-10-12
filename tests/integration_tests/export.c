@@ -67,6 +67,16 @@ Test(export, export_oswin, .init=setup)
 		"echo $VAR",
 		0
 	};
-
 	minicore(inputs, onze_env);
+}
+
+Test(export, export_substr, .init=setup)
+{
+	char *inputs[] = {
+		"export HOS=FOUT",
+		0
+	};
+	minicore(inputs, onze_env);
+
+	cr_assert_not_null(find_env_var(onze_env, "HOSTNAME"));
 }
