@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 13:50:39 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/29 08:19:38 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/12 09:58:02 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,54 @@ void	print_commands(t_command *cmds)
 		cmds = cmds->next;
 		j++;
 	}
+}
+
+int	parser_and_expander(t_command **cmds, t_token *tokens,
+				t_env_var **environ, char *user_input)
+{
+	*cmds = parser(tokens, environ);
+	if (*cmds == NULL || (*cmds)->cmd == NULL)
+	{
+		if (*cmds)
+			unlink((*cmds)->files->file_name);
+		free(user_input);
+		free_tokens(tokens);
+		free_commands(*cmds);
+		return (1);
+	}
+	expander(*cmds, *environ);
+	if ((*cmds)->cmd[0] == 0)
+	{
+		free(user_input);
+		free_tokens(tokens);
+		free_commands(*cmds);
+		return (1);
+	}
+	return (0);
+}
+
+int	syntax_protector(t_token *token)
+{
+	if(!token)
+		return (0);
+	while (token)
+	{
+		if (token->type == REDIRECT_OP && (!token->next || token->next->type == WORD))
+		{
+			printf("Syntax error\n");
+			return (0);
+		}
+		if (token->type == REDIRECT_OP && token->next && token->next->type != WORD)
+		{
+			printf("Syntax error\n");
+			return (0);
+		}
+		if (token->type == PIPE && token->next && token->next->type == PIPE)
+		{
+			printf("Syntax error\n");
+			return (0);
+		}
+		token = token->next;
+	}
+	return (1);
 }

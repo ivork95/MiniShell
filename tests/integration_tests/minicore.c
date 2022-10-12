@@ -78,94 +78,57 @@ char	*two_d_to_str(char **environ)
 // 	free_env_vars(onze_env);
 // }
 
-static int	syntax_protector(t_token *token)
+static void	get_user_input(char **user_input)
 {
-	if(!token)
-		return (0);
-	while (token)
+	struct sigaction	sa;
+
+	init_signals(&sa, &sigint_prompt_handler);
+	*user_input = ft_strdup(*user_input);
+	if (!(*user_input))
 	{
-		if (token->type == REDIRECT_OP && (!token->next || token->next->type == WORD))
-		{
-			printf("Syntax error\n");
-			return (0);
-		}
-		if (token->type == REDIRECT_OP && token->next && token->next->type != WORD)
-		{
-			printf("Syntax error\n");
-			return (0);
-		}
-		if (token->type == PIPE && token->next && token->next->type == PIPE)
-		{
-			printf("Syntax error\n");
-			return (0);
-		}
-		token = token->next;
+		printf("exit\n");
+		exit(0);
 	}
-	return (1);
+	add_history(*user_input);
 }
 
-int	parser_and_expander(t_command **cmds, t_token *tokens,
-				t_env_var **environ, char *user_input)
-{
-	*cmds = parser(tokens, environ);
-	if (*cmds == NULL || (*cmds)->cmd == NULL)
-	{
-		if (*cmds)
-			unlink((*cmds)->files->file_name);
-		free(user_input);
-		free_tokens(tokens);
-		free_commands(*cmds);
-		return (1);
-	}
-	expander(*cmds, *environ);
-	if ((*cmds)->cmd[0] == 0)
-	{
-		free(user_input);
-		free_tokens(tokens);
-		free_commands(*cmds);
-		return (1);
-	}
-	return (0);
-}
-
-void minicore(char **inputs, t_env_var *onze_env)
+void minicore(char **test_inputs, t_env_var *onze_env)
 {
 	t_command	*cmds;
 	t_token		*tokens;
 	char		*user_input;
 
 	g_exit_status = 0;
-	while (*inputs)
+	while (*test_inputs)
 	{
 		cmds = NULL;
 		user_input = NULL;
-
-		user_input = ft_strdup(*inputs);
-
+		user_input = *test_inputs;
+		get_user_input(&user_input);
 		tokens = tokenizer(user_input);
-		if (!syntax_protector(tokens))
+		// if (!syntax_protector(tokens))
+		if (tokens == NULL)
 		{
 			free(user_input);
 			free_tokens(tokens);
 
-			inputs++;
+			test_inputs++;
 
-
-			continue ;
+			continue;
 		}
 		if (parser_and_expander(&cmds, tokens, &onze_env, user_input))
 		{
-			inputs++;
-
+			test_inputs++;
 
 			continue ;
 		}
+
 		executor(cmds, &onze_env);
 		free(user_input);
 		free_tokens(tokens);
 		free_commands(cmds);
 
-		inputs++;
+		test_inputs++;
 	}
 	free_env_vars(onze_env);
 }
