@@ -32,24 +32,24 @@ ls -i -S -r
 /* Arguments & history */
 Test(arguments, bin_ls_a_S, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"/bin/ls -a -S tests/example_folder/",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str(expected);
 }
 
 Test(arguments, bin_ls_aS, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"/bin/ls -aS tests/example_folder/",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str(expected);
 }

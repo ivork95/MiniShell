@@ -9,6 +9,6 @@
 #include "../../includes/executor.h"
 
 char	*two_d_to_str(char **environ);
-void	minicore(char **inputs, t_env_var *onze_env);
+void minicore(char **test_inputs, t_env_var **onze_env);
 
 #endif

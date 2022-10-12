@@ -21,12 +21,12 @@ static void	setup(void)
 /* Relative path */
 Test(minishell_tests, relative_path, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"../usr/bin/ls tests/example_folder",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n");
 }

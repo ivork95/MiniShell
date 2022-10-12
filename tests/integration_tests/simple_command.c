@@ -21,106 +21,97 @@ static void	setup(void)
 /* Simple Command & global variables */
 Test(simple_command, bin_ls, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"/bin/ls tests/example_folder/",
 		0
 	};
-
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n");
 }
 
 Test(simple_command, double_quotes_only, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"\"\"",
 		0
 	};
-
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("minishell: \"\": command not found");
-	// echte bash probeert het als command te executen -> minishell niet
 }
 
 Test(simple_command, empty_string, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"",
 		0
 	};
-
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("");
 }
 
 Test(simple_command, space, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		" ",
 		0
 	};
-
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("");
 }
 
 Test(simple_command, spaces, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"                 ",
 		0
 	};
-
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("");
 }
 
 Test(simple_command, outer_quote_not_closed, .init=setup, .exit_code=1)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo ' hallo", // echo ' hallo
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 }
 
 Test(simple_command, inner_quote_not_closed, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo \"hallo' \"", // echo "hallo' "
 		0
 	};
-
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("hallo' \n");
 }
 
 Test(simple_command, outer_quote_not_closed_2, .init=setup, .exit_code=1)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo \"hallo' \" teest 'this' string'", // echo "hallo' " teest 'this' string'
 		0
 	};
-
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 }
 
 Test(simple_command, heredoc_without_delim_cmd, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"<<",
 		"echo $?",
 		0
 	};
+	minicore(test_inputs, &onze_env);
 
-	minicore(inputs, onze_env);
-
-	cr_assert_stdout_eq_str("Syntax error\n2\n");
+	cr_assert_stdout_eq_str("minishell: syntax error\n2\n");
 }

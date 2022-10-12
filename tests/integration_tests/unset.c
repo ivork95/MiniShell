@@ -21,13 +21,13 @@ static void	setup(void)
 /* Unset */
 Test(unset, unset, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"unset HOSTNAME",
 		"env",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	unsetenv("HOSTNAME");
 	char *a = two_d_to_str(environ);
@@ -42,13 +42,13 @@ Test(unset, unset, .init=setup)
 
 Test(unset, unset_multiple, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"unset HOSTNAME PWD",
 		"env",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	unsetenv("HOSTNAME");
 	unsetenv("PWD");
@@ -64,13 +64,13 @@ Test(unset, unset_multiple, .init=setup)
 
 Test(unset, unset_empty, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"unset",
 		"env",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	unsetenv("");
 	char	*a = two_d_to_str(environ);
@@ -85,13 +85,13 @@ Test(unset, unset_empty, .init=setup)
 
 Test(unset, unset_nonexist, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"unset bestaatniet",
 		"env",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	unsetenv("bestaatniet");
 	char	*a = two_d_to_str(environ);

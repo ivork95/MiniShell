@@ -6,11 +6,13 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 13:50:39 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/12 09:58:02 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 16:51:26 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+extern int	g_exit_status;
 
 void	perror_and_exit(char *s, int n)
 {
@@ -77,19 +79,16 @@ int	syntax_protector(t_token *token)
 		return (0);
 	while (token)
 	{
-		if (token->type == REDIRECT_OP && (!token->next || token->next->type == WORD))
+		if (token->type == REDIRECT_OP && (!token->next || token->next->type != WORD))
 		{
-			printf("Syntax error\n");
-			return (0);
-		}
-		if (token->type == REDIRECT_OP && token->next && token->next->type != WORD)
-		{
-			printf("Syntax error\n");
+			ft_putendl_fd("minishell: syntax error", 1);
+			g_exit_status = 2;
 			return (0);
 		}
 		if (token->type == PIPE && token->next && token->next->type == PIPE)
 		{
-			printf("Syntax error\n");
+			ft_putendl_fd("minishell: syntax error", 1);
+			g_exit_status = 2;
 			return (0);
 		}
 		token = token->next;

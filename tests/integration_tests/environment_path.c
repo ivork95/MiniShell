@@ -21,7 +21,7 @@ static void	setup(void)
 /* Environment path */
 Test(minishell_tests, environment_path, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"ls tests/example_folder",
 		"unset PATH",
 		"ls tests/example_folder",
@@ -30,7 +30,7 @@ Test(minishell_tests, environment_path, .init=setup)
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\nminishell: ls: No such file or directory\n0\nempty_directory\nfile\nrandom.c\n");
 }

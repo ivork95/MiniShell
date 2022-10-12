@@ -25,7 +25,7 @@ Test(expander, double_envp, .init = setup)
 		"echo $HOME$HOME",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("/root/root\n");
 }
 
@@ -35,7 +35,7 @@ Test(expander, envp_with_dollar, .init = setup)
 		"echo $HOME$",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("/root$\n");
 }
 
@@ -45,7 +45,7 @@ Test(expander, sandwichde_quotes, .init = setup)
 		"e'ch'o \"hell\"o world",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("hello world\n");
 }
 
@@ -55,7 +55,7 @@ Test(expander, single_quotes_inside_double, .init = setup)
 		"e'ch'o \"hello '$HOME'\"",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("hello '/root'\n");
 }
 
@@ -65,7 +65,7 @@ Test(expander, double_quotes_inside_double, .init = setup)
 		"echo \"hello \"$HOME\"\"",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("hello /root\n");
 }
 
@@ -75,7 +75,7 @@ Test(expander, linked_expanstion, .init = setup)
 		"echo test$HOME",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("test/root\n");
 }
 
@@ -85,7 +85,7 @@ Test(expander, linked_expanstion_rev, .init = setup)
 		"echo $HOMEtest",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("\n");
 }
 
@@ -95,7 +95,7 @@ Test(expander, double_quotes_remove, .init = setup)
 		"echo \"hello\"$HOME\"bye\"",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("hello/rootbye\n");
 }
 
@@ -105,7 +105,7 @@ Test(expander, multiple_quotes_inside, .init = setup)
 		"echo \"hello 'test' 'this' 'string' bye\"",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("hello 'test' 'this' 'string' bye\n");
 }
 
@@ -115,6 +115,6 @@ Test(expander, ikweetniet, .init = setup)
 		"echo $TEST$PWD",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("/pwd\n");
 }

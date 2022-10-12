@@ -21,12 +21,12 @@ static void	setup(void)
 /* Double Quotes */
 Test(minishell_tests, echo_double_quotes, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo \"cat lol.c | cat > lol.c\"",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("cat lol.c | cat > lol.c\n");
 }

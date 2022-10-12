@@ -21,12 +21,12 @@ static void	setup(void)
 /* Env */
 Test(minishell_tests, env, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"env",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	char	*a = two_d_to_str(environ);
 	if (a == NULL)

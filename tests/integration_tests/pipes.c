@@ -21,24 +21,24 @@ static void	setup(void)
 /* Pipes */
 Test(pipes, echo_pipe_echo, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"echo | echo",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("\n");
 }
 
 Test(pipes, pipes, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"cat tests/example_folder/file | grep bla | more",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("bla\nbla\n");
 }

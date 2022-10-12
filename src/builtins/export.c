@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/12 03:32:01 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/12 14:28:52 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	add_env_var(t_env_var **head, char *env_var)
 	}
 	ptr = ft_strchr(env_var, '=');
 	new = assign_env_key_value(env_var, ptr);
-	if (*(ptr - 1) == '+')
+	if (ptr && *(ptr - 1) == '+')
 		search_and_add(head, new);
 	else
 	{

@@ -49,7 +49,7 @@ static void	get_user_input(char **user_input)
 	add_history(*user_input);
 }
 
-void minicore(char **test_inputs, t_env_var *onze_env)
+void minicore(char **test_inputs, t_env_var **onze_env)
 {
 	t_command	*cmds;
 	t_token		*tokens;
@@ -63,8 +63,7 @@ void minicore(char **test_inputs, t_env_var *onze_env)
 		user_input = *test_inputs;
 		get_user_input(&user_input);
 		tokens = tokenizer(user_input);
-		// if (!syntax_protector(tokens))
-		if (tokens == NULL)
+		if (!syntax_protector(tokens))
 		{
 			free(user_input);
 			free_tokens(tokens);
@@ -73,19 +72,18 @@ void minicore(char **test_inputs, t_env_var *onze_env)
 
 			continue;
 		}
-		if (parser_and_expander(&cmds, tokens, &onze_env, user_input))
+		if (parser_and_expander(&cmds, tokens, onze_env, user_input))
 		{
 			test_inputs++;
 
 			continue ;
 		}
 
-		executor(cmds, &onze_env);
+		executor(cmds, onze_env);
 		free(user_input);
 		free_tokens(tokens);
 		free_commands(cmds);
 
 		test_inputs++;
 	}
-	free_env_vars(onze_env);
 }

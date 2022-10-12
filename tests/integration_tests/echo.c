@@ -25,7 +25,7 @@ Test(echo, echo_hello_world, .init=setup)
 		"echo Hello, World!",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("Hello, World!\n");
 }
 
@@ -35,7 +35,7 @@ Test(echo, echo_n_hello_world, .init=setup)
 		"echo -n Hello, World!",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("Hello, World!");
 }
 
@@ -45,7 +45,7 @@ Test(echo, echo, .init=setup)
 		"echo",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("\n");
 }
 
@@ -55,7 +55,7 @@ Test(echo, echo_n, .init=setup)
 		"echo -n",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("");
 }
 
@@ -65,7 +65,7 @@ Test(echo, echo_$_question_mark, .init=setup)
 		"echo $?",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("0\n");
 }
 
@@ -75,7 +75,7 @@ Test(echo, echo_$, .init=setup)
 		"echo $",
 		0
 	};
-	minicore(test_inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 	cr_assert_stdout_eq_str("$\n");
 }
 
@@ -85,6 +85,6 @@ Test(echo, echo_$$, .init=setup)
 		"echo $$",
 		0
 	};
-	minicore(test_inputs, onze_env);
-	cr_assert_stdout_eq_str("Should echo current PID\n");
+	minicore(test_inputs, &onze_env);
+	cr_assert_stdout_eq_str("$$\n");
 }

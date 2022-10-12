@@ -21,12 +21,12 @@ static void	setup(void)
 /* pwd */
 Test(pwd, pwd, .init=setup)
 {
-	char *inputs[] = {
+	char *test_inputs[] = {
 		"pwd",
 		0
 	};
 
-	minicore(inputs, onze_env);
+	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("/pwd\n");
 }
