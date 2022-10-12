@@ -80,3 +80,60 @@ Test(export, export_substr, .init=setup)
 
 	cr_assert_not_null(find_env_var(onze_env, "HOSTNAME"));
 }
+
+Test(export, export_key_only, .init=setup)
+{
+	char *inputs[] = {
+		"export kawish",
+		0
+	};
+	minicore(inputs, onze_env);
+
+	t_env_var *x = find_env_var(onze_env, "kawish");
+	cr_assert_not_null(x);
+	if (x)
+		cr_assert(zero(x->value));
+}
+
+Test(export, export_key_with_equals, .init=setup)
+{
+	char *inputs[] = {
+		"export kawish=",
+		0
+	};
+	minicore(inputs, onze_env);
+
+	t_env_var *x = find_env_var(onze_env, "kawish");
+	cr_assert_not_null(x);
+	if (x)
+		cr_assert(zero(x->value));
+}
+
+Test(export, export_plus_equals, .init=setup)
+{
+	char *inputs[] = {
+		"export kawish=gangster",
+		"export kawish+=flikkertje",
+		0
+	};
+	minicore(inputs, onze_env);
+
+	t_env_var *x = find_env_var(onze_env, "kawish");
+	cr_assert_not_null(x);
+	if (x)
+		cr_assert(eq(str, "gangsterflikkertje", x->value));
+}
+
+Test(export, export_plus_equals_twee, .init=setup)
+{
+	char *inputs[] = {
+		"export kawish+=gangster",
+		0
+	};
+	minicore(inputs, onze_env);
+
+	t_env_var *x = find_env_var(onze_env, "kawish");
+	cr_assert_not_null(x);
+	if (x)
+		cr_assert(eq(str, "gangster", x->value));
+}
