@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 21:52:57 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/11 15:44:58 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/12 13:27:52 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	sigint_prompt_handler(int num)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_exit_status = 1;
+	g_exit_status = 130;
 }
 
 void	sigint_heredoc_handler(int num)
