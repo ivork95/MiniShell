@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 15:18:41 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/13 15:19:53 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ static void	change_directory(t_command *command, t_env_var **environ)
 	}
 	else if (chdir(command->args[1]) == -1)
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(command->args[1], 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		ft_putstr_fd(command->args[1], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		free(old_pwd);
 		g_exit_status = 1;
 		return ;
