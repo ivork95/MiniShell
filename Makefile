@@ -49,9 +49,10 @@ TEST_FILES	:=	tests/parser_tests.c \
 				tests/tokenizer_tests.c \
 				tests/unset_tests.c
 CFLAGS		?=	-Wall -Wextra -Werror
-LDFLAGS		?=	-lreadline -g
+LDFLAGS		?=	-lreadline -lncurses -L $$HOME/.brew/opt/readline/lib
 LIBFT		:=	src/libft
 ITESTS		:=	tests/integration_tests
+RL_I		= -I $$HOME/.brew/opt/readline/include
 
 all : libft $(NAME)
 
@@ -59,17 +60,14 @@ libft:
 	make -C $(LIBFT)
 
 $(NAME) :$(MAIN) $(OBJECTS)
-	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS)
+	$(CC) -o $(NAME) $(MAIN) $(OBJECTS) $(LIBFT)/libft.a $(LDFLAGS)
 
 itests: all
 	make -C $(ITESTS)
 
-tests : all
-	$(CC) -o run_tests $(TEST_FILES) -lcriterion $(OBJECTS) -L$(LIBFT) -l:libft.a $(LDFLAGS) 
-
 obj/%.o : %.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) $(RL_I) -o $@ $<
 
 clean :
 	make clean -C $(LIBFT)
