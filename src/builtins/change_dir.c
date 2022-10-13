@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 15:19:53 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/13 17:33:43 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	cd_builtin(t_command *cmd, t_env_var **environ)
 		i++;
 	if (i > 2)
 	{
-		ft_putendl_fd("To many args\n", 2);
+		ft_putendl_fd("To many args", 2);
 		return ;
 	}
 	change_directory(cmd, environ);
