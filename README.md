@@ -22,31 +22,3 @@ Run code met readline in Ubuntu:
 ```bash
 gcc code.c -L/usr/local/lib -I/usr/local/include -lreadline
 ```
-
-show current frame - f
-
-cat < README.md | cat > outfile2 < Makefile
-
-TODO:
-	-echo ?$
-	-trowh error when quotes not closed
-	-echo 'hallo '$PATH' '
-	-<< a < Makefile cat
-	-<<a echo hallo | cat
-	-  << a < Makefile < Dockerfile cat > outfile
-	-find newline when exeec $NOT-EXIST
-    -echo builtin -nnn flag
-	- echo ?$ geeft een leak van 100 bytes aan omdat de args[1] pointer naar "?$" door expander word overschreven met een pointer naar "0"
-	- check if cuotes closed
-	- unlink filename when signaled
-	- builtin exit code
-> << a cat
-> ctrl-c
-> exit
-
-> heredoc zonder command
--""
-
-te lang
-void	expand_args(char **arg, t_env_var *envp)
-int	heredoc_function(t_token *token, char *file_name, t_env_var **envp)
