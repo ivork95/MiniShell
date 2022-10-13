@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 14:30:20 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/12 09:58:36 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/13 14:37:14 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 void	perror_and_exit(char *s, int n);
 void	print_commands(t_command *cmds);
 int		parser_and_expander(t_command **cmds, t_token *tokens,
-				t_env_var **environ, char *user_input);
+			t_env_var **environ, char *user_input);
 int		syntax_protector(t_token *token);
 
 #endif /* minishell.h */
