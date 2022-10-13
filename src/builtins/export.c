@@ -6,13 +6,11 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/12 20:25:00 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 16:02:09 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
-
-extern int	g_exit_status;
 
 static void	add_front(t_env_var **lst, t_env_var *new)
 {
@@ -79,7 +77,7 @@ void	add_env_var(t_env_var **head, char *env_var)
 	{
 		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 		ft_putstr_fd(env_var, STDERR_FILENO);
-		ft_putendl_fd(": not a valid identifier\n", STDERR_FILENO);
+		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	ptr = ft_strchr(env_var, '=');
@@ -108,4 +106,5 @@ void	export_builtin(t_command *command, t_env_var **environ)
 		add_env_var(environ, command->args[i]);
 		i++;
 	}
+	exit(EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 14:50:34 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 15:57:52 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static int	cd_home(t_env_var *environ)
 	if (home == NULL)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", 2);
-		g_exit_status = 1;
 		return (1);
 	}
 	else if (chdir(home->value) == -1)
@@ -56,7 +55,6 @@ static int	cd_home(t_env_var *environ)
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(home->value, 2);
 		ft_putendl_fd(": No such file or directory", 2);
-		g_exit_status = 1;
 		return (1);
 	}
 	return (0);
@@ -74,7 +72,7 @@ static void	change_directory(t_command *command, t_env_var **environ)
 		if (cd_home(*environ))
 		{
 			free(old_pwd);
-			return ;
+			exit(EXIT_FAILURE);
 		}
 	}
 	else if (chdir(command->args[1]) == -1)
@@ -83,12 +81,10 @@ static void	change_directory(t_command *command, t_env_var **environ)
 		ft_putstr_fd(command->args[1], 2);
 		ft_putendl_fd(": No such file or directory", 2);
 		free(old_pwd);
-		g_exit_status = 1;
-		return ;
+		exit(EXIT_FAILURE);
 	}
 	change_env_old_pwd(old_pwd, environ);
 	change_env_pwd(environ);
-	g_exit_status = 0;
 }
 
 void	cd_builtin(t_command *cmd, t_env_var **environ)
@@ -100,8 +96,10 @@ void	cd_builtin(t_command *cmd, t_env_var **environ)
 		i++;
 	if (i > 2)
 	{
-		ft_putendl_fd("To many args\n", 2);
+		ft_putendl_fd("To many args", 2);
+		g_exit_status = 1;
 		return ;
 	}
 	change_directory(cmd, environ);
+	exit(EXIT_SUCCESS);
 }

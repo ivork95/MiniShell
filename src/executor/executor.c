@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 20:44:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 15:53:05 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 		full_path = get_full_path(path, command->args[0]);
 	two_d_env = llenv_to_two_d_env(ll_environ);
 	execve(full_path, command->args, two_d_env);
-	perror_and_exit("execve", 127);
+	if (errno == EACCES)
+		perror_and_exit("execve", 126);
+	if (errno == ENOENT)
+		perror_and_exit("execve", 127);
 }
 
 int	exec_builtin(t_env_var **head, t_command *cmd)
@@ -102,7 +105,7 @@ void	executor(t_command *cmd, t_env_var **head)
 	int		last_exit_status;
 	pid_t	pid_to_check;
 
-	if (cmd->next == NULL)
+	if (cmd->next == NULL && !ft_strncmp(cmd->cmd, "exit", 5))
 	{
 		if (exec_builtin(head, cmd))
 			return ;

@@ -6,13 +6,11 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 01:47:57 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 15:58:30 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
-
-extern int	g_exit_status;
 
 static int	check_nl_flag(char *str)
 {
@@ -90,5 +88,5 @@ void	echo_builtin(t_command *command, t_env_var **environ)
 		perror_and_exit("dup2", EXIT_FAILURE);
 	if (close(saved_stdout) == -1)
 		perror_and_exit("close", EXIT_FAILURE);
-	g_exit_status = 0;
+	exit(EXIT_SUCCESS);
 }

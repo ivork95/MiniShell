@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:24:29 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/12 03:09:54 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 16:02:47 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,5 @@ void	unset_builtin(t_command *command, t_env_var **environ)
 		search_and_destroy(environ, command->args[i]);
 		i++;
 	}
-	g_exit_status = 0;
+	exit(EXIT_SUCCESS);
 }

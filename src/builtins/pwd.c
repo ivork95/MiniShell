@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 15:37:58 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 20:25:30 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 16:02:22 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ void	pwd_builtin(t_command *cmd, t_env_var **environ)
 	working_dir = getcwd(NULL, 0);
 	ft_putendl_fd(working_dir, STDOUT_FILENO);
 	free(working_dir);
-	g_exit_status = 0;
+	exit(EXIT_SUCCESS);
 }
