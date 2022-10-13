@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 13:50:39 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/12 20:28:52 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 12:06:53 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ int	syntax_protector(t_token *token)
 		if (token->type == REDIRECT_OP
 			&& (!token->next || token->next->type != WORD))
 		{
-			ft_putendl_fd("minishell: syntax error", STDOUT_FILENO);
+			ft_putendl_fd("minishell: syntax error", STDERR_FILENO);
 			g_exit_status = 2;
 			return (0);
 		}
 		if (token->type == PIPE && token->next && token->next->type == PIPE)
 		{
-			ft_putendl_fd("minishell: syntax error", STDOUT_FILENO);
+			ft_putendl_fd("minishell: syntax error", STDERR_FILENO);
 			g_exit_status = 2;
 			return (0);
 		}
