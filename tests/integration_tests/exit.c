@@ -111,6 +111,7 @@ Test(exit, exit_42_hello, .init=setup)
 		0
 	};
 	minicore(test_inputs, &onze_env);
+
 	cr_assert_stderr_eq_str("exit\nminishell: exit: too many arguments\n");
 	cr_assert_stdout_eq_str("1\n");
 }
@@ -123,7 +124,7 @@ Test(exit, exit_42_pipe_exit_a, .init=setup)
 		0
 	};
 	minicore(test_inputs, &onze_env);
-	cr_assert_stderr_eq_str("minishell: exit: a: numeric argument required\n");
+
 	cr_assert_stdout_eq_str("2\n");
 }
 
@@ -134,5 +135,6 @@ Test(exit, exit_a, .init=setup, .exit_code=2)
 		0
 	};
 	minicore(test_inputs, &onze_env);
+
 	cr_assert_stdout_eq_str("2\n");
 }

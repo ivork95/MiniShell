@@ -19,6 +19,18 @@ static void	setup(void)
 }
 
 /* Return value of a process */
+Test(return_value, return_value_een, .init=setup)
+{
+	char *test_inputs[] = {
+		"bestaatniet",
+		"echo $?",
+		0
+	};
+	minicore(test_inputs, &onze_env);
+
+	cr_assert_stdout_eq_str("127\n");
+}
+
 Test(return_value, return_value_error, .init=setup)
 {
 	char *test_inputs[] = {
@@ -44,18 +56,4 @@ Test(return_value, return_value, .init=setup)
 	minicore(test_inputs, &onze_env);
 
 	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n0\n");
-}
-
-Test(return_value, return_value_een, .init=setup)
-{
-	char *test_inputs[] = {
-		"bestaatniet",
-		"echo $?",
-		0
-	};
-
-	minicore(test_inputs, &onze_env);
-
-	cr_assert_stderr_eq_str("minishell: bestaatniet: command not found\n");
-	cr_assert_stdout_eq_str("127\n");
 }

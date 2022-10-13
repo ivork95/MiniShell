@@ -19,6 +19,9 @@ static void	setup(void)
 }
 
 /* Env */
+/*
+* Test is disabled want env verschilt door ./integration tests
+*/
 Test(export, export_jon_aegon, .init=setup, .disabled=true)
 {
 	char *test_inputs[] = {
@@ -39,6 +42,9 @@ Test(export, export_jon_aegon, .init=setup, .disabled=true)
 	free(a);
 }
 
+/*
+* Test is disabled want env verschilt door ./integration tests
+*/
 Test(export, export_hostname, .init=setup, .disabled=true)
 {
 	char *test_inputs[] = {
@@ -48,13 +54,13 @@ Test(export, export_hostname, .init=setup, .disabled=true)
 
 	minicore(test_inputs, &onze_env);
 
+	setenv("HOSTNAME", "EWAA", 1);
 	char	*a = two_d_to_str(environ);
 	if (a == NULL)
 	{
 		perror("calloc");
 		exit(1);
 	}
-	setenv("HOSTNAME", "EWAA", 1);
 	cr_assert_stdout_eq_str(a);
 	free(a);
 }
