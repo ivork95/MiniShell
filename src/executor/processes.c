@@ -6,13 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 16:51:57 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/13 17:03:24 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 
-extern int  g_exit_status;
+extern int	g_exit_status;
 
 static void	handle_redirect_in(t_file *files)
 {
