@@ -24,12 +24,13 @@ Test(cd, cd, .init=setup)
 	char *test_inputs[] = {
 		"cd",
 		"/bin/ls",
+		"echo $?",
 		0
 	};
 
 	minicore(test_inputs, &onze_env);
 
-	cr_assert_stdout_eq_str("");
+	cr_assert_stdout_eq_str("0\n");
 }
 
 Test(cd, cd_parent, .init=setup)
@@ -37,12 +38,13 @@ Test(cd, cd_parent, .init=setup)
 	char *test_inputs[] = {
 		"cd ..",
 		"/bin/ls pwd/tests/example_folder",
+		"echo $?",
 		0
 	};
 
 	minicore(test_inputs, &onze_env);
 
-	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n");
+	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n0\n");
 }
 
 Test(cd, cd_current, .init=setup)
@@ -62,10 +64,12 @@ Test(cd, cd_wrong, .init=setup)
 {
 	char *test_inputs[] = {
 		"cd blabla",
+		"echo $?",
 		0
 	};
 
 	minicore(test_inputs, &onze_env);
 
 	cr_assert_stderr_eq_str("minishell: cd: blabla: No such file or directory\n");
+	cr_assert_stdout_eq_str("1\n");
 }

@@ -6,11 +6,13 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/09/30 19:39:29 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 16:51:57 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
+
+extern int  g_exit_status;
 
 static void	handle_redirect_in(t_file *files)
 {
@@ -78,7 +80,7 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 			handle_redirect_in(cmd->files);
 		}
 		if (exec_builtin(head, cmd))
-			exit(EXIT_SUCCESS);
+			exit(g_exit_status);
 		exec_ll(*head, cmd);
 	}
 }
@@ -108,7 +110,7 @@ void	middle_process(t_env_var **head, t_command *cmd, int pipe_fd[2],
 			handle_redirect_out(cmd->files);
 		}
 		if (exec_builtin(head, cmd))
-			exit(EXIT_SUCCESS);
+			exit(g_exit_status);
 		exec_ll(*head, cmd);
 	}
 }
@@ -135,7 +137,7 @@ void	last_process(t_env_var **head, t_command *cmd, int read_end)
 			handle_redirect_out(cmd->files);
 		}
 		if (exec_builtin(head, cmd))
-			exit(EXIT_SUCCESS);
+			exit(g_exit_status);
 		exec_ll(*head, cmd);
 	}
 }
