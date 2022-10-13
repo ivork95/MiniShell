@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 15:04:54 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/13 15:18:41 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 	if (env_var == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	add_env_var(environ, env_var);
+	free(old_pwd);
 	free(env_var);
 }
 
@@ -39,47 +40,54 @@ static void	change_env_pwd(t_env_var **environ)
 	free(env_var);
 }
 
-static void	change_directory_inner(t_env_var **environ)
+static int	cd_home(t_env_var *environ)
 {
-	char		*old_pwd;
+	t_env_var	*home;
 
-	old_pwd = getcwd(NULL, 0);
-	change_env_old_pwd(old_pwd, environ);
-	free(old_pwd);
-	change_env_pwd(environ);
+	home = find_env_var(environ, "HOME");
+	if (home == NULL)
+	{
+		ft_putendl_fd("minishell: cd: HOME not set", 2);
+		g_exit_status = 1;
+		return (1);
+	}
+	else if (chdir(home->value) == -1)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(home->value, 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		g_exit_status = 1;
+		return (1);
+	}
+	return (0);
 }
 
 static void	change_directory(t_command *command, t_env_var **environ)
 {
-	t_env_var	*home;
+	char		*old_pwd;
 
+	old_pwd = getcwd(NULL, 0);
+	if (old_pwd == NULL)
+		perror_and_exit("getcwd", EXIT_FAILURE);
 	if (command->args[1] == NULL)
 	{
-		home = find_env_var(*environ, "HOME");
-		if (home == NULL)
+		if (cd_home(*environ))
 		{
-			ft_putendl_fd("minishell: cd: HOME not set", 2);
-			g_exit_status = 1;
-			return ;
-		}
-		else if (chdir(home->value) == -1)
-		{
-			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-			ft_putstr_fd(home->value, STDERR_FILENO);
-			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-			g_exit_status = 1;
+			free(old_pwd);
 			return ;
 		}
 	}
 	else if (chdir(command->args[1]) == -1)
 	{
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(command->args[1], STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(command->args[1], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		free(old_pwd);
 		g_exit_status = 1;
 		return ;
 	}
-	change_directory_inner(environ);
+	change_env_old_pwd(old_pwd, environ);
+	change_env_pwd(environ);
 	g_exit_status = 0;
 }
 
