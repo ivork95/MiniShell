@@ -32,5 +32,6 @@ Test(minishell_tests, environment_path, .init=setup)
 
 	minicore(test_inputs, &onze_env);
 
-	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\nminishell: ls: No such file or directory\n0\nempty_directory\nfile\nrandom.c\n");
+	cr_assert_stdout_eq_str("0\nempty_directory\nfile\nrandom.c\n0\nempty_directory\nfile\nrandom.c\n");
+	cr_assert_stderr_eq_str("minishell: ls: No such file or directory\n");
 }

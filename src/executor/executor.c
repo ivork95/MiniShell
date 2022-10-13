@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 20:44:22 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/13 15:05:11 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 	path_node = find_env_var(ll_environ, "PATH");
 	if (path_node == NULL)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(command->args[0], 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(command->args[0], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		exit(127);
 	}
 	path = path_node->value;
