@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/12 17:06:46 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/19 04:58:36 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,12 @@ static int	set_files(t_token **token, t_command *command, t_env_var **envp)
 			return (-1);
 	}
 	else
-		file->file_name = get_file_name(*token);
+		file->file_name = get_file_name(*token, *envp);
+    if (!file->file_name)
+    {
+        free(file);
+        return (-1);
+    }
 	if (!(command)->files)
 		(command)->files = file;
 	else
@@ -102,6 +107,7 @@ t_command	*parser(t_token *token, t_env_var **envp)
 			if (fill_command(&token, command, envp) == -1)
 			{
 				free_commands(command);
+                free_commands(head);
 				return (NULL);
 			}
 		}

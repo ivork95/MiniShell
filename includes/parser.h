@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:22:11 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/09/30 20:58:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/19 04:38:05 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		free_splitted_array(char **splitted_array);
 /* parser_utils_cont.c */
 int			heredoc_setup(t_token *token, t_file *file, t_env_var **envp);
 void		file_add_back(t_command **command, t_file *file);
-char		*get_file_name(t_token *token);
+char		*get_file_name(t_token *token, t_env_var *envp);
 
 /* parser_utils.c */
 int			redirect_type(char *str);

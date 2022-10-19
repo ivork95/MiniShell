@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 14:39:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/06 15:11:27 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:34:35 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ static void	get_user_intput(char *file_name, char *delimiter, t_env_var *envp)
 	{
 		input = readline("heredoc>");
 		if (!input)
-			perror_and_exit("warning: here-doc delimited by EOF", EXIT_FAILURE);
+			perror_and_exit("warning: here-doc delimited by EOF", EXIT_SUCCESS);
 		if (!ft_strncmp(input, delimiter, ft_strlen(delimiter) + 1))
 			break ;
 		if (ft_strchr(input, '$') != 0)
-			input = expand_envp(input, ft_strchr(input, '$'), envp);
+            expand_args(&input, 0, envp);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);

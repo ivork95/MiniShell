@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 13:50:39 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/13 12:06:53 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:24:44 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,33 @@ void	print_commands(t_command *cmds)
 	}
 }
 
-static int	only_quotes(t_command *command)
+int	only_quotes(char *command)
 {
 	int	i;
+    int j;
 
 	i = 0;
-	while (command->cmd[i])
+	while (command[i] == '\"')
 	{
-		if (command->cmd[i] != '\"')
+		if (command[i] != '\"')
 			return (0);
 		i++;
 	}
-	return (1);
+    j = 0;
+	while (command[j] == '\'')
+	{
+		if (command[j] != '\'')
+			return (0);
+		j++;
+	}
+	return (i + j);
 }
 
 int	parser_and_expander(t_command **cmds, t_token *tokens,
 				t_env_var **environ, char *user_input)
 {
 	*cmds = parser(tokens, environ);
-	if (*cmds == NULL)
+	if (*cmds == NULL || (*cmds)->cmd == NULL)
 	{
 		if (*cmds)
 			unlink((*cmds)->files->file_name);
@@ -76,7 +84,7 @@ int	parser_and_expander(t_command **cmds, t_token *tokens,
 		free_commands(*cmds);
 		return (1);
 	}
-	if (only_quotes(*cmds))
+	if (only_quotes((*cmds)->cmd))
 		return (0);
 	expander(*cmds, *environ);
 	if ((*cmds)->cmd[0] == 0)
@@ -102,7 +110,7 @@ int	syntax_protector(t_token *token)
 			g_exit_status = 2;
 			return (0);
 		}
-		if (token->type == PIPE && token->next && token->next->type == PIPE)
+		if (token->type == PIPE && (token->next == NULL || token->next->type == PIPE))
 		{
 			ft_putendl_fd("minishell: syntax error", STDERR_FILENO);
 			g_exit_status = 2;

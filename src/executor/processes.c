@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:12:32 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 17:03:24 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:50:42 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	first_process(t_env_var **head, t_command *cmd, int pipe_fd[2])
 		if (cmd->files != NULL)
 		{
 			handle_redirect_in(cmd->files);
+            handle_redirect_out(cmd->files);
 		}
 		if (exec_builtin(head, cmd))
 			exit(g_exit_status);

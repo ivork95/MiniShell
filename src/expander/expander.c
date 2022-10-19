@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/25 03:05:34 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 02:03:55 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/19 14:44:25 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,19 @@ void	expander(t_command *commands, t_env_var *envp)
 	int	i;
 	int	start;
 
-	i = 0;
-	start = 0;
-	while (commands->args[i])
-	{
-		expand_args(&commands->args[i], 0, envp);
-		remove_quotes(&commands->args[i], start);
-		if (i == 0)
-			commands->cmd = commands->args[i];
-		i++;
-	}
-	commands->cmd = commands->args[0];
+    while (commands)
+    {
+	    start = 0;
+	    i = 0;
+        while (commands->args[i])
+        {
+            expand_args(&commands->args[i], 0, envp);
+            remove_quotes(&commands->args[i], start);
+            if (i == 0)
+                commands->cmd = commands->args[i];
+            i++;
+        }
+        commands->cmd = commands->args[0];
+        commands = commands->next;
+    }
 }

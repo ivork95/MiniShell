@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 19:57:04 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/11 14:40:18 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:07:50 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_expand_data	set_data(t_expand_data data, char *str, char *pos_dollar_sign,
 		perror_and_exit("malloc", EXIT_FAILURE);
 	if (find_env_var(envp, data.env_name))
 		data.env_str = find_env_var(envp, data.env_name)->value;
-	else
+	if (data.env_str == NULL)
 		data.env_str = "\0";
 	return (data);
 }

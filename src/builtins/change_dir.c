@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 17:33:43 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:18:04 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	change_directory(t_command *command, t_env_var **environ)
 	old_pwd = getcwd(NULL, 0);
 	if (old_pwd == NULL)
 		perror_and_exit("getcwd", EXIT_FAILURE);
-	if (command->args[1] == NULL)
+	if (command->args[1] == NULL || *(command->args[1]) == '\0')
 	{
 		if (cd_home(*environ))
 		{
