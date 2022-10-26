@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/19 15:18:04 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/26 13:32:44 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	change_env_old_pwd(char *old_pwd, t_env_var **environ)
 	char	*env_var;
 
 	env_var = ft_strjoin("OLDPWD=", old_pwd);
+	free(old_pwd);
 	if (env_var == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	add_env_var(environ, env_var);
-	free(old_pwd);
 	free(env_var);
 }
 

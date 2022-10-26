@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 14:39:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:34:35 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/26 13:41:56 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ char	*create_file_name(void)
 		if (file_num == NULL)
 			perror_and_exit("malloc", EXIT_FAILURE);
 		file_name = ft_strjoin("tmp", file_num);
+		free(file_num);
 		if (file_name == NULL)
 			perror_and_exit("malloc", EXIT_FAILURE);
-		free(file_num);
 		if (access(file_name, F_OK))
 			return (file_name);
 		free(file_name);

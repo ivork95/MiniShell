@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/12 20:26:44 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/26 13:29:34 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ static char	*env_var_to_str(t_env_var *node)
 	if (tmp == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	env_var_str = ft_strjoin(tmp, node->value);
+	free(tmp);
 	if (env_var_str == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
-	free(tmp);
 	return (env_var_str);
 }
 

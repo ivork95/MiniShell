@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/13 15:18:56 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/26 13:39:08 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	*create_pipe(void)
 	int	*pipe_fd;
 
 	pipe_fd = malloc(sizeof(int) * 2);
+	if (pipe_fd == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
 	if (pipe(pipe_fd) == -1)
 		perror_and_exit("pipe", EXIT_FAILURE);
 	return (pipe_fd);
@@ -74,6 +76,9 @@ char	*get_full_path(char *path, const char *cmd)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	cmd_dup = ft_strjoin("/", cmd);
 	if (cmd_dup == NULL)
+	{
+		free_splitted_array(paths);
 		perror_and_exit("malloc", EXIT_FAILURE);
+	}
 	return (get_full_path_inner(paths, cmd_dup, cmd));
 }

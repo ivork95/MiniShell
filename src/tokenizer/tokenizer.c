@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/07/14 22:00:12 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/11 16:42:14 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/26 13:48:02 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_token	*tokenize_word(char *str)
 		len++;
 	}
 	if (quote == '\'' || quote == '\"')
-		perror_and_exit("Dooie input van je", EXIT_FAILURE);
+		perror_and_exit("Invalid input", EXIT_FAILURE);
 	new_token->type = WORD;
 	new_token->str = str;
 	new_token->len = len;

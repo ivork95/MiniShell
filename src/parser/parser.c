@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/19 04:58:36 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/26 13:46:39 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ static void	set_command(t_token **token, t_command *command)
 	i = count_words(*token);
 	command->args = ft_calloc(i + 1, sizeof(char *));
 	if (command->args == NULL)
+	{
+		free(cmd);
 		perror_and_exit("malloc", EXIT_FAILURE);
+	}
 	command->args[i] = NULL;
 	command->args[0] = cmd;
 	command->cmd = cmd;
