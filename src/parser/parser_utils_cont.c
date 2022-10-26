@@ -6,34 +6,34 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 20:50:02 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/19 15:35:42 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/26 14:00:06 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-extern int g_exit_status;
+extern int	g_exit_status;
 
 char	*get_file_name(t_token *token, t_env_var *envp)
 {
 	char	*file_name;
- 
+
 	file_name = malloc(sizeof(char) * token->len + 1);
 	if (file_name == NULL)
 		perror_and_exit("malloc", EXIT_FAILURE);
 	ft_strlcpy(file_name, token->str, token->len + 1);
 	if (ft_strchr(file_name, '$') != 0)
-        expand_args(&file_name, 0, envp);
+		expand_args(&file_name, 0, envp);
 		// file_name = expand_envp(file_name, ft_strchr(file_name, '$'), envp);
-    if (ft_strlen(file_name) == 0 || only_quotes(file_name))
-    {
-        ft_putstr_fd("minishell: ", 1);
-        write(1, token->str, token->len);
-        ft_putendl_fd(": ambiguous redirect", 1);
-        free(file_name);
-        g_exit_status = 1;
-        return (NULL);
-    }
+	if (ft_strlen(file_name) == 0 || only_quotes(file_name))
+	{
+		ft_putstr_fd("minishell: ", 1);
+		write(1, token->str, token->len);
+		ft_putendl_fd(": ambiguous redirect", 1);
+		free(file_name);
+		g_exit_status = 1;
+		return (NULL);
+	}
 	return (file_name);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 14:39:43 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/26 13:41:56 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/26 13:55:45 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	get_user_intput(char *file_name, char *delimiter, t_env_var *envp)
 		if (!ft_strncmp(input, delimiter, ft_strlen(delimiter) + 1))
 			break ;
 		if (ft_strchr(input, '$') != 0)
-            expand_args(&input, 0, envp);
+			expand_args(&input, 0, envp);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);

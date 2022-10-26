@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 13:50:39 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:24:44 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/26 13:57:14 by kgajadie      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_commands(t_command *cmds)
 int	only_quotes(char *command)
 {
 	int	i;
-    int j;
+	int	j;
 
 	i = 0;
 	while (command[i] == '\"')
@@ -61,7 +61,7 @@ int	only_quotes(char *command)
 			return (0);
 		i++;
 	}
-    j = 0;
+	j = 0;
 	while (command[j] == '\'')
 	{
 		if (command[j] != '\'')
@@ -110,7 +110,8 @@ int	syntax_protector(t_token *token)
 			g_exit_status = 2;
 			return (0);
 		}
-		if (token->type == PIPE && (token->next == NULL || token->next->type == PIPE))
+		if (token->type == PIPE
+			&& (token->next == NULL || token->next->type == PIPE))
 		{
 			ft_putendl_fd("minishell: syntax error", STDERR_FILENO);
 			g_exit_status = 2;
