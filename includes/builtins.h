@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/06 14:20:25 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/27 15:17:27 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 
 /* change_dir.c */
 void		cd_builtin(t_command *cmd, t_env_var **vars);
+
+/* change_dir_cont.c */
+int			cd_old_pwd(t_env_var *environ);
+void		print_error(char *cmd, char *old_pwd);
 
 /* echo.c */
 void		echo_builtin(t_command *command, t_env_var **vars);

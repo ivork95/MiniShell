@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 20:50:02 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/26 14:00:06 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/27 12:36:12 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*get_file_name(t_token *token, t_env_var *envp)
 	ft_strlcpy(file_name, token->str, token->len + 1);
 	if (ft_strchr(file_name, '$') != 0)
 		expand_args(&file_name, 0, envp);
-		// file_name = expand_envp(file_name, ft_strchr(file_name, '$'), envp);
 	if (ft_strlen(file_name) == 0 || only_quotes(file_name))
 	{
 		ft_putstr_fd("minishell: ", 1);
@@ -58,4 +57,15 @@ int	heredoc_setup(t_token *token, t_file *file, t_env_var **envp)
 		return (-1);
 	}
 	return (0);
+}
+
+t_file	*create_file(void)
+{
+	t_file	*file;
+
+	file = malloc(sizeof(t_file));
+	if (file == NULL)
+		perror_and_exit("malloc", EXIT_FAILURE);
+	file->next = NULL;
+	return (file);
 }

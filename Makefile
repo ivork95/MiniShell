@@ -18,6 +18,7 @@ HEADERS		:=	includes/parser.h \
 				includes/signals.h
 MAIN		:=	obj/main.o
 OBJECTS		:=	obj/change_dir.o \
+				obj/change_dir_cont.o \
 				obj/echo.o \
 				obj/env.o \
 				obj/executor_utils.o \

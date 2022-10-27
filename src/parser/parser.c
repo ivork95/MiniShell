@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/24 16:58:55 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/26 13:55:52 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/27 12:34:27 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,8 @@ static int	set_files(t_token **token, t_command *command, t_env_var **envp)
 {
 	t_file	*file;
 
-	file = malloc(sizeof(t_file));
-	if (file == NULL)
-		perror_and_exit("malloc", EXIT_FAILURE);
+	file = create_file();
 	file->type = redirect_type((*token)->str);
-	file->next = NULL;
 	*token = (*token)->next;
 	if (file->type == HEREDOC)
 	{

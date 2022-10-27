@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/26 13:32:44 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/27 15:19:23 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,20 @@ static void	change_directory(t_command *command, t_env_var **environ)
 	old_pwd = getcwd(NULL, 0);
 	if (old_pwd == NULL)
 		perror_and_exit("getcwd", EXIT_FAILURE);
-	if (command->args[1] == NULL || *(command->args[1]) == '\0')
+	if (command->args[1] == NULL || *(command->args[1]) == '\0'
+		|| !ft_strncmp(command->args[1], "~", 2))
 	{
 		if (cd_home(*environ))
-		{
-			free(old_pwd);
-			return ;
-		}
+			return (free(old_pwd));
+	}
+	else if (ft_strncmp(command->args[1], "-", 2) == 0)
+	{
+		if (cd_old_pwd(*environ))
+			return (free(old_pwd));
 	}
 	else if (chdir(command->args[1]) == -1)
 	{
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(command->args[1], STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-		free(old_pwd);
+		print_error(command->args[1], old_pwd);
 		g_exit_status = 1;
 		return ;
 	}

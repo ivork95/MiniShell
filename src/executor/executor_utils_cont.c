@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/30 10:53:02 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/26 13:29:34 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/27 12:51:31 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*env_var_to_str(t_env_var *node)
 	env_var_str = ft_strjoin(tmp, node->value);
 	free(tmp);
 	if (env_var_str == NULL)
-		perror_and_exit("malloc", EXIT_FAILURE);
+		perror_and_exit("malloc2", EXIT_FAILURE);
 	return (env_var_str);
 }
 
@@ -84,8 +84,11 @@ char	**llenv_to_two_d_env(t_env_var *environ)
 	two_d_env = calloc_two_d_env(environ);
 	while (environ)
 	{
-		two_d_env[n] = env_var_to_str(environ);
-		n++;
+		if (environ->value)
+		{
+			two_d_env[n] = env_var_to_str(environ);
+			n++;
+		}
 		environ = environ->next;
 	}
 	return (two_d_env);

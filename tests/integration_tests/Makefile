@@ -18,6 +18,7 @@ test_objects		=	obj/simple_command.o \
 						obj/minicore.o \
 						obj/test_expander.o
 minishell_objects	=	../../obj/change_dir.o \
+						../../obj/change_dir_cont.o \
 						../../obj/echo.o \
 						../../obj/env.o \
 						../../obj/executor_utils.o \
