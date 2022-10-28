@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:17:49 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/26 13:39:08 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/10/28 14:08:32 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static char	*get_full_path_inner(char **paths, char *cmd_dup, const char *cmd)
 		full_path = ft_strjoin(paths[i], cmd_dup);
 		if (full_path == NULL)
 			perror_and_exit("malloc", EXIT_FAILURE);
-		if (!access(full_path, X_OK))
+		if (!access(full_path, X_OK) && ft_strncmp(cmd, "..", 3)
+			&& ft_strncmp(cmd, ".", 2))
 			break ;
 		free(full_path);
 		i++;
@@ -56,7 +57,6 @@ static char	*get_full_path_inner(char **paths, char *cmd_dup, const char *cmd)
 	free(cmd_dup);
 	if (paths[i] == NULL || cmd[0] == '\0')
 	{
-		free_splitted_array(paths);
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd((char *)cmd, STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);

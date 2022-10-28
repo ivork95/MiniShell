@@ -6,14 +6,22 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/15 15:10:13 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/19 04:03:43 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/28 14:36:06 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 #include <errno.h>
 
-void	exec_ll(t_env_var *ll_environ, t_command *command)
+void	exit_errno(void)
+{
+	if (errno == EACCES)
+		perror_and_exit("execve", 126);
+	if (errno == ENOENT)
+		perror_and_exit("execve", 127);
+}
+
+void	exec_ll(t_env_var *ll_environ, t_command *cmd)
 {
 	t_env_var	*path_node;
 	char		*path;
@@ -24,21 +32,20 @@ void	exec_ll(t_env_var *ll_environ, t_command *command)
 	if (path_node == NULL)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(command->args[0], STDERR_FILENO);
+		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		exit(127);
 	}
 	path = path_node->value;
-	if (access(command->args[0], X_OK) == 0)
-		full_path = command->args[0];
+	if ((!access(cmd->args[0], X_OK) && ft_strncmp(cmd->args[0], "..", 3)
+			&& ft_strncmp(cmd->args[0], ".", 2))
+		|| !ft_strncmp(cmd->args[0], "./", 2))
+		full_path = cmd->args[0];
 	else
-		full_path = get_full_path(path, command->args[0]);
+		full_path = get_full_path(path, cmd->args[0]);
 	two_d_env = llenv_to_two_d_env(ll_environ);
-	execve(full_path, command->args, two_d_env);
-	if (errno == EACCES)
-		perror_and_exit("execve", 126);
-	if (errno == ENOENT)
-		perror_and_exit("execve", 127);
+	execve(full_path, cmd->args, two_d_env);
+	exit_errno();
 }
 
 int	exec_builtin(t_env_var **head, t_command *cmd)

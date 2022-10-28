@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/28 10:52:13 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/28 10:58:05 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	minishell(t_env_var	*environ)
 			free_tokens(tokens);
 			continue ;
 		}
-		add_history(*user_input);
+		add_history(user_input);
 		if (parser_and_expander(&cmds, tokens, &environ, user_input))
 			continue ;
 		executor(cmds, &environ);

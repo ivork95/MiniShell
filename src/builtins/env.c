@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:17:30 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/12 02:37:43 by ivork         ########   odam.nl         */
+/*   Updated: 2022/10/28 14:23:20 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@ void	env(t_command *command, t_env_var **head)
 
 	(void)command;
 	vars = *head;
+	if (command->args[1])
+	{
+		ft_putstr_fd("env: \'", STDERR_FILENO);
+		ft_putstr_fd((char *)command->args[1], STDERR_FILENO);
+		ft_putendl_fd("\': no such file or directory", STDERR_FILENO);
+		g_exit_status = 127;
+		return ;
+	}
 	while (vars != NULL)
 	{
 		if (vars->value)
