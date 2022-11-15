@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 16:11:41 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/28 11:55:14 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/13 03:07:29 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ static void	change_directory(t_command *command, t_env_var **environ)
 	char		*old_pwd;
 
 	old_pwd = getcwd(NULL, 0);
-	if (old_pwd == NULL)
-		perror("getcwd");
+	// if (old_pwd == NULL)
+	// 	perror("getcwd");
 	if (command->args[1] == NULL || *(command->args[1]) == '\0'
 		|| !ft_strncmp(command->args[1], "~", 2))
 	{
@@ -86,7 +86,8 @@ static void	change_directory(t_command *command, t_env_var **environ)
 		g_exit_status = 1;
 		return ;
 	}
-	change_env_old_pwd(old_pwd, environ);
+    if (old_pwd)
+	    change_env_old_pwd(old_pwd, environ);
 	change_env_pwd(environ);
 	g_exit_status = 0;
 }
