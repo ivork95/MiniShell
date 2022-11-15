@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/28 10:58:05 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/15 12:29:03 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	get_user_input(char **user_input)
 	if (!(*user_input))
 	{
 		ft_putendl_fd("exit", 2);
-		exit(0);
+		exit(g_exit_status);
 	}
 }
 
