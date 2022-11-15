@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/18 01:34:55 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/12 01:47:57 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/12 21:25:18 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	check_nl_flag(char *str)
 	int	i;
 
 	i = 1;
-	if (str[0] != '-')
+	if (str[0] != '-' || !str[i])
 		return (0);
 	while (str[i])
 	{
