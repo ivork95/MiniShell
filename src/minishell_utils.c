@@ -6,7 +6,7 @@
 /*   By: kgajadie <kgajadie@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/23 13:50:39 by kgajadie      #+#    #+#                 */
-/*   Updated: 2022/10/26 13:57:14 by kgajadie      ########   odam.nl         */
+/*   Updated: 2022/11/13 02:43:36 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ int	only_quotes(char *command)
 	int	j;
 
 	i = 0;
-	while (command[i] == '\"')
+	while (command[i] && command[0] == '\"')
 	{
 		if (command[i] != '\"')
 			return (0);
 		i++;
 	}
 	j = 0;
-	while (command[j] == '\'')
+	while (command[j] && command[0] == '\'')
 	{
 		if (command[j] != '\'')
 			return (0);
