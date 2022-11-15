@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/10 15:56:50 by ivork         #+#    #+#                 */
-/*   Updated: 2022/11/15 12:29:03 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/15 16:00:24 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,29 @@ void	print_env(t_env_var *head)
 		ft_putendl_fd(head->value, STDOUT_FILENO);
 		head = head->next;
 	}
+}
+
+int	increment_shlvl(t_env_var **environ)
+{
+	t_env_var	*shlvl;
+	int			current_shlvl;
+
+	shlvl = find_env_var(*environ, "SHLVL");
+	if (shlvl && str_is_numeric(shlvl->value))
+	{
+		current_shlvl = ft_atoi(shlvl->value);
+		if (current_shlvl < 1)
+		{
+			add_env_var(environ, "SHLVL=1");
+			return (1);
+		}
+		current_shlvl++;
+		free(shlvl->value);
+		shlvl->value = ft_itoa(current_shlvl);
+		return (0);
+	}
+	add_env_var(environ, "SHLVL=1");
+	return (1);
 }
 
 static void	get_user_input(char **user_input)
@@ -76,6 +99,7 @@ int	main(int argc, char **const argv, char **envp)
 	(void)argv;
 	environ = NULL;
 	environ = environ_to_linked_list_recursive(environ, envp);
+	increment_shlvl(&environ);
 	minishell(environ);
 	free_env_vars(environ);
 	return (0);

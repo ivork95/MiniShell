@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/06 17:28:45 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/12 20:23:31 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/15 15:59:35 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit_status;
 
-static bool	str_is_numeric(char *s)
+bool	str_is_numeric(char *s)
 {
 	char			*ascii;
 	unsigned int	i;
