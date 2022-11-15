@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/10/28 14:28:40 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/13 03:17:58 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	add_env_var(t_env_var **head, char *env_var)
 		ft_putstr_fd(env_var, STDERR_FILENO);
 		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
 		g_exit_status = 1;
+        return ;
 	}
 	ptr = ft_strchr(env_var, '=');
 	new = assign_env_key_value(env_var, ptr);
