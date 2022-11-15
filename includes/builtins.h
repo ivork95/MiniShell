@@ -6,7 +6,7 @@
 /*   By: ivork <ivork@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/26 14:03:25 by ivork         #+#    #+#                 */
-/*   Updated: 2022/10/27 15:17:27 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/15 13:10:22 by kawish        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void		put_env_vars_declare(t_env_var *head);
 t_env_var	*environ_to_linked_list_recursive(t_env_var *head, char **environ);
 
 /* exit.c */
+bool		str_is_numeric(char *s);
 void		exit_builtin(t_command *cmd, t_env_var **vars);
 
 /* export.c */
