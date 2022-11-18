@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/11/18 12:54:03 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/18 13:02:30 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void	search_and_add(t_env_var **head, t_env_var *new)
 		}
 		envp = envp->next;
 	}
-	add_front(head, new);
+	new->next = *head;
+	*head = new;
 }
 
 static int	check_identifier(char *env_var)
