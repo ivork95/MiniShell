@@ -6,7 +6,7 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/11/18 13:02:30 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/18 13:10:28 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,11 @@ static int	check_identifier(char *env_var)
 	while (*env_var && env_var != ptr)
 	{
 		if (!ft_isalnum(*env_var) && *env_var != '_')
+		{
+			if (ptr && *(ptr - 1) == '+' && (ptr - 1) == env_var)
+				return (1);
 			return (0);
+		}
 		env_var++;
 	}
 	return (1);
