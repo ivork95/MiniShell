@@ -6,19 +6,13 @@
 /*   By: kawish <kawish@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 17:19:42 by kawish        #+#    #+#                 */
-/*   Updated: 2022/11/13 03:17:58 by ivork         ########   odam.nl         */
+/*   Updated: 2022/11/18 12:54:03 by ivork         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 
 extern int	g_exit_status;
-
-static void	add_front(t_env_var **lst, t_env_var *new)
-{
-	new->next = *lst;
-	*lst = new;
-}
 
 t_env_var	*assign_env_key_value(char *env_var, char *ptr)
 {
@@ -70,18 +64,37 @@ void	search_and_add(t_env_var **head, t_env_var *new)
 	add_front(head, new);
 }
 
+static int	check_identifier(char *env_var)
+{
+	char	*ptr;
+
+	ptr = ft_strchr(env_var, '=');
+	if (ft_isdigit(env_var[0]))
+		return (0);
+	if (!ft_isalpha(env_var[0]) && env_var[0] != '_')
+		return (0);
+	env_var++;
+	while (*env_var && env_var != ptr)
+	{
+		if (!ft_isalnum(*env_var) && *env_var != '_')
+			return (0);
+		env_var++;
+	}
+	return (1);
+}
+
 void	add_env_var(t_env_var **head, char *env_var)
 {
 	char		*ptr;
 	t_env_var	*new;
 
-	if (!ft_isalnum(*env_var))
+	if (!check_identifier(env_var))
 	{
 		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 		ft_putstr_fd(env_var, STDERR_FILENO);
 		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
 		g_exit_status = 1;
-        return ;
+		return ;
 	}
 	ptr = ft_strchr(env_var, '=');
 	new = assign_env_key_value(env_var, ptr);
@@ -90,7 +103,8 @@ void	add_env_var(t_env_var **head, char *env_var)
 	else
 	{
 		search_and_destroy(head, new->key);
-		add_front(head, new);
+		new->next = *head;
+		*head = new;
 	}
 }
 
