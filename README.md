@@ -1,27 +1,35 @@
 # MiniShell
+## Overview
+MiniShell is a project where we have created our own shell. It provides basic shell functionalities such as executing commands, managing processes, and handling input/output redirection.
 
-Bouw image genaamd ubuntu-c-dev op basis van Dockerfile:
-```bash
-docker build -t  ubuntu-c-dev .
+### Build Image
+To build an image named ubuntu-c-dev based on the provided Dockerfile:
+
+```r
+docker build -t ubuntu-c-dev .
 ```
 
-Draai container op basis van image genaamd  ubuntu-c-dev met mounted eigen folder:
-```bash
-docker run -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
-docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -it --rm --init -v "$PWD:/pwd"  ubuntu-c-dev sh -c "cd /pwd; bash"
-```
---cap-add=SYS_PTRACE --security-opt seccomp=unconfined = nodig om lldb te kunnen runnen in container
--i = interactive so bash doesn’t immediately quit because there is no input\
--t = bash shows prompt\
---rm = delete container on exit to not waste space\
--v = mounts specific folder from host to Docker container\
---init = shiieet snap het nut niet, maar Noah gebruikt het\
--c = CPU shares (relative weight) ???\
-sh = ?
+### Run Container
+To run a container based on the ubuntu-c-dev image with your own folder mounted:
 
-Run code met readline in Ubuntu:
 ```bash
-gcc code.c -L/usr/local/lib -I/usr/local/include -lreadline
+docker run -it --rm --init -v "$PWD:/pwd" ubuntu-c-dev sh -c "cd /pwd; bash"
 ```
+### Usage
+To use MiniShell, follow these steps:
 
-show current frame - f
+Build the Docker image using the provided Dockerfile.
+
+Run a container based on the image, with your folder mounted.
+
+Run make in root folder to compile code.
+
+Run program.
+
+./minishell
+
+### Example
+
+```shell
+./minishell
+```
